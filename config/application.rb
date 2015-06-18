@@ -31,5 +31,8 @@ module Drawsome
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Fixes deadlock issue - didn't look into why
+    config.middleware.delete Rack::Lock
   end
 end

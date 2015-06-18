@@ -18,8 +18,9 @@ group :development, :test do
   gem 'spring'
 end
 
-
 gem 'remove_turbolinks'
+gem 'websocket-rails'
+
 group :development do
   gem 'pry-rails'
   gem 'pry-stack_explorer'
