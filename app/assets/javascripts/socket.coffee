@@ -4,11 +4,12 @@ $(document).ready ->
 
   # Sending data to the server through the open socket from my understanding
   task = 
-    name: 'Start taking advantage of WebSockets',
+    name: 'Hey server!  Respond to me please...',
     completed: false
 
-  # dispatcher.trigger 'hello', task
+  dispatcher.bind 'test_response', (data) ->
+    console.log data
+
+  dispatcher.trigger 'test', task
 
 
-
-  

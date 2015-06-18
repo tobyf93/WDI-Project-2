@@ -8,7 +8,11 @@ class SocketController < WebsocketRails::BaseController
   end
 
   def test
-    require 'pry'
-    binding.pry
+    # require 'pry'
+
+    send_message :test_response, "Hi!  I'm the server :)"
+    send_message :test_response, "I can send you messages without you asking for it!"
+
+    # binding.pry
   end
 end
