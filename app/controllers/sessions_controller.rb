@@ -9,7 +9,6 @@ class SessionsController < ApplicationController
       redirect_to '/'
 
     else
-
       flash[:notice] = "Invalid login, please try again."
       redirect_to '/'
     end

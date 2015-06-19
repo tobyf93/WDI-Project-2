@@ -1,0 +1,30 @@
+// Place all the styles related to the sessions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+*{
+	box-sizing: border-box;
+}
+.login-wrapper{
+	h2{
+		margin-top:0px;
+	}
+}
+.btn{
+	-webkit-appearance:none;
+	appearance:none;
+	border:0px;
+	padding: 8px 12px;
+	border-radius: 5px;
+	text-transform: uppercase;
+	&:hover{
+		background: #aee;
+	}
+}
+form{
+	input{
+		display:block;
+		margin-bottom:12px;
+		border:1px solid #aaa;
+	}
+}
