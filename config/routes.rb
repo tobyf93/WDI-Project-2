@@ -19,7 +19,8 @@
 
 Rails.application.routes.draw do
   
-  root :to => 'sessions#new'
+  devise_for :users
+  root :to => 'pages#app'
  
   post '/login' => 'sessions#create'
   delete '/login' => 'sessions#destroy'
