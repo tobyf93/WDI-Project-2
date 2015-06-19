@@ -4,4 +4,7 @@ class PagesController < ApplicationController
 
   def gamestate
   end
+
+  def app
+  end
 end
