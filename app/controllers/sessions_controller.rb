@@ -9,7 +9,6 @@ class SessionsController < ApplicationController
       redirect_to :app
 
     else
-
       flash[:notice] = "Invalid login, please try again."
       redirect_to :root
     end
