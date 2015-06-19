@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   
   root :to => 'pages#socketdemo'
   
+  get '/gamestate' => 'pages#gamestate'
   get '/login' => 'sessions#new'
   post '/login' => 'sessions#create'
   delete '/login' => 'sessions#destroy'
