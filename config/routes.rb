@@ -4,6 +4,7 @@
 #       root GET      /                         sessions#new
 #      login POST     /login(.:format)          sessions#create
 #            DELETE   /login(.:format)          sessions#destroy
+#        app GET      /app(.:format)            pages#app
 # socketdemo GET      /socketdemo(.:format)     pages#socketdemo
 #      users GET      /users(.:format)          users#index
 #            POST     /users(.:format)          users#create
@@ -23,7 +24,10 @@ Rails.application.routes.draw do
   post '/login' => 'sessions#create'
   delete '/login' => 'sessions#destroy'
 
+  get '/app' => 'pages#app'
+
   get '/socketdemo' => 'pages#socketdemo'
+
   resources :users
   
 end
