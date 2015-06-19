@@ -4,12 +4,25 @@ $(document).ready ->
 
   # Sending data to the server through the open socket from my understanding
   task = 
-    name: 'Hey server!  Respond to me please...',
+    name: 'Anonymous User',
     completed: false
 
-  dispatcher.bind 'test_response', (data) ->
-    console.log data
+  # dispatcher.bind 'test_response', (data) ->
+  #   console.log data
 
-  dispatcher.trigger 'test', task
+  # Subscribe to messages channel.  This allows server to push new messages to
+  # client without first receiving a request.
+  channel = dispatcher.subscribe 'messages'
 
+  channel.bind 'new', (data) ->
+    console.log "New message: #{data}"
+    $('#messages').append("> #{data}<br>")
 
+  $('#message').on 'keydown', (e) ->
+    $this = $(this)
+
+    if e.keyCode == 13
+      console.log 'You hit enter'
+      task.message = $this.val()
+      $this.val ''
+      dispatcher.trigger 'test', task

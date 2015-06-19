@@ -20,6 +20,7 @@ end
 
 gem 'remove_turbolinks'
 gem 'websocket-rails'
+gem 'rails_12factor', group: :production
 
 group :development do
   gem 'pry-rails'

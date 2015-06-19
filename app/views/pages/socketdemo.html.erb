@@ -1,2 +1,22 @@
-<h1>Pages#socketdemo</h1>
-<p>Find me in app/views/pages/socketdemo.html.erb</p>
+<style>
+  body {
+    text-align: center;
+  }
+
+  #messages, #message {
+    width: 600px;
+  }
+
+  #messages {
+    border: 1px solid black;
+    height: 500px;
+    margin: 0 auto;
+    text-align: left;
+    overflow: scroll;
+  }
+</style>
+
+<h1>Live Chat via Sockets</h1>
+<div id="messages">
+</div>
+<input id="message" type="text" autofocus>
