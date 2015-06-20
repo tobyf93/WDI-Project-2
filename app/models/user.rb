@@ -3,10 +3,6 @@
 # Table name: users
 #
 #  id                     :integer          not null, primary key
-#  username               :string
-#  admin                  :boolean
-#  created_at             :datetime
-#  updated_at             :datetime
 #  encrypted_password     :string           default(""), not null
 #  reset_password_token   :string
 #  reset_password_sent_at :datetime

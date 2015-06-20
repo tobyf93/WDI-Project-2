@@ -27,18 +27,14 @@
 Rails.application.routes.draw do
   root :to => 'pages#app'
 
-  get '/gamestate' => 'pages#gamestate'
-  get '/login' => 'sessions#new'
-  
   devise_for :users
-
+  get '/login' => 'sessions#new'
   post '/login' => 'sessions#create'
   delete '/login' => 'sessions#destroy'
 
   get '/app' => 'pages#app'
 
+  # Demo Stuff
   get '/socketdemo' => 'pages#socketdemo'
-
-  # resources :users
-  
+  get '/gamestate' => 'pages#gamestate'
 end

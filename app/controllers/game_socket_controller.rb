@@ -1,5 +1,7 @@
 class GameSocketController < WebsocketRails::BaseController
   def join
+    game = Game.last
+
     response = "Player #{message[:name]} has joined the game"
     WebsocketRails[:game].trigger :add_player, response
   end
