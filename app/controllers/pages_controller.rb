@@ -1,4 +1,6 @@
 class PagesController < ApplicationController
+  
+
   def socketdemo
   end
 
@@ -7,4 +9,5 @@ class PagesController < ApplicationController
 
   def app
   end
+
 end
