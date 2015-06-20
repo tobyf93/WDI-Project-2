@@ -21,5 +21,13 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def draw
+    # binding.pry
+    response = "xPos = #{message[:xPos]} yPos = #{message[:yPos]}"
+    data = {
+      x_pos: message[:xPos],
+      y_pos: message[:yPos]
+    }
+
+    WebsocketRails[:game].trigger :draw, data
   end
 end
