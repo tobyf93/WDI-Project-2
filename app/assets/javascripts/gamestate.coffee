@@ -7,10 +7,16 @@ $(document).ready ->
   gameChannel = dispatcher.subscribe 'game'
 
   gameChannel.bind 'add_player', (data) ->
-    console.log data
+    $playersList = $('#players')
+    $playersList.empty()
+    data.forEach (player) ->
+      $playersList.append "<li>#{player}</li>"
 
   gameChannel.bind 'remove_player', (data) ->
-    console.log data
+    $playersList = $('#players')
+    $playersList.empty()
+    data.forEach (player) ->
+      $playersList.append "<li>#{player}</li>"
   ###################################################
 
 

@@ -7,8 +7,7 @@ class GameSocketController < WebsocketRails::BaseController
     game.players << player
     players = game.players.pluck(:name).uniq
 
-    response = "Players: #{players}"
-    WebsocketRails[:game].trigger :add_player, response
+    WebsocketRails[:game].trigger :add_player, players
   end
 
   def leave
@@ -18,7 +17,6 @@ class GameSocketController < WebsocketRails::BaseController
     Player.where(:name => message[:name]).destroy_all
     players = game.players.pluck(:name).uniq
 
-    response = "Players: #{players}"
-    WebsocketRails[:game].trigger :remove_player, response
+    WebsocketRails[:game].trigger :remove_player, players
   end
 end
