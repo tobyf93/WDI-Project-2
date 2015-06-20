@@ -19,4 +19,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     WebsocketRails[:game].trigger :remove_player, players
   end
+
+  def draw
+  end
 end
