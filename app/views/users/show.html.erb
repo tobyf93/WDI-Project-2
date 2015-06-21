@@ -1,7 +1,6 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Profile Image:</strong><br>
   <%= image_tag(@user.profile_image, size: "75x75") %>
 </p>
 
@@ -20,7 +19,9 @@
   <%= @user.bio %>
 </p>
 
-
+<p><strong>Total wins:</strong>
+<%= @user.total_wins %> / <%= @user.total_games %>
+</p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

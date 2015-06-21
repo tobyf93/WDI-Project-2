@@ -31,7 +31,8 @@ class UsersController < ApplicationController
     if @user
       respond_to do |format|
         if @user.save
-          format.html { redirect_to @user, notice: 'User was successfully created.' }
+          session[:user_id] = @user.id
+          format.html { redirect_to :app, notice: 'User was successfully created.' }
           format.json { render :show, status: :created, location: @user }
         else
           format.html { render :new }
@@ -47,7 +48,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     @user = User.find params[:id]
-    
+
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }

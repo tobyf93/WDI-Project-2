@@ -7,7 +7,6 @@ class SessionsController < ApplicationController
     if user.present? && user.authenticate(params[:password])
       session[:user_id] = user.id
       redirect_to :app
-
     else
       flash[:notice] = "Invalid login, please try again."
       redirect_to :root

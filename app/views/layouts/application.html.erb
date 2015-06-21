@@ -14,7 +14,8 @@
   <p class="navbar-text pull-right">
   <% if @current_user %>
     Logged in as <strong><%= @current_user.username %></strong>.
-    <%= link_to 'Edit Account Settings', edit_user_path(@current_user.id), :class => 'navbar-link' %> |
+    <%= link_to 'Drawsome!', :app, :class => 'navbar-link' %> | 
+    <%= link_to 'My Account', user_path(@current_user.id), :class => 'navbar-link' %> |
     <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
   <% else %>
     <%= link_to "Sign up", new_user_path, :class => 'navbar-link'  %> |
@@ -22,10 +23,9 @@
   <% end %>
 </div>
 
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
-
 <div class="container">
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
   <%= yield %>
 </div>
 
