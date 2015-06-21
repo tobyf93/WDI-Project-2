@@ -26,7 +26,7 @@ development:
   <<: *default
   database: Drawsome_development
   host: localhost
-  username: mcooper
+  username: charleslee
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
