@@ -49,4 +49,9 @@ class User < ActiveRecord::Base
     BCrypt::Password.new(remember_digest).is_password?(remember_token)
   end
 
+  def forget
+    update_attribute(:remember_digest, nil)
+  end
+  # This method just deletes the remember_digest so that the browser forgets the cookie if the user logs out.
+
 end
