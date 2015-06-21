@@ -2,25 +2,26 @@
 #
 # Table name: users
 #
-#  id                     :integer          not null, primary key
-#  encrypted_password     :string           default(""), not null
-#  reset_password_token   :string
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :inet
-#  last_sign_in_ip        :inet
-#  confirmation_token     :string
-#  confirmed_at           :datetime
-#  confirmation_sent_at   :datetime
-#  email                  :string           default(""), not null
+#  id              :integer          not null, primary key
+#  username        :string
+#  password_digest :text
+#  email           :text
+#  admin           :boolean          default(FALSE)
+#  bio             :text
+#  profile_image   :text             default("https://tracker.moodle.org/secure/attachment/30912/f3.png")
+#  total_wins      :integer          default(0)
+#  created_at      :datetime
+#  updated_at      :datetime
 #
 
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  
+  validates :username, :length => { :minimum => 4, :too_short => "must be at least 4 characters long" }, :format => { :with => /\A[a-zA-Z]+\z/, :chars_error => "Only letters allowed." }, :presence => true, :uniqueness => true
+  # Username must be at least 4 characters, can only have upper and lower case letters and must be present.
+
+  has_secure_password
+
+  validates :password_digest, :length => { :minimum => 4, :too_short => "must be at least 4 characters long" }, :presence => true
+  # Password must be at least 4 characters and must be present.
+
 end

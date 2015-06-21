@@ -1,13 +1,12 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Username:</strong>
-  <%= @user.username %>
+  <%= image_tag(@user.profile_image, size: "75x75") %>
 </p>
 
 <p>
-  <strong>Password digest:</strong>
-  <%= @user.password_digest %>
+  <strong>Username:</strong>
+  <%= @user.username %>
 </p>
 
 <p>
@@ -16,8 +15,12 @@
 </p>
 
 <p>
-  <strong>Admin:</strong>
-  <%= @user.admin %>
+  <strong>Bio:</strong>
+  <%= @user.bio %>
+</p>
+
+<p><strong>Total wins:</strong>
+<%= @user.total_wins %> / <%= @user.total_games %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
