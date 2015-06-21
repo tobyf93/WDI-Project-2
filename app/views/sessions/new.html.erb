@@ -1,0 +1,13 @@
+<section class="login">
+  <div class="login-wrapper">
+    <h2>LOGIN</h2>
+
+    <%= form_tag '/login' do %>
+        <%= text_field_tag 'username', nil, :placeholder=>"username" %>
+        <%= password_field_tag 'password', nil , :placeholder=>'password' %>
+        <%= submit_tag 'Login', :class=>'btn btn-submit full-width'%>
+    <% end %>
+
+    <%= link_to 'Sign Up', new_user_path %>
+  </div>
+</section>
