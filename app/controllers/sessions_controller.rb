@@ -8,7 +8,11 @@ class SessionsController < ApplicationController
     user = User.find_by :username => params[:username]
     if user.present? && user.authenticate(params[:password])
       session[:user_id] = user.id
-      remember user
+      if params[:remember_me]["validated"].to_i == 1
+        remember user
+      else
+        forget user
+      end
       redirect_to :app
     else
       flash[:notice] = "Invalid login, please try again."
