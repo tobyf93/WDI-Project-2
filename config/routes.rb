@@ -1,27 +1,14 @@
 # == Route Map
 #
-#                   Prefix Verb     URI Pattern                    Controller#Action
-#         new_user_session GET      /users/sign_in(.:format)       devise/sessions#new
-#             user_session POST     /users/sign_in(.:format)       devise/sessions#create
-#     destroy_user_session DELETE   /users/sign_out(.:format)      devise/sessions#destroy
-#            user_password POST     /users/password(.:format)      devise/passwords#create
-#        new_user_password GET      /users/password/new(.:format)  devise/passwords#new
-#       edit_user_password GET      /users/password/edit(.:format) devise/passwords#edit
-#                          PATCH    /users/password(.:format)      devise/passwords#update
-#                          PUT      /users/password(.:format)      devise/passwords#update
-# cancel_user_registration GET      /users/cancel(.:format)        devise/registrations#cancel
-#        user_registration POST     /users(.:format)               devise/registrations#create
-#    new_user_registration GET      /users/sign_up(.:format)       devise/registrations#new
-#   edit_user_registration GET      /users/edit(.:format)          devise/registrations#edit
-#                          PATCH    /users(.:format)               devise/registrations#update
-#                          PUT      /users(.:format)               devise/registrations#update
-#                          DELETE   /users(.:format)               devise/registrations#destroy
-#                     root GET      /                              pages#app
-#                    login POST     /login(.:format)               sessions#create
-#                          DELETE   /login(.:format)               sessions#destroy
-#                      app GET      /app(.:format)                 pages#app
-#               socketdemo GET      /socketdemo(.:format)          pages#socketdemo
-#                websocket GET|POST /websocket(.:format)           websocket_rails
+#     Prefix Verb     URI Pattern           Controller#Action
+#       root GET      /                     pages#app
+#      login GET      /login(.:format)      sessions#new
+#            POST     /login(.:format)      sessions#create
+#            DELETE   /login(.:format)      sessions#destroy
+#        app GET      /app(.:format)        pages#app
+# socketdemo GET      /socketdemo(.:format) pages#socketdemo
+#  gamestate GET      /gamestate(.:format)  pages#gamestate
+#  websocket GET|POST /websocket(.:format)  websocket_rails
 #
 
 Rails.application.routes.draw do
@@ -29,11 +16,13 @@ Rails.application.routes.draw do
 
   get '/login' => 'sessions#new'
   post '/login' => 'sessions#create'
-  delete '/login' => 'sessions#destroy'
+  delete '/login' => 'sessions#destroy', :as => 'destroy_user_session'
 
   get '/app' => 'pages#app'
 
   # Demo Stuff
   get '/socketdemo' => 'pages#socketdemo'
   get '/gamestate' => 'pages#gamestate'
+
+resources :users
 end

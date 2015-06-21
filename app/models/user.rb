@@ -16,10 +16,12 @@
 
 class User < ActiveRecord::Base
   
-  validates :username, :length => { :minimum => 4, :too_short => "must be at least %{minimum} characters long" }, :format => { :with => /\A[a-zA-Z]+\z/, :chars_error => "Only letters allowed." }, :presence => true
+  validates :username, :length => { :minimum => 4, :too_short => "must be at least 4 characters long" }, :format => { :with => /\A[a-zA-Z]+\z/, :chars_error => "Only letters allowed." }, :presence => true, :uniqueness => true
   # Username must be at least 4 characters, can only have upper and lower case letters and must be present.
 
-  validates :password_digest, :length =>  { :minimum => 4, :too_short => "must be at least %{minimum} characters long" }, :presence => true
+  has_secure_password
+
+  validates :password_digest, :length => { :minimum => 4, :too_short => "must be at least 4 characters long" }, :presence => true
   # Password must be at least 4 characters and must be present.
-  
+
 end

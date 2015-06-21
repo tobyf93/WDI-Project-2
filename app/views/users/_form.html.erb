@@ -25,11 +25,15 @@
   </p>
   <p class="field">
     <%= f.label :email %><br>
-    <%= f.text_area :email %>
+    <%= f.email_field :email %>
   </p>
   <p class="field">
-    <%= f.label :admin %><br>
-    <%= f.check_box :admin %>
+    <%= f.label :profile_image %><br>
+    <%= f.url_field :profile_image %>
+  </p>
+  <p>
+    <%= f.label :bio %><br>
+    <%= f.text_area :bio %>
   </p>
   <p class="actions">
     <%= f.label :submit %>

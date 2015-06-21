@@ -16,4 +16,3 @@
 //= require backbone-min
 //= require_tree .
 //= require websocket_rails/main
-

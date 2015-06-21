@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  # before_action :authenticate
+  before_action :authenticate, except: [:new, :create]
   
   # GET /users
   # GET /users.json
@@ -28,14 +28,18 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+    if @user
+      respond_to do |format|
+        if @user.save
+          format.html { redirect_to @user, notice: 'User was successfully created.' }
+          format.json { render :show, status: :created, location: @user }
+        else
+          format.html { render :new }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to new_user_path
     end
   end
 
@@ -71,6 +75,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :password, :email, :admin)
+      params.require(:user).permit(:username, :password, :password_confirmation, :profile_image, :email, :bio, :admin)
     end
 end
