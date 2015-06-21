@@ -8,7 +8,9 @@ class ApplicationController < ActionController::Base
     if session[:user_id]
       @current_user = User.find session[:user_id]
     else
-      redirect_to login_path
+      respond_to do |format|
+        format.html { redirect_to login_path, notice: 'Please log in to access Drawsome.' }
+      end
     end
 
   end
