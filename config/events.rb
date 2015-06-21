@@ -13,4 +13,9 @@ WebsocketRails::EventMap.describe do
   # The above will handle an event triggered on the client like `product.new`.
 
   subscribe :test, 'socket#test'
+
+  namespace :game do
+    subscribe :join, 'game_socket#join'
+    subscribe :leave, 'game_socket#leave'
+  end
 end

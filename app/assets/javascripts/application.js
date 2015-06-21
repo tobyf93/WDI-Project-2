@@ -12,6 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require underscore-min
+//= require backbone-min
+//= require sketch
 //= require_tree .
 //= require websocket_rails/main
-

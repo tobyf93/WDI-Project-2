@@ -1,13 +1,11 @@
-<% if user_signed_in? %>
+<% if @current_user %>
 
 Welcome back <%=  %>
 
 <h1>WELCOME TO DRAWSOME, GET READY TO HAVE THE DRAWIEST TIME OF YOUR LIFE.</h1>
 
 <div id="main">
-  <div id="waitingSpace">
-    WAITING TO PLAY
-  </div>
+
 </div>
 
 <% else %>
@@ -15,3 +13,38 @@ Welcome back <%=  %>
 <h1> Please sign-in to take part in the drawesomeness that is drawesome.</h1>
 
 <% end %>
+
+<script id="pregameTemplate" type="template/text">
+  <div id="waitingSpace">
+    WAITING TO PLAY
+	<button class="btn startBtn"> Waiting for players </button>
+  </div>
+</script>
+<script id="individualuserRDY" type="template/text">
+	<div class="playerTiles">
+	//WILL DISPLAY A NEW TILE WHEN WE DETECT A USER IS LOGGING IN
+
+	//WILL DISPLAY READY STYLE ONCE A USER HAS SIGNED IN 
+	</div>
+</script>
+<script id="canvas" type="template/text">
+	<canvas id="drawsomeCanv" width="100%" height="100%"></canvas>
+</script>
+<script id="guesserTemplate" type="template/text">
+	
+</script>
+<script id="drawerTempalte" type="template/text">
+	
+</script>
+<script id="wordRd" type="template/text">
+	
+</script>
+<script id="chatBoxTemplate" type="template/text">
+	<div class="chatBoxWrapper">
+		<div class="chatBox"></div>
+		<textarea class="typeBox"></textarea>
+	</div>
+</script>
+<script id="eventAlerts" type="template/text">
+	
+</script>

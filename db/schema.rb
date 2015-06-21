@@ -11,27 +11,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150619044147) do
+ActiveRecord::Schema.define(version: 20150621044023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "users", force: :cascade do |t|
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.inet     "current_sign_in_ip"
-    t.inet     "last_sign_in_ip"
-    t.string   "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string   "email",                  default: "", null: false
+  create_table "games", force: :cascade do |t|
+    t.string   "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  create_table "players", force: :cascade do |t|
+    t.integer  "game_id"
+    t.integer  "user_id"
+    t.integer  "score"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "name"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "username"
+    t.text     "password_digest"
+    t.text     "email"
+    t.boolean  "admin",           default: false
+    t.text     "bio"
+    t.text     "profile_image",   default: "https://tracker.moodle.org/secure/attachment/30912/f3.png"
+    t.integer  "total_wins",      default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "total_games",     default: 0
+    t.string   "remember_digest"
+  end
 
 end
