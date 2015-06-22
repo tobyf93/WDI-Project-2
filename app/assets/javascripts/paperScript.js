@@ -1,9 +1,9 @@
-var path;
 $(document).ready(function(){
 	paper.install(window);
 	paper.setup('drawsomeCanv');
 	var tool = new Tool();
-	view.draw();
+	var path;
+	var strokeColor;
 
 	// Socket stuff
 	var dispatcher = new WebSocketRails(window.location.host + '/websocket');
@@ -17,6 +17,8 @@ $(document).ready(function(){
 	  	path = new Path();
 	  }
 
+	  strokeColor = data.stroke_color;
+
 	  addPoint({x: data.x_pos, y: data.y_pos});
 	});
 
@@ -26,7 +28,8 @@ $(document).ready(function(){
 		var data = {
 	    xPos: event.point.x,
 	    yPos: event.point.y,
-	    newPath: true
+	    newPath: true,
+	    strokeColor: strokeColor
 	  };
 
 		dispatcher.trigger('game.draw', data);
@@ -37,7 +40,8 @@ $(document).ready(function(){
 	tool.onMouseDrag = function(event) {
 		var data = {
 	    xPos: event.point.x,
-	    yPos: event.point.y
+	    yPos: event.point.y,
+	    strokeColor: strokeColor
 	  };
 
 		dispatcher.trigger('game.draw', data);
@@ -46,9 +50,21 @@ $(document).ready(function(){
 	};
 
 	var addPoint = function(point) {
-		path.strokeColor = 'black';
+		strokeColor = strokeColor || 'black';
+
+		path.strokeColor = strokeColor;
 		path.add(point);
 		view.draw();	
 	};
 
+	// Color palette
+	$('.color').on('click', function() {
+		var classes = $(this).attr('class').split(' ');
+		strokeColor = classes[1];
+	});
+
 });
+
+
+
+
