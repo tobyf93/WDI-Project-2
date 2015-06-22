@@ -1,21 +1,25 @@
-paper.install(window);
-
+var path;
 $(document).ready(function(){
+	paper.install(window);
 
 	// Socket stuff
-	var dispatcher = new WebSocketRails('localhost:3000/websocket');
+	var dispatcher = new WebSocketRails(window.location.host + '/websocket');
 	var channel = dispatcher.subscribe('game');
 	channel.bind('draw', function(data) {
 		var drawing = $('#drawing').is(':checked');
 	  console.log(data.x_pos, data.y_pos);
+
+	  path = path || new Path();
 	  addPoint({x: data.x_pos, y: data.y_pos});
 	});
 
 	paper.setup('drawsomeCanv');
 	var tool = new Tool();
-	var path = new Path(); 
+	var path = undefined; 
 
 	tool.onMouseDown = function(event) {
+		path = new Path();
+
 		var data = {
 	    xPos: event.point.x,
 	    yPos: event.point.y
@@ -40,7 +44,8 @@ $(document).ready(function(){
 
 	var addPoint = function(point) {
 		path.add(point);
-		console.log('adding point..');
+		console.log(path);
+		view.draw();	
 	};
 
 });
