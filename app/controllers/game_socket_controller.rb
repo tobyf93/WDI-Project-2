@@ -62,7 +62,8 @@ class GameSocketController < WebsocketRails::BaseController
       x_pos: message[:xPos],
       y_pos: message[:yPos],
       new_path: message[:newPath],
-      stroke_color: message[:strokeColor]
+      stroke_color: message[:strokeColor],
+      stroke_width: message[:strokeWidth]
     }
 
     WebsocketRails[:game].trigger :draw, data
