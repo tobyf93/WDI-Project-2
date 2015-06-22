@@ -11,10 +11,17 @@ class GameSocketController < WebsocketRails::BaseController
 
     user = User.find session[:user_id]
 
+    users = []
+      game.players.each do |player|
+        user = User.find player.user_id
+        users.push user
+      end
+
     players = game.players.pluck(:user_id).uniq
     data = {
       players: game.players,
-      username: user.username
+      username: user.username,
+      users: users
     }
 
     WebsocketRails[:game].trigger :join, data
@@ -28,9 +35,16 @@ class GameSocketController < WebsocketRails::BaseController
       player = (Player.where ("user_id = #{session[:user_id]}"))
       user = User.find session[:user_id]
 
+      users = []
+      game.players.each do |player|
+        user = User.find player.user_id
+        users.push user
+      end
+
       data = {
         username: user.username,
-        players: game.players
+        players: game.players,
+        users: users
       }
 
       (Player.where ("user_id = #{session[:user_id]}")).destroy_all

@@ -34,7 +34,7 @@ $(document).ready(function() {
     $('#players').html('');
 
     for (var i = 0; i < data.players.length; i++) {
-      $newPlayer = $('<li>user_id: ' + data.players[i].user_id + '</li>');
+      $newPlayer = $('<li>Player Name: ' + data.users[i].username + ', user_id: ' + data.players[i].user_id +'</li>');
       $newPlayer.appendTo('#players');
     };
 
