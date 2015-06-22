@@ -1,13 +1,15 @@
 $(document).ready(function() {
 
+
   if ($('#drawingGive').length === 0) {
-    return
-  };
+    return;
+  }
   $.ajax({
     url: '/word',
     dataType: 'json'
   }).done(function(data) {
     console.log(data);
+  });
 
 
   var joinGame = function() {
@@ -21,7 +23,7 @@ $(document).ready(function() {
     for (var i = 0; i < data.players.length; i++) {
       $newPlayer = $('<li>Player Name: ' + data.users[i].username + ', user_id: ' + data.players[i].user_id +'</li>');
       $newPlayer.appendTo('#players');
-    };
+    }
 
   });
 
@@ -33,9 +35,9 @@ $(document).ready(function() {
       console.log(data);
       $newPlayer = $('<li>Player Name: ' + data.users[j].username + ', user_id: ' + data.players[j].user_id +'</li>');
       $newPlayer.appendTo('#players');
-    };
+    }
 
-  })
+  });
 
   joinGame();
 });
