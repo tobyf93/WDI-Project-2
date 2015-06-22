@@ -2,13 +2,9 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 app = app || {}
-# _.templateSettings =
-# 	evaluate: ///
-# 	\{\[([\s\S]+?)\]\}
-# 	///g # {[ console.log("Hello"); ]} - runs
-#  	interpolate: ///
-#  	\{\{([\s\S]+?)\}\}
-#  	///g # {{ key }} - interpolates
+
+_.templateSettings.evaluate = /// ^ /\{\[([\s\S]+?)\]\} ///g
+_.templateSettings.interpolate = /// ^ /\{\{([\s\S]+?)\}\} ///g
 
 # $(document).ready(=>
 # 	# Start up the document 
