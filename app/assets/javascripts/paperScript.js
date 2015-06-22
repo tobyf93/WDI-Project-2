@@ -13,6 +13,10 @@ $(document).ready(function(){
 		var drawing = $('#drawing').is(':checked');
 
 	  path = path || new Path();
+	  if (data.new_path) {
+	  	path = new Path();
+	  }
+
 	  addPoint({x: data.x_pos, y: data.y_pos});
 	});
 
@@ -21,7 +25,8 @@ $(document).ready(function(){
 
 		var data = {
 	    xPos: event.point.x,
-	    yPos: event.point.y
+	    yPos: event.point.y,
+	    newPath: true
 	  };
 
 		dispatcher.trigger('game.draw', data);
@@ -41,9 +46,6 @@ $(document).ready(function(){
 	};
 
 	var addPoint = function(point) {
-		// console.log('drawing: ', point.x, ' ', point.y);
-		console.log("PATH", path);
-
 		path.strokeColor = 'black';
 		path.add(point);
 		view.draw();	
