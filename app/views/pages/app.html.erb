@@ -21,18 +21,16 @@ Welcome back <%=  %>
 
 <% end %>
 
-<script id="pregameTemplate" type="template/text">
-  <div id="waitingSpace">
+<script id="preGameTemplate" type="template/text">
+  <div id="waitingView">
     WAITING TO PLAY
+    <div id="playerTiles"></div>
 	<button class="btn startBtn"> Waiting for players </button>
   </div>
 </script>
-<script id="individualuserRDY" type="template/text">
-	<div class="playerTiles">
-	//WILL DISPLAY A NEW TILE WHEN WE DETECT A USER IS LOGGING IN
-
-	//WILL DISPLAY READY STYLE ONCE A USER HAS SIGNED IN 
-	</div>
+<script id="preGamePlayerTemplate" type="template/text">
+	<section id="playerName">{{name}}</section> 
+	<section id="playerState">{{status}}</section>
 </script>
 <script id="canvas" type="template/text">
 	<canvas id="drawsomeCanv" width="100%" height="100%"></canvas>

@@ -6,7 +6,7 @@ $(document).ready(function(){
 	var dispatcher = new WebSocketRails(window.location.host + '/websocket');
 	var channel = dispatcher.subscribe('game');
 	channel.bind('draw', function(data) {
-		var drawing = $('#drawing').is(':checked');
+	  // var drawing = $('#drawing').is(':checked');
 	  console.log(data.x_pos, data.y_pos);
 
 	  path = path || new Path();
