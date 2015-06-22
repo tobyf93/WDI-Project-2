@@ -11,6 +11,8 @@ $(document).ready(function() {
     console.log(data);
   });
 
+  var dispatcher = new WebSocketRails(window.location.host + '/websocket');
+  var channel = dispatcher.subscribe('game');
 
   var joinGame = function() {
     dispatcher.trigger('game.join');
@@ -21,9 +23,9 @@ $(document).ready(function() {
     $('#players').html('');
 
     for (var i = 0; i < data.players.length; i++) {
-      $newPlayer = $('<li>Player Name: ' + data.users[i].username + ', user_id: ' + data.players[i].user_id +'</li>');
+      $newPlayer = $('<li>Player Name: ' + data.users[i].username + ', user_id: ' + data.players[i].user_id + '</li>');
       $newPlayer.appendTo('#players');
-    }
+    };
 
   });
 
@@ -33,7 +35,7 @@ $(document).ready(function() {
     // This loop needs to be the length minus one as the player isn't destroyed until after the data has been setup to be passed through.
     for (var j = 0; j < data.players.length; j++) {
       console.log(data);
-      $newPlayer = $('<li>Player Name: ' + data.users[j].username + ', user_id: ' + data.players[j].user_id +'</li>');
+      $newPlayer = $('<li>Player Name: ' + data.users[j].username + ', user_id: ' + data.players[j].user_id + '</li>');
       $newPlayer.appendTo('#players');
     }
 
