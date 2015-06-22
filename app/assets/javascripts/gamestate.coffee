@@ -20,8 +20,6 @@ $(document).ready ->
   ###################################################
 
 
-
-
   $('#addPlayer').on 'click', ->
     name = $('#player').val()
     data =
