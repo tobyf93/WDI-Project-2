@@ -14,11 +14,11 @@
 //= require jquery_ujs
 //= require underscore-min
 //= require backbone-min
-//= require sketch
 //= require paper-full
 //= require_tree ./backbone/models
 //= require_tree ./backbone/collections
 //= require_tree ./backbone/views
 //= require_tree ./backbone/router
+
 //= require_tree .
 //= require websocket_rails/main
