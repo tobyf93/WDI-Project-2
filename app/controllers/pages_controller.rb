@@ -10,4 +10,7 @@ class PagesController < ApplicationController
   def app
   end
 
+  def loaddrawing
+  end
+
 end
