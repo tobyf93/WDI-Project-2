@@ -5,3 +5,9 @@ class app.Router extends Backbone.Router
 		'':'index'
 		'guesser':'guesserView'
 		'drawer':'drawerView'
+	index: =>
+		return "hello"
+	guesser: =>
+		return "hello"
+	drawer: =>
+		return "hello"
