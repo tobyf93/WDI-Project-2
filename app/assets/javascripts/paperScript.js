@@ -3,10 +3,11 @@ $(document).ready(function(){
 	paper.install(window);
 	paper.setup('drawsomeCanv');
 	var tool = new Tool();
-	var path; 
+	view.draw();
 
 	// Socket stuff
 	var dispatcher = new WebSocketRails(window.location.host + '/websocket');
+
 	var channel = dispatcher.subscribe('game');
 	channel.bind('draw', function(data) {
 		var drawing = $('#drawing').is(':checked');
@@ -25,7 +26,6 @@ $(document).ready(function(){
 
 		dispatcher.trigger('game.draw', data);
 
-		path.strokeColor = 'black';
 		addPoint(event.point);
 	};
 
@@ -41,7 +41,10 @@ $(document).ready(function(){
 	};
 
 	var addPoint = function(point) {
-		console.log('drawing: ', point.x, ' ', point.y);
+		// console.log('drawing: ', point.x, ' ', point.y);
+		console.log("PATH", path);
+
+		path.strokeColor = 'black';
 		path.add(point);
 		view.draw();	
 	};
