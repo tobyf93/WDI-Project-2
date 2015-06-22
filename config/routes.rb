@@ -26,6 +26,8 @@ Rails.application.routes.draw do
   post '/login' => 'sessions#create'
   delete '/login' => 'sessions#destroy', :as => 'destroy_user_session'
 
+  get '/word' => 'words#get_word'
+
   get '/app' => 'pages#app'
 
   # Demo Stuff
