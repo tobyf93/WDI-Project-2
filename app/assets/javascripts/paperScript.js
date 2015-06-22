@@ -1,8 +1,9 @@
+var path;
 $(document).ready(function(){
 	paper.install(window);
 
 	// Socket stuff
-	var dispatcher = new WebSocketRails('localhost:3000/websocket');
+	var dispatcher = new WebSocketRails(window.location.host + '/websocket');
 	var channel = dispatcher.subscribe('game');
 	channel.bind('draw', function(data) {
 		var drawing = $('#drawing').is(':checked');
