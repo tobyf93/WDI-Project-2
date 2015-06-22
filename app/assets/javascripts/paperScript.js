@@ -13,6 +13,10 @@ $(document).ready(function(){
 		var drawing = $('#drawing').is(':checked');
 
 	  path = path || new Path();
+	  if (data.new_path) {
+	  	path = new Path();
+	  }
+
 	  addPoint({x: data.x_pos, y: data.y_pos});
 	});
 
