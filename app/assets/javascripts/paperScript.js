@@ -15,7 +15,7 @@ $(document).ready(function(){
 
 	paper.setup('drawsomeCanv');
 	var tool = new Tool();
-	var path = new Path(); 
+	var path = undefined; 
 
 	tool.onMouseDown = function(event) {
 		path = new Path();
@@ -43,9 +43,9 @@ $(document).ready(function(){
 	};
 
 	var addPoint = function(point) {
-		console.log(path);
 		path.add(point);
-		console.log('adding point..');
+		console.log(path);
+		view.draw();	
 	};
 
 });
