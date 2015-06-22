@@ -22,6 +22,8 @@
 Rails.application.routes.draw do
   root :to => 'pages#app'
 
+  resources :users
+
   get '/login' => 'sessions#new'
   post '/login' => 'sessions#create'
   delete '/login' => 'sessions#destroy', :as => 'destroy_user_session'
@@ -33,6 +35,5 @@ Rails.application.routes.draw do
   # Demo Stuff
   get '/socketdemo' => 'pages#socketdemo'
   get '/gamestate' => 'pages#gamestate'
-
-resources :users
+  get '/canvas' => 'pages#canvasdemo'
 end
