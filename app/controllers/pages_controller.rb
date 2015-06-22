@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  
+  before_action :authenticate
 
   def socketdemo
   end
@@ -8,6 +8,9 @@ class PagesController < ApplicationController
   end
 
   def app
+  end
+
+  def loaddrawing
   end
 
 end

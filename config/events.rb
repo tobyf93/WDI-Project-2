@@ -1,21 +1,16 @@
 WebsocketRails::EventMap.describe do
-  # You can use this file to map incoming events to controller actions.
-  # One event can be mapped to any number of controller actions. The
-  # actions will be executed in the order they were subscribed.
-  #
-  # Uncomment and edit the next line to handle the client connected event:
-  #   subscribe :client_connected, :to => Controller, :with_method => :method_name
-  #
-  # Here is an example of mapping namespaced events:
-  #   namespace :product do
-  #     subscribe :new, :to => ProductController, :with_method => :new_product
-  #   end
-  # The above will handle an event triggered on the client like `product.new`.
+  # Events that can be triggered via the client.  This allows clients to privately
+  # communicate with the server over the open socket.  It is then the servers job
+  # to either respond privately to the client or broadcast information to all clients
+  # via the public channels.
 
   subscribe :test, 'socket#test'
 
   namespace :game do
     subscribe :join, 'game_socket#join'
     subscribe :leave, 'game_socket#leave'
+    subscribe :draw, 'game_socket#draw'
   end
+
+  subscribe :client_disconnected, 'game_socket#leave'
 end

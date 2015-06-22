@@ -1,6 +1,6 @@
-app = app || {}
+window.app = window.app || {}
 
-class app.Players extends Backbone.Model
+class app.Player extends Backbone.Model
   defaults =
     go: 'here',
-    like: 'normal'
+    like: 'normal'  
