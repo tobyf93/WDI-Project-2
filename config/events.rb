@@ -11,4 +11,6 @@ WebsocketRails::EventMap.describe do
     subscribe :leave, 'game_socket#leave'
     subscribe :draw, 'game_socket#draw'
   end
+
+  subscribe :client_disconnected, 'game_socket#leave'
 end
