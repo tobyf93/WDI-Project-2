@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @word.name %>
+</p>
+
+<p>
+  <strong>Related image:</strong>
+  <%= @word.related_image %>
+</p>
+
+<%= link_to 'Edit', edit_word_path(@word) %> |
+<%= link_to 'Back', words_path %>
+
+
+<h3>Hints for<%= @word.name %></h3>
+<% if @word.hints %>
+  <% @word.hints.each do |hint| %>
+    <li class="bullets">Hint: <%= link_to hint.name, word_hint_path(@word, hint) %> </li>
+  <% end %>
+<% end %>

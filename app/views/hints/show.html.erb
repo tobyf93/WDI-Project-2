@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @hint.name %>
+</p>
+
+<p>
+  <strong>Word:</strong>
+  <%= link_to @hint.word.name, word_path(@word) %>
+</p>
+
+<%= link_to 'Edit', edit_word_hint_path(@word, @hint) %> |
+<%= link_to 'Back', word_hints_path(@word) %>
