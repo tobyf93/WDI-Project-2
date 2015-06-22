@@ -1,6 +1,5 @@
-paper.install(window);
-
 $(document).ready(function(){
+	paper.install(window);
 
 	// Socket stuff
 	var dispatcher = new WebSocketRails('localhost:3000/websocket');
