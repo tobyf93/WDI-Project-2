@@ -1,12 +1,12 @@
-$(document).ready(function() {
+// $(document).ready(function() {
   
-  if ($('#drawingGive').length === 0) {
-    return
-  };
+//   if ($('#drawingGive').length === 0) {
+//     return
+//   };
 
-  $.ajax({
-    url: 
+//   $.ajax({
+//     url: 
     
-  });
+//   });
 
-});
+// });

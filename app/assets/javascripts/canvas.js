@@ -1,4 +1,5 @@
 $(document).ready( function(){
+  return;
 
 // Mouse coordinates 
 var mouse ={x:0, y:0};
