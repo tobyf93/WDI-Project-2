@@ -15,6 +15,10 @@
 //= require underscore-min
 //= require backbone-min
 //= require paper-full
-//= require sketch
+//= require_tree ./backbone/models
+//= require_tree ./backbone/collections
+//= require_tree ./backbone/views
+//= require_tree ./backbone/router
+
 //= require_tree .
 //= require websocket_rails/main
