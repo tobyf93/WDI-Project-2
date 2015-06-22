@@ -21,7 +21,8 @@ $(document).ready(function(){
 
 		var data = {
 	    xPos: event.point.x,
-	    yPos: event.point.y
+	    yPos: event.point.y,
+	    newPath: true
 	  };
 
 		dispatcher.trigger('game.draw', data);
@@ -41,9 +42,6 @@ $(document).ready(function(){
 	};
 
 	var addPoint = function(point) {
-		// console.log('drawing: ', point.x, ' ', point.y);
-		console.log("PATH", path);
-
 		path.strokeColor = 'black';
 		path.add(point);
 		view.draw();	
