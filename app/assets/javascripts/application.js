@@ -15,5 +15,6 @@
 //= require underscore-min
 //= require backbone-min
 //= require sketch
+//= require paper-full
 //= require_tree .
 //= require websocket_rails/main
