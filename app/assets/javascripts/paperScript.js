@@ -1,4 +1,4 @@
-var path;
+
 $(document).ready(function(){
 	// The rest of the code doesn't run unless we are on the page with the #drawing element.
 	if ($('#drawing').length === 0) {
@@ -8,6 +8,7 @@ $(document).ready(function(){
 	paper.install(window);
 	paper.setup('drawsomeCanv');
 	var tool = new Tool();
+	var path;
 	view.draw();
 
 	// Socket stuff
@@ -16,8 +17,6 @@ $(document).ready(function(){
 	var channel = dispatcher.subscribe('game');
 
 	channel.bind('draw', function(data) {
-		var drawing = $('#drawing').is(':checked');
-
 	  path = path || new Path();
 	  if (data.new_path) {
 	  	path = new Path();
