@@ -15,29 +15,32 @@ $(document).ready(function(){
 	var tool = new Tool();
 	var path = new Path(); 
 
-	tool.onMouseDown = function(event){
-		// path = new Path();
+	tool.onMouseDown = function(event) {
+		var data = {
+	    xPos: event.point.x,
+	    yPos: event.point.y
+	  };
+
+		dispatcher.trigger('game.draw', data);
+
 		path.strokeColor = 'black';
-		// path.add(event.point);
 		addPoint(event.point);
-		// console.log(event.point);
 	};
 
-	tool.onMouseDrag = function(event){
-		// path.add(event.point);
+	tool.onMouseDrag = function(event) {
+		var data = {
+	    xPos: event.point.x,
+	    yPos: event.point.y
+	  };
+
+		dispatcher.trigger('game.draw', data);
+
 		addPoint(event.point);
-		// console.log(event.point);
 	};
 
 	var addPoint = function(point) {
 		path.add(point);
-
-		var data = {
-	    xPos: point.x,
-	    yPos: point.y
-	  };
-
-		dispatcher.trigger('game.draw', data);
+		console.log('adding point..');
 	};
 
 });
