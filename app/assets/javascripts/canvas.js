@@ -1,5 +1,6 @@
 $(document).ready( function(){
-// return;
+return;
+
 // Mouse coordinates 
 var mouse ={x:0, y:0};
 var last_mouse_move = {x: undefined, y: undefined};
