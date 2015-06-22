@@ -3,21 +3,46 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.last
     game = Game.create if !game
 
-    player = Player.create :name => message[:name]
-    game.players << player
-    players = game.players.pluck(:name).uniq
+    # Checks that a player with the signed 
+    if (Player.where ("user_id = #{session[:user_id]}")).empty?
+      player = Player.create :user_id => session[:user_id]
+      game.players << player
+    end
 
-    WebsocketRails[:game].trigger :add_player, players
+    user = User.find session[:user_id]
+
+    players = game.players.pluck(:user_id).uniq
+    data = {
+      players: game.players,
+      username: user.username
+    }
+
+    WebsocketRails[:game].trigger :join, data
   end
 
   def leave
     game = Game.last
     game = Game.create if !game
 
-    Player.where(:name => message[:name]).destroy_all
-    players = game.players.pluck(:name).uniq
+    if (Player.where ("user_id = #{session[:user_id]}")).any?
+      player = (Player.where ("user_id = #{session[:user_id]}"))
+      user = User.find session[:user_id]
 
-    WebsocketRails[:game].trigger :remove_player, players
+      data = {
+        username: user.username,
+        players: game.players
+      }
+
+      (Player.where ("user_id = #{session[:user_id]}")).destroy_all
+      WebsocketRails[:game].trigger :leave, data
+    else
+      data = {
+        username: 'NOBODY',
+        players: game.players
+      }
+
+      WebsocketRails[:game].trigger :leave, data
+    end
   end
 
   def draw

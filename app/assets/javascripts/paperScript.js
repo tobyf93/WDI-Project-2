@@ -1,10 +1,16 @@
 var path;
 $(document).ready(function(){
+	// The rest of the code doesn't run unless we are on the page with the #drawing element.
+	if ($('#drawing').length === 0) {
+		return;
+	};
+
 	paper.install(window);
 
 	// Socket stuff
 	var dispatcher = new WebSocketRails(window.location.host + '/websocket');
 	var channel = dispatcher.subscribe('game');
+
 	channel.bind('draw', function(data) {
 		var drawing = $('#drawing').is(':checked');
 	  console.log(data.x_pos, data.y_pos);
