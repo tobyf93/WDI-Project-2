@@ -1,22 +1,32 @@
 $(document).ready( function(){
 
+// Mouse coordinates 
+var mouse ={x:0, y:0};
+var last_mouse_move = {x: undefined, y: undefined};
+
+
 // Socket stuff
 var dispatcher = new WebSocketRails('localhost:3000/websocket');
 var channel = dispatcher.subscribe('game');
 channel.bind('draw', function(data) {
-  draw(data.x_pos, data.y_pos);
+  var drawing = $('#drawing').is(':checked');
+
+  if (!drawing) {
+    if (last_mouse_move.x === undefined) {
+      last_mouse_move = {x: data.x_pos, y: data.y_pos};
+    }
+
+    console.log(data.x_pos, data.y_pos);
+    // draw(data.x_pos, data.y_pos);
+  }
 });
 
 //Get the canvas and set the context to it to draw
 var canvas = document.getElementById("mainCanvas");
-console.log(canvas);
 var context = canvas.getContext("2d");
 
 
 
-// Mouse coordinates 
-var mouse ={x:0,y:0};
-var last_mouse_move = {x: 0, y: 0};
  
 /* Mouse Capturing Work */
 canvas.addEventListener('mousemove', function(e) {
@@ -24,25 +34,24 @@ canvas.addEventListener('mousemove', function(e) {
 }, false);
 
 // Set the drawing tool properties 
-  context.lineWidth = 5;
-  context.lineJoin = 'round';
-  context.lineCap = 'round';
-  context.strokeStyle = 'blue';
+context.lineWidth = 5;
+context.lineJoin = 'round';
+context.lineCap = 'round';
+context.strokeStyle = 'blue';
 
 
 
 // on mouse down the draw path starts, Mousemove set within the mousedown
 // on mouse up , the event listener is associated with mouse down is removed . 
 canvas.addEventListener('mousedown', function(e){
- // getCoordinates(e);
  context.beginPath();
  context.moveTo(mouse.x,mouse.y);
  canvas.addEventListener('mousemove', _draw ,false);
-},false);
+}, false);
 
 canvas.addEventListener('mouseup',function(){
   canvas.removeEventListener('mousemove',_draw,false);
-},false);
+}, false);
 
 // getCoordinates get the mouse Co-ordinates relative to the Canvas element 
 var getCoordinates = function(e){
