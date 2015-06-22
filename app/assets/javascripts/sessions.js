@@ -1,15 +1,14 @@
 $(document).ready(function() {
 
-
-  if ($('#drawingGive').length === 0) {
-    return;
-  }
-  $.ajax({
-    url: '/word',
-    dataType: 'json'
-  }).done(function(data) {
-    console.log(data);
-  });
+  // if ($('#drawingGive').length === 0) {
+  //   return;
+  // }
+  // $.ajax({
+  //   url: '/word',
+  //   dataType: 'json'
+  // }).done(function(data) {
+  //   console.log(data);
+  // });
 
   var dispatcher = new WebSocketRails(window.location.host + '/websocket');
   var channel = dispatcher.subscribe('game');
