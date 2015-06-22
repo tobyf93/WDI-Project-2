@@ -41,11 +41,11 @@ $(document).ready(function() {
   });
 
   channel.bind('leave', function(data) {
-    console.log(data.username + ' left the game.');
     $('#players').html('');
-
-    for (var i = 0; i < data.players.length; i++) {
-      $newPlayer = $('<li>user_id: ' + data.players[i].user_id + '</li>');
+    // This loop needs to be the length minus one as the player isn't destroyed until after the data has been setup to be passed through.
+    for (var j = 0; j < data.players.length; j++) {
+      console.log(data);
+      $newPlayer = $('<li>Player Name: ' + data.users[j].username + ', user_id: ' + data.players[j].user_id +'</li>');
       $newPlayer.appendTo('#players');
     };
 
