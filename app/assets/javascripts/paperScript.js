@@ -8,28 +8,36 @@ $(document).ready(function(){
 	channel.bind('draw', function(data) {
 		var drawing = $('#drawing').is(':checked');
 	  console.log(data.x_pos, data.y_pos);
+	  addPoint({x: data.x_pos, y: data.y_pos});
 	});
 
 	paper.setup('drawsomeCanv');
 	var tool = new Tool();
-	var path; 
+	var path = new Path(); 
 
 	tool.onMouseDown = function(event){
-		path = new Path();
+		// path = new Path();
 		path.strokeColor = 'black';
 		// path.add(event.point);
 		addPoint(event.point);
-		console.log(event.point);
+		// console.log(event.point);
 	};
 
 	tool.onMouseDrag = function(event){
 		// path.add(event.point);
 		addPoint(event.point);
-		console.log(event.point);
+		// console.log(event.point);
 	};
 
 	var addPoint = function(point) {
 		path.add(point);
+
+		var data = {
+	    xPos: point.x,
+	    yPos: point.y
+	  };
+
+		dispatcher.trigger('game.draw', data);
 	};
 
 });
