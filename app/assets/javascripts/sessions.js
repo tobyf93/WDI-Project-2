@@ -10,7 +10,9 @@ $(document).ready(function() {
   //   console.log(data);
   // });
 
-  if ($('#drawsomeCanv'))
+  if ($('#drawsomeCanv').length === 0) {
+    return;
+  };
 
   var dispatcher = new WebSocketRails(window.location.host + '/websocket');
   var channel = dispatcher.subscribe('game');
