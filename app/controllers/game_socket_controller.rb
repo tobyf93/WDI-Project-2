@@ -177,8 +177,6 @@ class GameSocketController < WebsocketRails::BaseController
     current_guess = current_player.first.guess.downcase
     correct_answer = (Word.find game.word_id).name.downcase
 
-
-
     if current_guess == correct_answer
       score = (current_player.first.time_of_guess * 10)
       current_player.first.score += score
@@ -190,12 +188,10 @@ class GameSocketController < WebsocketRails::BaseController
       }
 
     else
-
       data = {
         response: "You guessed wrong...",
         score: 0 
       }
-
     end
 
     send_message :guess_response, data, :namespace => :game
