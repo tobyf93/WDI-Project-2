@@ -11,6 +11,7 @@
 #  name       :string
 #  guess      :string
 #  state      :string
+#  has_drawn  :boolean          default(FALSE)
 #
 
 class Player < ActiveRecord::Base

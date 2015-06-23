@@ -60,4 +60,5 @@ Rails.application.routes.draw do
   get '/socketdemo' => 'pages#socketdemo'
   get '/gamestate' => 'pages#gamestate'
   get '/canvas' => 'pages#canvasdemo'
+  get '/test' => 'pages#test'
 end
