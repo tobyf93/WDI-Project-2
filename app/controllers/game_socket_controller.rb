@@ -11,11 +11,20 @@ class GameSocketController < WebsocketRails::BaseController
   # end
 
   def start
-    WebsocketRails[:game].trigger :start, 'beginning game'
+    WebsocketRails[:game].trigger :start, 'Beginning game'
+    round_start 1
+  end
 
-    Thread.new do
-      sleep(5.seconds)
-      WebsocketRails[:game].trigger :start, 'finishing game'
+  def round_start round
+    if round <= 5
+      Thread.new do
+        WebsocketRails[:game].trigger :start, "Starting round #{round}"
+        round += 1
+        sleep(3.seconds)
+        self.round_start round
+      end
+    else
+      WebsocketRails[:game].trigger :start, "Ending game"
     end
   end
 
