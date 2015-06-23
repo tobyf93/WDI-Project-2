@@ -6,6 +6,6 @@ class FetchSocketController < WebsocketRails::BaseController
     data = {
       players: game.players
     }
-
+    WebsocketRails[:fetch].trigger :fetch, data
   end
 end
