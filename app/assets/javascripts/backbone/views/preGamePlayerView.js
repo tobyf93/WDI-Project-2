@@ -7,9 +7,11 @@ app.PreGamePlayerView = Backbone.View.extend({
 	// 		id: this.model.get('name')
 	// 	}
 	// },
+	el:'#playerTiles',
 	render: function(){
-		preGamePlayerTemplate = $('#preGameTemplate').html();
+		debugger;
+		preGamePlayerTemplate = $('#preGamePlayerTemplate').html();
 		preGamePlayerHTML = _.template(preGamePlayerTemplate);
-		this.$el.html(preGamePlayerHTML(this.model.toJSON()));
+		this.$el.append(preGamePlayerHTML(this.model.toJSON()));
 	}
 });
