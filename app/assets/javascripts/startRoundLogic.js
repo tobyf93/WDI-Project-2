@@ -75,6 +75,17 @@ $(document).ready(function() {
     // dispatcher.unbind('game.my_turn');
   });
 
+  $('#guessButton').on('click', function(e) {
+    e.preventDefault();
+
+    var guess = $('#guessField').val();
+    dispatcher.trigger('game.submit_guess', guess);
+  });
+
+  dispatcher.bind('game.guess_response', function(data) {
+    console.log(data);
+  });
+
   var runMyTurn = function() {
     console.log('It is your turn!');
   };
