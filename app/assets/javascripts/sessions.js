@@ -10,6 +10,8 @@ $(document).ready(function() {
   //   console.log(data);
   // });
 
+  if ($('#drawsomeCanv'))
+
   var dispatcher = new WebSocketRails(window.location.host + '/websocket');
   var channel = dispatcher.subscribe('game');
 
@@ -19,23 +21,23 @@ $(document).ready(function() {
 
   channel.bind('join', function(data) {
     console.log(data);
-    $('#players').html('');
+    $('#playerTiles').html('');
 
     for (var i = 0; i < data.players.length; i++) {
       $newPlayer = $('<li>Player Name: ' + data.users[i].username + ', user_id: ' + data.players[i].user_id + '</li>');
-      $newPlayer.appendTo('#players');
+      $newPlayer.appendTo('#playerTiles');
     };
 
   });
 
 
   channel.bind('leave', function(data) {
-    $('#players').html('');
+    $('#playerTiles').html('');
     // This loop needs to be the length minus one as the player isn't destroyed until after the data has been setup to be passed through.
     for (var j = 0; j < data.players.length; j++) {
       console.log(data);
       $newPlayer = $('<li>Player Name: ' + data.users[j].username + ', user_id: ' + data.players[j].user_id + '</li>');
-      $newPlayer.appendTo('#players');
+      $newPlayer.appendTo('#playerTiles');
     }
 
   });
