@@ -6,7 +6,9 @@ app.PreGameView = Backbone.View.extend({
 		'click #ready':'ready'
 		},
 	initialize: function(){
+		debugger;
 		this.players = app.playersList;
+		this.fetchPlayers(); 
 	},
 	render: function(){
 		preGameTemplate = $('#preGameTemplate').html();
@@ -21,11 +23,13 @@ app.PreGameView = Backbone.View.extend({
 			dispatcher.trigger('game.join');
 	},
 	fetchPlayers: function(){
+		debugger;
 		if ($('#drawsomeCanv').length === 0) {
 			return;
 		};
 
 		channel.bind('join', function(data) {
+			
 			console.log(data);
 			$('#playerTiles').html('');
 
