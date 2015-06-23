@@ -52,7 +52,16 @@ $(document).ready(function() {
     // =====================================================
     // Change view on gameover. 
     console.log(msg);
-  })
+  });
+
+  channel.bind('end_round', function() {
+    console.log('THE ROUND HAS ENDED, FETCHING SCORE!');
+    dispatcher.trigger('game.get_score');
+  });
+
+  dispatcher.bind('game.get_score', function(data) {
+    console.log(data);
+  });
 
   dispatcher.bind('game.not_turn', function(data) {
     // ==========================================================
