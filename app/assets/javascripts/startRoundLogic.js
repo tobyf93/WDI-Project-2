@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  
   if ($('#assignRoles').length === 0) {
     return;
   }
@@ -83,9 +84,7 @@ $(document).ready(function() {
 
   $('#resetRoles').on('click', function(e) {
     e.preventDefault();
-  })
-
-
+  });
 
   joinGame();
 });

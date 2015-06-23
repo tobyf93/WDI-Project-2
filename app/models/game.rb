@@ -6,8 +6,10 @@
 #  state      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  word_id    :integer
 #
 
 class Game < ActiveRecord::Base
   has_many :players
+  has_one :word
 end
