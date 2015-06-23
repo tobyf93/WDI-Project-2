@@ -37,7 +37,6 @@ $(document).ready(function() {
     $name = $('<p>' + data.username + "'s turn</p>");
     $name.appendTo('#miketest');
 
-
     dispatcher.trigger('game.get_role');
   });
 
