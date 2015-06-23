@@ -1,11 +1,15 @@
-window.app = window.app || {}
+app = app || {}
 
-class app.preGamePlayerView extends Backbone.View 
-	attributes: =>
-		return 
-			class: "playerTile"
+app.PreGamePlayerView = Backbone.View.extend({
+	attributes: function(){
+		return {
+			class: "playerTile",
 			id: this.model.get('name')
-	render: =>
-		preGamePlayerTemplate = $('#preGameTemplate').html()
-		preGamePlayerHTML = _.template(preGamePlayerTemplate)
-		this.$el.html(preGamePlayerHTML(this.model.toJSON()))
+		}
+	},
+	render: function(){
+		preGamePlayerTemplate = $('#preGameTemplate').html();
+		preGamePlayerHTML = _.template(preGamePlayerTemplate);
+		this.$el.html(preGamePlayerHTML(this.model.toJSON()));
+	}
+});
