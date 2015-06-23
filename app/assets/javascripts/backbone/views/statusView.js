@@ -5,8 +5,6 @@ el:'#main',
 render: function(){
   var message = " Status view Message goes here";
   this.$el.html(message);
-
-
 }
 
 });

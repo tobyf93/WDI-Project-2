@@ -6,7 +6,6 @@ app.PreGameView = Backbone.View.extend({
 		'click #ready':'ready'
 		},
 	initialize: function(){
-		debugger;
 		this.players = app.playersList;
 		this.fetchPlayers(); 
 	},
@@ -23,7 +22,6 @@ app.PreGameView = Backbone.View.extend({
 			dispatcher.trigger('game.join');
 	},
 	fetchPlayers: function(){
-		debugger;
 		if ($('#drawsomeCanv').length === 0) {
 			return;
 		};
