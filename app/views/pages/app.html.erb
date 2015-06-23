@@ -39,10 +39,13 @@ Welcome back <%=  %>
 <h1>WELCOME TO DRAWSOME, GET READY TO HAVE THE DRAWIEST TIME OF YOUR LIFE.</h1>
 
 <div id="main">
+
+</div>
+<div id="canvasTest">
 	<canvas id="drawsomeCanv"></canvas>
 	<div class="color black"></div>
 	<div class="color green"></div>
-	<div class="color red"></div>
+	<div class="color red"></div>	
 	<div class="color blue"></div>
 	<input id="strokeWidth" type="range" min="1" value="1" max="10">
 </div>
@@ -57,7 +60,7 @@ Welcome back <%=  %>
   <div id="waitingView">
     WAITING TO PLAY
     <div id="playerTiles"></div>
-	<button class="btn startBtn"> Waiting for players </button>
+	<button id="startGame" class="btn startBtn"> Waiting for players </button>
   </div>
 </script>
 <script id="preGamePlayerTemplate" type="template/text">
