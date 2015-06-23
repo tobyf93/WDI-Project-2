@@ -137,6 +137,10 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.last
     correct_answer = (Word.find game.word_id).name.downcase
 
+    player = (Player.where({ :user_id => session[:user_id] }))
+    player.first.state = "guessed"
+    player.first.save
+
     if correct_answer == message.downcase
       response = "You guessed correctly"
     else
