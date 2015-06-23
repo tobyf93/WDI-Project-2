@@ -27,9 +27,11 @@ app.PreGameView = Backbone.View.extend({
 	},
 
 	joinGame: function() {
+		// Not sure that this is an appropriate spot for this check
 		if($('#main').length===0) {
 			return;
 		}
+
 		app.dispatcher.trigger('game.join');
 	},
 
@@ -39,6 +41,9 @@ app.PreGameView = Backbone.View.extend({
 			return;
 		}
 		app.gameChannel.bind('join', function(data) {
+			app.playersList.reset();
+			debugger;
+
 			for (var i = 0; i < data.players.length; i++) {
 				app.playersList.add({
 					username: data.users[i].username,
