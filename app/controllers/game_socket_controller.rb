@@ -1,11 +1,22 @@
 class GameSocketController < WebsocketRails::BaseController
 
+  # This is waiting till the function end to publish to channel.  Would be good
+  # if there was a way to flush channel before each sleep...
+  # def start
+  #   WebsocketRails[:game].trigger :start, 'beginning game'
+  #   sleep(1.seconds)
+  #   WebsocketRails[:game].trigger :start, '1 second passed on server'
+  #   sleep(5.seconds)
+  #   WebsocketRails[:game].trigger :start, 'finishing game'
+  # end
+
   def start
     WebsocketRails[:game].trigger :start, 'beginning game'
-    sleep(1.seconds)
-    WebsocketRails[:game].trigger :start, '1 second passed on server'
-    sleep(5.seconds)
-    WebsocketRails[:game].trigger :start, 'finishing game'
+
+    Thread.new do
+      sleep(5.seconds)
+      WebsocketRails[:game].trigger :start, 'finishing game'
+    end
   end
 
   def join
