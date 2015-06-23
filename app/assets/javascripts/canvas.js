@@ -37,7 +37,6 @@ app.canvas = {
 		  app.canvas.strokeColor = data.stroke_color;
 		  app.canvas.strokeWidth = data.stroke_width;
 
-		  console.log(data);
 		  app.canvas.addPoint({x: data.x_pos, y: data.y_pos});
 		});
 	},
@@ -49,32 +48,26 @@ app.canvas = {
 		$('#strokeWidth').on('input', this.changeStrokeWidthEvent);
 	},
 
-	mouseDownEvent: function(e) {
-		path = new Path();
-
+	sendDrawData: function(e, newPath) {
 		var data = {
 	    xPos: e.point.x,
 	    yPos: e.point.y,
-	    newPath: true,
+	    newPath: newPath,
 	    strokeColor: app.canvas.strokeColor,
 	    strokeWidth: app.canvas.strokeWidth
 	  };
 
-		app.canvas.dispatcher.trigger('game.draw', data);
+	  this.dispatcher.trigger('game.draw', data);
+	},
 
+	mouseDownEvent: function(e) {
+		path = new Path();
+		app.canvas.sendDrawData(e, true);
 		app.canvas.addPoint(e.point);
 	},
 
 	mouseDragEvent: function(e) {
-		var data = {
-	    xPos: e.point.x,
-	    yPos: e.point.y,
-	    strokeColor: app.canvas.strokeColor,
-	    strokeWidth: app.canvas.strokeWidth
-	  };
-
-		app.canvas.dispatcher.trigger('game.draw', data);
-
+		app.canvas.sendDrawData(e);
 		app.canvas.addPoint(e.point);
 	},
 
@@ -95,6 +88,7 @@ app.canvas = {
 		path.strokeWidth = strokeWidth;
 		path.add(point);
 		view.draw();	
+		console.log(path);
 	}
 
 };
