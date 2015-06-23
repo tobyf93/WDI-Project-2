@@ -1,21 +1,53 @@
 class GameSocketController < WebsocketRails::BaseController
 
+  # This is waiting till the function end to publish to channel.  Would be good
+  # if there was a way to flush channel before each sleep...
+  # def start
+  #   WebsocketRails[:game].trigger :start, 'beginning game'
+  #   sleep(1.seconds)
+  #   WebsocketRails[:game].trigger :start, '1 second passed on server'
+  #   sleep(5.seconds)
+  #   WebsocketRails[:game].trigger :start, 'finishing game'
+  # end
+
+  def start
+    WebsocketRails[:game].trigger :start, 'Beginning game'
+    round_start 1
+  end
+
+  def round_start round
+    if round <= 3
+      Thread.new do
+        WebsocketRails[:game].trigger :start, "Starting round #{round}"
+        start_round # We will need to rename these methods
+        sleep(3.seconds)
+        round_summary round
+      end
+    else
+      WebsocketRails[:game].trigger :start, "Ending game"
+    end
+  end
+
+  def round_summary round
+    WebsocketRails[:game].trigger :start, "Round #{round} summary"
+    sleep(3.seconds)
+    round += 1
+    self.round_start round
+  end
+
   def join
     game = Game.last
     game = Game.create if !game
+    user = User.find session[:user_id]
+    player = Player.find_by :user_id => user.id
 
-    # Checks that a player with the signed 
-    if (Player.where ("user_id = #{session[:user_id]}")).empty?
-      player = Player.create :user_id => session[:user_id]
+    if !player
+      player = Player.create :user_id => user.id
       game.players << player
     end
 
-    user = User.find session[:user_id]
-
-    users = []
-    game.players.each do |player|
-      user = User.find player.user_id
-      users.push user
+    users = game.players.map do |player|
+      player.user
     end
  
     players = game.players.pluck(:user_id).uniq
@@ -60,8 +92,6 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def draw
-    # binding.pry
-    response = "xPos = #{message[:xPos]} yPos = #{message[:yPos]}"
     data = {
       x_pos: message[:xPos],
       y_pos: message[:yPos],

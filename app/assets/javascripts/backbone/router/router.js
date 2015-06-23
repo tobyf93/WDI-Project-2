@@ -10,7 +10,6 @@ app.Router = Backbone.Router.extend({
 		console.log("Hello this is the index");
 		app.playersList = new app.Players(); 
 		app.preGamePg = new app.PreGameView();
-		app.playersList.fetch()
 		app.preGamePg.render();
 	},
 	guesser: function(){
