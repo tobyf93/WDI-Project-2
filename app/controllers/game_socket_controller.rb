@@ -12,7 +12,7 @@ class GameSocketController < WebsocketRails::BaseController
     end
 
     users = game.players.map do |player|
-      user = User.find player.user_id
+      player.user
     end
  
     players = game.players.pluck(:user_id).uniq
