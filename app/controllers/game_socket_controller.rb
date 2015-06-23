@@ -87,12 +87,20 @@ class GameSocketController < WebsocketRails::BaseController
       end
     end
 
-    data = {
-      username: (User.find user.id).username
-    }
+    if user == ""
+      data = {
+        message: "the game is over hoe."
+      }
 
-    # TODO: End the game if no player to draw was found.
-    WebsocketRails[:game].trigger :start_round, data
+      WebsocketRails[:game].trigger :game_over, data
+    else
+      data = {
+        username: (User.find user.id).username
+      }
+
+      # TODO: End the game if no player to draw was found.
+      WebsocketRails[:game].trigger :start_round, data
+    end    
   end
 
   def get_role

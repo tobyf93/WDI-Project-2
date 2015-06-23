@@ -46,7 +46,17 @@ $(document).ready(function() {
     dispatcher.trigger('game.start_round');
   });
 
+  channel.bind('game_over', function(msg) {
+    // =====================================================
+    // Insert the code for what to do when the game is over.
+    // =====================================================
+    console.log(msg);
+  })
+
   dispatcher.bind('game.not_turn', function(data) {
+    // ==========================================================
+    // Insert the code for what to do when the person is guessing
+    // ========================================================== 
     console.log(data)
     runGuessTurn();
     // dispatcher.unbind('game.not_turn');
@@ -54,6 +64,9 @@ $(document).ready(function() {
   });
 
   dispatcher.bind('game.my_turn', function(data) {
+    // =========================================================
+    // Insert the code for what to do when the person is drawing
+    // =========================================================
     console.log(data)
     runMyTurn();
     // dispatcher.unbind('game.not_turn');
@@ -71,6 +84,8 @@ $(document).ready(function() {
   $('#resetRoles').on('click', function(e) {
     e.preventDefault();
   })
+
+
 
   joinGame();
 });
