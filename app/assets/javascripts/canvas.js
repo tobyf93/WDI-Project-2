@@ -34,10 +34,10 @@ app.canvas = {
 		  	path = new Path();
 		  }
 
-		  strokeColor = data.stroke_color;
-		  strokeWidth = data.stroke_width;
+		  app.canvas.strokeColor = data.stroke_color;
+		  app.canvas.strokeWidth = data.stroke_width;
 
-		  console.log('adding point..');
+		  console.log(data);
 		  app.canvas.addPoint({x: data.x_pos, y: data.y_pos});
 		});
 	},
@@ -56,8 +56,8 @@ app.canvas = {
 	    xPos: e.point.x,
 	    yPos: e.point.y,
 	    newPath: true,
-	    strokeColor: this.strokeColor,
-	    strokeWidth: this.strokeWidth
+	    strokeColor: app.canvas.strokeColor,
+	    strokeWidth: app.canvas.strokeWidth
 	  };
 
 		app.canvas.dispatcher.trigger('game.draw', data);
@@ -69,8 +69,8 @@ app.canvas = {
 		var data = {
 	    xPos: e.point.x,
 	    yPos: e.point.y,
-	    strokeColor: this.strokeColor,
-	    strokeWidth: this.strokeWidth
+	    strokeColor: app.canvas.strokeColor,
+	    strokeWidth: app.canvas.strokeWidth
 	  };
 
 		app.canvas.dispatcher.trigger('game.draw', data);
