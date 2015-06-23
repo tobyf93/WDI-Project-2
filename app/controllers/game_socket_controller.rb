@@ -91,6 +91,9 @@ class GameSocketController < WebsocketRails::BaseController
       end
     end
 
+    game.players_left = game.players.length
+    game.save
+
     if user == ""
       data = {
         message: "the game is over hoe."
@@ -147,6 +150,10 @@ class GameSocketController < WebsocketRails::BaseController
     else
       response = "You guessed WRONG! LOSER"
     end
+
+    game.players_left = game.players_left - 1
+    game.save
+    
     send_message :guess_response, response, :namespace => :game
   end
 end
