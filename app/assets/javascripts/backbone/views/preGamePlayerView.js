@@ -1,4 +1,4 @@
-app = app || {}
+app = app || {};
 
 app.PreGamePlayerView = Backbone.View.extend({
 	// attributes: function(){
@@ -8,6 +8,7 @@ app.PreGamePlayerView = Backbone.View.extend({
 	// 	}
 	// },
 	el:'#playerTiles',
+
 	render: function(){
 		preGamePlayerTemplate = $('#preGamePlayerTemplate').html();
 		preGamePlayerHTML = _.template(preGamePlayerTemplate);

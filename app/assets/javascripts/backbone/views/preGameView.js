@@ -20,6 +20,7 @@ app.PreGameView = Backbone.View.extend({
 	},
 
 	renderList: function() {
+		$('#playerTiles').empty();
 		app.playersList.each(function(player){
 			playertile = new app.PreGamePlayerView({model:player});
 			playertile.render();
@@ -42,7 +43,6 @@ app.PreGameView = Backbone.View.extend({
 		}
 		app.gameChannel.bind('join', function(data) {
 			app.playersList.reset();
-			debugger;
 
 			for (var i = 0; i < data.players.length; i++) {
 				app.playersList.add({
