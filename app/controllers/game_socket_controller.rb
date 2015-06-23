@@ -18,6 +18,7 @@ class GameSocketController < WebsocketRails::BaseController
       end
 
     players = game.players.pluck(:user_id).uniq
+    
     data = {
       players: game.players,
       username: user.username,

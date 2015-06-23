@@ -13,6 +13,7 @@ WebsocketRails::EventMap.describe do
     subscribe :turn, 'game_socket#turn'
     subscribe :start_round, 'game_socket#start_round'
     subscribe :get_role, 'game_socket#get_role'
+
   end
 
   subscribe :client_disconnected, 'game_socket#leave'
