@@ -11,16 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150623061854) do
+ActiveRecord::Schema.define(version: 20150623082418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "games", force: :cascade do |t|
     t.string   "state"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.integer  "word_id"
+    t.integer  "players_left"
   end
 
   create_table "hints", force: :cascade do |t|
@@ -34,12 +35,13 @@ ActiveRecord::Schema.define(version: 20150623061854) do
     t.integer  "game_id"
     t.integer  "user_id"
     t.integer  "score"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.string   "name"
     t.string   "guess"
     t.string   "state"
-    t.boolean  "has_drawn",  default: false
+    t.boolean  "has_drawn",     default: false
+    t.integer  "time_of_guess"
   end
 
   create_table "users", force: :cascade do |t|
