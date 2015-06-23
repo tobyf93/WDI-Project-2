@@ -147,6 +147,7 @@ class GameSocketController < WebsocketRails::BaseController
     player = (Player.where({ :user_id => session[:user_id] }))
     player.first.state = "guessed"
     player.first.time_of_guess = message['time']
+    player.first.guess = message['guess'].downcase
     player.first.save
 
     if correct_answer == message['guess'].downcase
@@ -158,6 +159,43 @@ class GameSocketController < WebsocketRails::BaseController
     game.players_left = game.players_left - 1
     game.save
 
-    send_message :guess_response, response, :namespace => :game
+    if game.players_left == 0
+      end_round
+    end
+  end
+
+  def end_round
+    game = Game.last
+
+    WebsocketRails[:game].trigger :end_round
+  end
+
+  def get_score
+    game = Game.last
+    current_player = Player.where({ :user_id => session[:user_id] })
+
+    current_guess = current_player.first.guess.downcase
+    correct_answer = (Word.find game.word_id).name.downcase
+
+
+
+    if current_guess == correct_answer
+      score = (current_player.first.time_of_guess * 10)
+
+      data = {
+        response: "You guessed right!",
+        score: score
+      }
+
+    else
+
+      data = {
+        response: "You guessed wrong...",
+        score: 0 
+      }
+
+    end
+
+    send_message :guess_response, data, :namespace => :game
   end
 end
