@@ -8,6 +8,7 @@ $(document).ready(function(){
 	var tool = new Tool();
 	var path;
 	var strokeColor;
+	var strokeWidth;
 
 	// Socket stuff
 	var dispatcher = new WebSocketRails(window.location.host + '/websocket');
@@ -21,6 +22,7 @@ $(document).ready(function(){
 	  }
 
 	  strokeColor = data.stroke_color;
+	  strokeWidth = data.stroke_width;
 
 	  addPoint({x: data.x_pos, y: data.y_pos});
 	});
@@ -32,7 +34,8 @@ $(document).ready(function(){
 	    xPos: event.point.x,
 	    yPos: event.point.y,
 	    newPath: true,
-	    strokeColor: strokeColor
+	    strokeColor: strokeColor,
+	    strokeWidth: strokeWidth
 	  };
 
 		dispatcher.trigger('game.draw', data);
@@ -44,7 +47,8 @@ $(document).ready(function(){
 		var data = {
 	    xPos: event.point.x,
 	    yPos: event.point.y,
-	    strokeColor: strokeColor
+	    strokeColor: strokeColor,
+	    strokeWidth: strokeWidth
 	  };
 
 		dispatcher.trigger('game.draw', data);
@@ -54,8 +58,10 @@ $(document).ready(function(){
 
 	var addPoint = function(point) {
 		strokeColor = strokeColor || 'black';
+		strokeWidth = strokeWidth || 1;
 
 		path.strokeColor = strokeColor;
+		path.strokeWidth = strokeWidth;
 		path.add(point);
 		view.draw();	
 	};
@@ -66,6 +72,10 @@ $(document).ready(function(){
 		strokeColor = classes[1];
 	});
 
+	// Stroke width
+	$('#strokeWidth').on('input', function() {
+		strokeWidth = $(this).val();
+	});
 });
 
 
