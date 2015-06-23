@@ -19,13 +19,19 @@ class GameSocketController < WebsocketRails::BaseController
     if round <= 5
       Thread.new do
         WebsocketRails[:game].trigger :start, "Starting round #{round}"
-        round += 1
         sleep(3.seconds)
-        self.round_start round
+        round_summary round
       end
     else
       WebsocketRails[:game].trigger :start, "Ending game"
     end
+  end
+
+  def round_summary round
+    WebsocketRails[:game].trigger :start, "Round #{round} summary"
+    sleep(3.seconds)
+    round += 1
+    self.round_start round
   end
 
   def join
