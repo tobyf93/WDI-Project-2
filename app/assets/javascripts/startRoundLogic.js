@@ -37,7 +37,6 @@ $(document).ready(function() {
     $name = $('<p>' + data.username + "'s turn</p>");
     $name.appendTo('#miketest');
 
-
     dispatcher.trigger('game.get_role');
   });
 
@@ -53,7 +52,16 @@ $(document).ready(function() {
     // =====================================================
     // Change view on gameover. 
     console.log(msg);
-  })
+  });
+
+  channel.bind('end_round', function() {
+    console.log('THE ROUND HAS ENDED, FETCHING SCORE!');
+    dispatcher.trigger('game.get_score');
+  });
+
+  dispatcher.bind('game.get_score', function(data) {
+    console.log(data);
+  });
 
   dispatcher.bind('game.not_turn', function(data) {
     // ==========================================================
@@ -73,6 +81,23 @@ $(document).ready(function() {
     runMyTurn();
     // dispatcher.unbind('game.not_turn');
     // dispatcher.unbind('game.my_turn');
+  });
+
+  $('#guessButton').on('click', function(e) {
+    e.preventDefault();
+    // TODO: This variable will need to be replaced with the actual time from the timer at the time the submit function runs.
+    var timeOfGuess = 1;
+
+    var data = {
+      guess: $('#guessField').val(),
+      time: timeOfGuess
+    }
+    // var guess = $('#guessField').val();
+    dispatcher.trigger('game.submit_guess', data);
+  });
+
+  dispatcher.bind('game.guess_response', function(data) {
+    console.log(data);
   });
 
   var runMyTurn = function() {

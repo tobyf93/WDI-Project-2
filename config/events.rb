@@ -5,9 +5,12 @@ WebsocketRails::EventMap.describe do
   # via the public channels.
 
   subscribe :test, 'socket#test'
+  subscribe :client_disconnected, 'game_socket#leave'
+
   namespace :fetch do
     subscribe :players, 'fetch_socket#players'
   end
+
   namespace :game do
     subscribe :join, 'game_socket#join'
     subscribe :leave, 'game_socket#leave'
@@ -15,8 +18,9 @@ WebsocketRails::EventMap.describe do
     subscribe :turn, 'game_socket#turn'
     subscribe :start_round, 'game_socket#start_round'
     subscribe :get_role, 'game_socket#get_role'
-
+    subscribe :submit_guess, 'game_socket#submit_guess'
+    subscribe :end_round, 'game_socket#end_round'
+    subscribe :get_score, 'game_socket#get_score'
+    subscribe :start, 'game_socket#start'
   end
-
-  subscribe :client_disconnected, 'game_socket#leave'
 end
