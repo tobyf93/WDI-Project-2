@@ -181,6 +181,8 @@ class GameSocketController < WebsocketRails::BaseController
 
     if current_guess == correct_answer
       score = (current_player.first.time_of_guess * 10)
+      current_player.first.score += score
+      current_player.first.save
 
       data = {
         response: "You guessed right!",
