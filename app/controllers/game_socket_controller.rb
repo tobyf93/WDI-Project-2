@@ -131,4 +131,16 @@ class GameSocketController < WebsocketRails::BaseController
       send_message :not_turn, data, :namespace => :game
     end
   end
+
+  def submit_guess
+    game = Game.last
+    correct_answer = (Word.find game.word_id).name.downcase
+
+    if correct_answer == message.downcase
+      response = "You guessed correctly"
+    else
+      response = "You guessed WRONG! LOSER"
+    end
+    send_message :guess_response, response, :namespace => :game
+  end
 end
