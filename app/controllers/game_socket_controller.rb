@@ -33,24 +33,28 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.last
     game = Game.create if !game
 
-    if (Player.where ("user_id = #{session[:user_id]}")).any?
-      # player = (Player.where ("user_id = #{session[:user_id]}"))
-      # user = User.find session[:user_id]
-      
-      (Player.where ("user_id = #{session[:user_id]}")).destroy_all
+      if game.players.length < 1
+        game.destroy
+      else
+        if (Player.where ("user_id = #{session[:user_id]}")).any?
+          # player = (Player.where ("user_id = #{session[:user_id]}"))
+          # user = User.find session[:user_id]
+          
+          (Player.where ("user_id = #{session[:user_id]}")).destroy_all
 
-      users = []
-      game.players.each do |player|
-        user = User.find player.user_id
-        users.push user
+          users = []
+          game.players.each do |player|
+            user = User.find player.user_id
+            users.push user
 
-      data = {
-        username: 'A player',
-        players: game.players,
-        users: users
-      }
+          data = {
+            username: 'A player',
+            players: game.players,
+            users: users
+          }
 
-      WebsocketRails[:game].trigger :leave, data
+          WebsocketRails[:game].trigger :leave, data
+        end
       end
     end
   end
@@ -153,7 +157,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     game.players_left = game.players_left - 1
     game.save
-    
+
     send_message :guess_response, response, :namespace => :game
   end
 end
