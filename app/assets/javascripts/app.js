@@ -8,7 +8,8 @@ _.templateSettings = {
 
 $(function(){
 	app.dispatcher = new WebSocketRails(window.location.host + '/websocket');
-	app.channel = app.dispatcher.subscribe('game');
+	app.fetchChannel = app.dispatcher.subscribe('fetch');
+	app.gameChannel = app.dispatcher.subscribe('game');
 	app.router = new app.Router();
 	Backbone.history.start();	
 });
