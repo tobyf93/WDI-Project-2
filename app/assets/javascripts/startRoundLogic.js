@@ -51,6 +51,7 @@ $(document).ready(function() {
     // =====================================================
     // Insert the code for what to do when the game is over.
     // =====================================================
+    // Change view on gameover. 
     console.log(msg);
   })
 

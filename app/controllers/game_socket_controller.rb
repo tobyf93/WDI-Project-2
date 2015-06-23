@@ -1,4 +1,5 @@
 class GameSocketController < WebsocketRails::BaseController
+
   def join
     game = Game.last
     game = Game.create if !game
@@ -12,13 +13,13 @@ class GameSocketController < WebsocketRails::BaseController
     user = User.find session[:user_id]
 
     users = []
-      game.players.each do |player|
-        user = User.find player.user_id
-        users.push user
-      end
-
+    game.players.each do |player|
+      user = User.find player.user_id
+      users.push user
+    end
+ 
     players = game.players.pluck(:user_id).uniq
-    
+
     data = {
       players: game.players,
       username: user.username,
