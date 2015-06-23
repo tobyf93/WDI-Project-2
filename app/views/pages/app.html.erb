@@ -53,7 +53,7 @@ Welcome back <%=  %>
   <div id="waitingView">
     WAITING TO PLAY
     <div id="playerTiles"></div>
-	<button id="startGame" class="btn startBtn"> Ready </button>
+	<button id="playerReady" class="btn startBtn"> Ready </button>
   </div>
 </script>
 <script id="preGamePlayerTemplate" type="template/text">
@@ -62,7 +62,7 @@ Welcome back <%=  %>
 	<section id="playerState">{{state}}</section>
 </div>
 </script>
-<script id="canvas" type="template/text">
+<script id="canvasTemplate" type="template/text">
 	<canvas id="drawsomeCanv"></canvas>
 	<div class="color black"></div>
 	<div class="color green"></div>

@@ -10,10 +10,14 @@ $(document).ready(function() {
 });
 
 app.canvas = {
-	init: function() {
+	initPaper: function(){
 		this.setupPaperJS();
+	}
+	initGuesser: function() {
 		this.setupDefaults();
-		this.setupSockets();
+		this.setupListener();
+	},
+	initDrawer: function(){
 		this.setupEvents();
 	},
 
@@ -29,11 +33,8 @@ app.canvas = {
 		this.strokeWidth = 1;
 	},
 
-	setupSockets: function() {
-		this.dispatcher = new WebSocketRails(window.location.host + '/websocket');
-		var channel = this.dispatcher.subscribe('game');
-
-		channel.bind('draw', function(data) {
+	setupListener: function() {
+		app.gameChannel.bind('draw', function(data) {
 		  app.canvas.path = app.canvas.path || new Path();
 		  if (data.new_path) {
 		  	path = new Path();
