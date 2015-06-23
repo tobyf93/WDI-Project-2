@@ -16,12 +16,10 @@ app.PreGameView = Backbone.View.extend({
 	render: function() {
 		preGameTemplate = $('#preGameTemplate').html();
 		this.$el.html(preGameTemplate);
-		console.log(app.playersList);
 		this.renderList();
 	},
 
 	renderList: function() {
-		console.log(app.playersList);
 		app.playersList.each(function(player){
 			playertile = new app.PreGamePlayerView({model:player});
 			playertile.render();
@@ -37,12 +35,10 @@ app.PreGameView = Backbone.View.extend({
 
 	fetchPlayers: function() {
 		var view = this;
-		view.joinGame();
 		if ($('#main').length === 0) {
 			return;
 		}
 		app.gameChannel.bind('join', function(data) {
-			console.log(data);
 			for (var i = 0; i < data.players.length; i++) {
 				app.playersList.add({
 					username: data.users[i].username,
@@ -50,7 +46,7 @@ app.PreGameView = Backbone.View.extend({
 					state: data.players[i].state
 				});
 			}
-			
+
 			view.renderList();
 		});
 
@@ -62,6 +58,8 @@ app.PreGameView = Backbone.View.extend({
 			// 	$newPlayer.appendTo('#playerTiles');
 			// }
 		});
+
+		view.joinGame();
 	}
 });
 

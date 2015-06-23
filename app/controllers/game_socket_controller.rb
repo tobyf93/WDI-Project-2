@@ -3,19 +3,16 @@ class GameSocketController < WebsocketRails::BaseController
   def join
     game = Game.last
     game = Game.create if !game
+    user = User.find session[:user_id]
+    player = Player.find_by :user_id => user.id
 
-    # Checks that a player with the signed 
-    if (Player.where ("user_id = #{session[:user_id]}")).empty?
-      player = Player.create :user_id => session[:user_id]
+    if !player
+      player = Player.create :user_id => user.id
       game.players << player
     end
 
-    user = User.find session[:user_id]
-
-    users = []
-    game.players.each do |player|
+    users = game.players.map do |player|
       user = User.find player.user_id
-      users.push user
     end
  
     players = game.players.pluck(:user_id).uniq
