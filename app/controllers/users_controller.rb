@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   def index
     @players = Player.all
     @users = User.all
+    # binding.pry
     respond_to do |format|
       format.html {}
       format.json {render :json => @players}
