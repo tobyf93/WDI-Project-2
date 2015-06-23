@@ -1,4 +1,5 @@
 class GameSocketController < WebsocketRails::BaseController
+
   def join
     game = Game.last
     game = Game.create if !game
@@ -12,13 +13,13 @@ class GameSocketController < WebsocketRails::BaseController
     user = User.find session[:user_id]
 
     users = []
-      game.players.each do |player|
-        user = User.find player.user_id
-        users.push user
-      end
-
+    game.players.each do |player|
+      user = User.find player.user_id
+      users.push user
+    end
+ 
     players = game.players.pluck(:user_id).uniq
-    
+
     data = {
       players: game.players,
       username: user.username,
@@ -74,6 +75,9 @@ class GameSocketController < WebsocketRails::BaseController
     selected = false
     user = ""
 
+    game.word_id = (Word.all).sample.id
+    game.save
+
     game.players.each do |player|
       if player.has_drawn == false && selected == false
         player.state = "drawing"
@@ -87,12 +91,20 @@ class GameSocketController < WebsocketRails::BaseController
       end
     end
 
-    data = {
-      username: (User.find user.id).username
-    }
+    if user == ""
+      data = {
+        message: "the game is over hoe."
+      }
 
-    # TODO: End the game if no player to draw was found.
-    WebsocketRails[:game].trigger :start_round, data
+      WebsocketRails[:game].trigger :game_over, data
+    else
+      data = {
+        username: (User.find user.id).username
+      }
+
+      # TODO: End the game if no player to draw was found.
+      WebsocketRails[:game].trigger :start_round, data
+    end    
   end
 
   def get_role
@@ -104,9 +116,11 @@ class GameSocketController < WebsocketRails::BaseController
 
     if current_player.first.state == "drawing"
       my_turn = true
+      this_word = Word.find game.word_id
 
       data = {
-        my_turn: my_turn
+        my_turn: my_turn,
+        word: this_word.name
       }
 
       send_message :my_turn, data, :namespace => :game
@@ -119,5 +133,3 @@ class GameSocketController < WebsocketRails::BaseController
     end
   end
 end
-
-# [["game.get_role",{"id":null,"channel":null,"user_id":null,"data":{"__better_errors_bindings_stack":[{"iseq":{}},{"iseq":{}},{"iseq":{}},{"iseq":{}},{"iseq":{}},{"iseq":{}},{"iseq":{}},{"iseq":{}},{"iseq":{}},{"iseq":{}},{"iseq":{}}]},"success":false,"result":null,"token":null,"server_token":null}]]

@@ -1,6 +1,11 @@
 var app = app || {};
 
 $(document).ready(function() {
+	
+	if ($('#drawsomeCanv').length === 0) {
+		return;
+	};
+
 	app.canvas.init();
 });
 

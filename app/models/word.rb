@@ -11,4 +11,5 @@
 
 class Word < ActiveRecord::Base
   has_many :hints
+  has_many :games
 end

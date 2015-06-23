@@ -5,7 +5,9 @@ WebsocketRails::EventMap.describe do
   # via the public channels.
 
   subscribe :test, 'socket#test'
-
+  namespace :fetch do
+    subscribe :players, 'fetch_socket#players'
+  end
   namespace :game do
     subscribe :join, 'game_socket#join'
     subscribe :leave, 'game_socket#leave'
