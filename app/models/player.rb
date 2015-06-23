@@ -9,6 +9,9 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  name       :string
+#  guess      :string
+#  state      :string
+#  has_drawn  :boolean          default(FALSE)
 #
 
 class Player < ActiveRecord::Base
