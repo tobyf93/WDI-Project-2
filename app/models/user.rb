@@ -18,6 +18,7 @@
 
 class User < ActiveRecord::Base
   attr_accessor :remember_token
+  has_many :players
   
   validates :username, :length => { :minimum => 4, :too_short => "must be at least 4 characters long" }, :format => { :with => /\A[a-zA-Z]+\z/, :chars_error => "Only letters allowed." }, :presence => true, :uniqueness => true
   # Username must be at least 4 characters, can only have upper and lower case letters and must be present.
