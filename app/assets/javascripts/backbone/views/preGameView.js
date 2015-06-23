@@ -1,35 +1,41 @@
-var app = app || {}
+var app = app || {};
 
 app.PreGameView = Backbone.View.extend({
-	el:'#main',
-	events:{
-		'click #ready':'ready'
-		},
-	initialize: function(){
+	el: '#main',
+
+	events: {
+		'click #ready': 'ready'
+	},
+
+	initialize: function() {
 		this.players = app.playersList;
 		
 		this.fetchPlayers(); 
 	},
-	render: function(){
+
+	render: function() {
 		preGameTemplate = $('#preGameTemplate').html();
 		this.$el.html(preGameTemplate);
-		console.log(app.playersList)
+		console.log(app.playersList);
 		this.renderList();
 	},
-	renderList: function(){
+
+	renderList: function() {
 		console.log(app.playersList);
 		app.playersList.each(function(player){
 			playertile = new app.PreGamePlayerView({model:player});
 			playertile.render();
 		});
 	},
-	joinGame: function(){
-		if($('#main').length===0){
+
+	joinGame: function() {
+		if($('#main').length===0) {
 			return;
 		}
 		app.dispatcher.trigger('game.join');
 	},
-	fetchPlayers: function(){
+
+	fetchPlayers: function() {
 		var view = this;
 		view.joinGame();
 		if ($('#main').length === 0) {
@@ -43,7 +49,8 @@ app.PreGameView = Backbone.View.extend({
 					user_id: data.players[i].user_id,
 					state: data.players[i].state
 				});
-			};
+			}
+			
 			view.renderList();
 		});
 

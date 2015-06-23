@@ -9,7 +9,6 @@ app.PreGamePlayerView = Backbone.View.extend({
 	// },
 	el:'#playerTiles',
 	render: function(){
-		debugger;
 		preGamePlayerTemplate = $('#preGamePlayerTemplate').html();
 		preGamePlayerHTML = _.template(preGamePlayerTemplate);
 		this.$el.append(preGamePlayerHTML(this.model.toJSON()));
