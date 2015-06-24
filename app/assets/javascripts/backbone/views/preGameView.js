@@ -4,7 +4,7 @@ app.PreGameView = Backbone.View.extend({
 	el:'#main',
 	events:{
 		'click #playerReady':'markReady',
-		'click #playerCancel':'cancel',
+		'click #playerCancel':'playerCancel',
 		},
 	initBinds: function(){
 		var view = this;
@@ -68,7 +68,7 @@ app.PreGameView = Backbone.View.extend({
 	markReady:function(event){
 		console.log(event.currentTarget);
 		app.dispatcher.trigger('game.mark_ready');
-		this.playerReady();
+		this.buttonToggle();
 	},
 
 	joinGame: function() {
@@ -84,12 +84,18 @@ app.PreGameView = Backbone.View.extend({
 
 		this.joinGame();
 	},
-	playerReady: function(){
-		$('#playerReady').addClass('hidden');
-		$('#playerCancel').removeClass('hidden');
+	playerCancel: function(){
+		console.log(event.currentTarget);
+		console.log("Cancelling ready state");
+		app.dispatcher.trigger('game.mark_ready');
+		this.buttonToggle();
+	},
+	buttonToggle: function(){
+		$('#playerReady').toggleClass('hidden');
+		$('#playerCancel').toggleClass('hidden');
 		// app.dispatcher.trigger('game.start_round', "ready");
-		app.gameChannel.bind('start_round', function(data){
-			console.log(data);
-		});
+		// app.gameChannel.bind('start_round', function(data){
+		// 	console.log(data);
+		// });
 	}
 });
