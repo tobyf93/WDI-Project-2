@@ -113,7 +113,7 @@ class GameSocketController < WebsocketRails::BaseController
     end
 
     if game.players.length >= 2 && allReady
-      start
+      _start
       WebsocketRails[:game].trigger :tell_players_start
     end
   end
