@@ -189,7 +189,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     #SAVE GAME
     game.save
-
+    # binding.pry
     game.players.shuffle.each do |player|
       if player.has_drawn == false && selected == false
         player.state = "drawing"
