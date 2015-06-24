@@ -1,8 +1,7 @@
 class GameSocketController < WebsocketRails::BaseController
-  private :_start, :_start_round, :_round_summary, :_start_phase, :_phase_summary
-  ###########################################################################
+  ##############################################################################
   # Game Dictator
-  ###########################################################################
+  ##############################################################################
   # start     Begins a game with X rounds.
 
   # round     Initially called by start.  A round consists of X phases where X
@@ -72,7 +71,9 @@ class GameSocketController < WebsocketRails::BaseController
   def _phase_summary
   end
 
-  ###########################################################################
+  private :_start, :_start_round, :_round_summary, :_start_phase, :_phase_summary
+  ##############################################################################
+  
 
   def mark_ready
     game = Game.last
