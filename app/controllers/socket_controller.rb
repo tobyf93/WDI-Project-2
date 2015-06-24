@@ -8,8 +8,7 @@ class SocketController < WebsocketRails::BaseController
   end
 
   def test
-    WebsocketRails[:messages].trigger(:new, message[:message])
-    # binding.pry
+    WebsocketRails[:message].trigger(:send, message)
   end
 
   
