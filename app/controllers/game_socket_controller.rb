@@ -224,12 +224,12 @@ class GameSocketController < WebsocketRails::BaseController
 
     if current_player.first.state == "drawing"
       # my_turn = true
-      this_word = Word.find game.word_id
+      # this_word = Word.find game.word_id
 
       data = {
         test_data: "Is my turn.",
         my_turn: true,
-        word: this_word.name
+        # word: this_word.name
       }
       send_message :my_turn, data, :namespace => :game
     else
