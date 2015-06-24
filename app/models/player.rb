@@ -5,16 +5,16 @@
 #  id            :integer          not null, primary key
 #  game_id       :integer
 #  user_id       :integer
-#  score         :integer
+#  score         :integer          default(0)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  name          :string
 #  guess         :string
-#  state         :string
+#  state         :string           default("not ready")
 #  has_drawn     :boolean          default(FALSE)
-#  time_of_guess :integer
-#
+#  time_of_guess :integer          default(0)
+#  guess_time    :datetime
 
 class Player < ActiveRecord::Base
   belongs_to :user
+  belongs_to :game
 end

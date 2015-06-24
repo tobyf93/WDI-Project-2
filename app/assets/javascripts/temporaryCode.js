@@ -1,7 +1,7 @@
 var app = app || {};
 
 $(document).ready(function() {
-  app.gameChannel.bind('start', function(data) {
+  app.gameChannel.bind('dictator', function(data) {
     console.log(data);
   });
 
