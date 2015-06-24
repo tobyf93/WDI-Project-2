@@ -147,9 +147,6 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :draw, data
   end
 
-
-
-
   def start_round
     #IF A GAME DOES NOT EXIST CREATE A GAME
     game = Game.last
@@ -162,7 +159,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     #SAVE GAME
     game.save
-    game.players.each do |player|
+    game.players.shuffle.each do |player|
       if player.has_drawn == false && selected == false
         player.state = "drawing"
         player.has_drawn = true
@@ -219,7 +216,7 @@ class GameSocketController < WebsocketRails::BaseController
       data = {
         my_turn: my_turn
       }
-      send_message :not_turn, data, :namespace => :game
+      send_message :my_turn, data, :namespace => :game
     end
   end
 
@@ -229,7 +226,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     player = (Player.where({ :user_id => session[:user_id] }))
     player.first.state = "guessed"
-    player.first.time_of_guess = message['time']
+    player.first.time_of_guess = Time.new
     player.first.guess = message['guess'].downcase
     player.first.save
 
@@ -261,7 +258,8 @@ class GameSocketController < WebsocketRails::BaseController
     correct_answer = (Word.find game.word_id).name.downcase
 
     if current_guess == correct_answer
-      score = (current_player.first.time_of_guess * 10)
+      time_difference = current_player.first.time_of_guess - game.phase_start_time
+      score = (time_difference * 10)
       current_player.first.score += score
       current_player.first.save
 
