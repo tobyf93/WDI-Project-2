@@ -10,6 +10,45 @@ class GameSocketController < WebsocketRails::BaseController
   #   WebsocketRails[:game].trigger :start, 'finishing game'
   # end
 
+  def mark_ready
+    game = Game.last
+    game = Game.create if !game
+
+    player = Player.where({ :user_id => session[:user_id] }).first
+    player.state = "ready"
+    player.save
+
+    check_for_game_start
+
+    player_states = []
+
+    game.players.each do |player|
+      player_states.push({:id => player.id, :state => player.state})
+    end
+
+    WebsocketRails[:game].trigger :player_states, player_states
+  end
+
+  def check_for_game_start
+    game = Game.last
+    game = Game.create if !game
+
+    allReady = true
+
+    game.players.each do |player|
+      if player.state != "ready"
+        allReady = false
+      end
+    end
+
+    if game.players.length >= 3 && allReady
+      start
+      WebsocketRails[:game].trigger :tell_players_start
+    end
+  end
+
+
+
   def start
     WebsocketRails[:game].trigger :start, 'Beginning game'
     round_start 1
@@ -34,6 +73,10 @@ class GameSocketController < WebsocketRails::BaseController
     round += 1
     self.round_start round
   end
+
+
+
+
 
   def join
     game = Game.last
@@ -102,6 +145,9 @@ class GameSocketController < WebsocketRails::BaseController
 
     WebsocketRails[:game].trigger :draw, data
   end
+
+
+
 
   def start_round
     game = Game.last
