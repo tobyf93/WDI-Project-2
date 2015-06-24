@@ -65,24 +65,14 @@ $(document).ready(function() {
     console.log(data);
   });
 
-  dispatcher.bind('game.not_turn', function(data) {
-    // ==========================================================
-    // Insert the code for what to do when the person is guessing
-    // ========================================================== 
-    console.log(data)
-    runGuessTurn();
-    // dispatcher.unbind('game.not_turn');
-    // dispatcher.unbind('game.my_turn');
-  });
-
   dispatcher.bind('game.my_turn', function(data) {
-    // =========================================================
-    // Insert the code for what to do when the person is drawing
-    // =========================================================
+
     console.log(data)
-    runMyTurn();
-    // dispatcher.unbind('game.not_turn');
-    // dispatcher.unbind('game.my_turn');
+    if (data.my_turn) {
+      runMyTurn(data.word);  
+    } else {
+      runGuessTurn();
+    };
   });
 
   $('#guessButton').on('click', function(e) {

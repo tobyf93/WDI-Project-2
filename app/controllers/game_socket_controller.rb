@@ -170,9 +170,6 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :draw, data
   end
 
-
-
-
   def start_round
     #IF A GAME DOES NOT EXIST CREATE A GAME
     game = Game.last
@@ -243,8 +240,7 @@ class GameSocketController < WebsocketRails::BaseController
       data = {
         my_turn: my_turn
       }
-
-      send_message :not_turn, data, :namespace => :game
+      send_message :my_turn, data, :namespace => :game
     end
   end
 
@@ -254,7 +250,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     player = (Player.where({ :user_id => session[:user_id] }))
     player.first.state = "guessed"
-    player.first.time_of_guess = message['time']
+    player.first.time_of_guess = Time.new
     player.first.guess = message['guess'].downcase
     player.first.save
 
