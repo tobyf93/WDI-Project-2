@@ -1,7 +1,6 @@
 class GameSocketController < WebsocketRails::BaseController
-
   ###########################################################################
-  # Game Administrator
+  # Game Dictator
   ###########################################################################
   # start     Begins a game with X rounds.
 
@@ -11,32 +10,70 @@ class GameSocketController < WebsocketRails::BaseController
   # phase     A phase consists of a single player drawing a given word and the
   #           remaining players submiting guesses based on the realtime drawing.
 
-  def start
-    WebsocketRails[:game].trigger :start, 'Beginning game'
-    round_start 1
+  def _start
+    # Temporary - eventually we will pass the game into the _start method
+    game = Game.last
+    game = Game.create if !game
+
+    WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
+    _start_round game, 1
   end
 
-  def round_start round
-    if round <= 2
-      Thread.new do
-        WebsocketRails[:game].trigger :start, "Starting round #{round}"
-        start_round # We will need to rename these methods
-        sleep(3.seconds)
-        round_summary round
+  def _start_round game, round
+    Thread.new do 
+      if round <= 3
+        WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
+        game.players.each { |player| _start_phase player }
+        
+        WebsocketRails[:game].trigger :dictator, "\tEnding Round #{round}"
+        _round_summary game, round
+      else
+        WebsocketRails[:game].trigger :dictator, "Ending Game"
       end
-    else
-      WebsocketRails[:game].trigger :start, "Ending game"
     end
   end
 
-  def round_summary round
-    WebsocketRails[:game].trigger :start, "Round #{round} summary"
+  def _round_summary game, round
+    WebsocketRails[:game].trigger :dictator, "\tRound #{round} Summary"
     sleep(3.seconds)
+
     round += 1
-    self.round_start round
+    _start_round game, round
+  end
+
+  def _start_phase player
+    game = player.game
+    game.phase_start_time = Time.new
+    game.save
+
+    WebsocketRails[:game].trigger :dictator, "\t\t#{player.user.username} Is Now Drawing"
+    sleep(3.seconds)
+  end
+
+  def _phase_summary
   end
 
   ###########################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   def mark_ready
     game = Game.last
