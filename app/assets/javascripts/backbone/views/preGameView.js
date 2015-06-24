@@ -81,18 +81,15 @@ app.PreGameView = Backbone.View.extend({
 		// this.fetchPlayers();
 	},
 	fetchPlayers: function() {
+
 		this.joinGame();
 	},
 	playerReady: function(){
 		$('#playerReady').addClass('hidden');
 		$('#playerCancel').removeClass('hidden');
-		app.dispatcher.trigger('game.start_round', "ready");
+		// app.dispatcher.trigger('game.start_round', "ready");
 		app.gameChannel.bind('start_round', function(data){
 			console.log(data);
 		});
-
 	}
 });
-
-
-
