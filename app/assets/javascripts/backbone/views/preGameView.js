@@ -37,7 +37,6 @@ app.PreGameView = Backbone.View.extend({
 		// SETUP BIND TO LISTEN FOR THREE OR MORE READY USERS //
 		//****************************************************// 
 		app.gameChannel.bind('tell_players_start', function(){
-
 			app.router.navigate('game', true);
 		});
 

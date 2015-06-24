@@ -22,13 +22,11 @@ class GameSocketController < WebsocketRails::BaseController
   def _start_round game, round
     Thread.new do
       if round <= 3
-        
-        if game.word_id
-          game.word_id = nil
-          game.players.each do |player|
-            player.has_drawn = false
-          end
 
+        game.players.each do |player|
+          player.state = "ready"
+          player.has_drawn = false
+          player.save
         end
 
         WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
@@ -46,7 +44,7 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :dictator, "\tRound #{round} Summary"
     # end_round
 
-    round_summary game
+    game = round_summary game
 
     sleep(3.seconds)
 
@@ -59,9 +57,11 @@ class GameSocketController < WebsocketRails::BaseController
     game.phase_start_time = Time.new
     game.save
 
-    start_phase
+    start_phase game
+
+    # player_real = game.players.find_by :state => 'drawing' - THIS IS WHAT IS FUCKING EVERYTHING UP
+    # 
     WebsocketRails[:game].trigger :tell_players_start
-    WebsocketRails[:game].trigger :dictator, "\t\t#{player.user.username} Is Now Drawing"
 
     sleep(3.second)
   end
@@ -179,17 +179,21 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :draw, data
   end
 
-  def start_phase
-    game = Game.last
+  def start_phase game
 
     selected = false
     user = nil
 
+
+    # TODO: Find out why this isn't running after one round is complete
+    # =================================================================
     game.players.shuffle.each do |player|
       if player.has_drawn == false && selected == false
         player.state = "drawing"
         player.has_drawn = true
         player.save
+
+        WebsocketRails[:game].trigger :dictator, "\t\t#{player.user.username} Is Now Drawing"
 
         selected = true
         user = player.user
@@ -200,7 +204,6 @@ class GameSocketController < WebsocketRails::BaseController
     end
     game.players_left = game.players.length
     game.save
-
   end
 
   def get_role
@@ -266,7 +269,18 @@ class GameSocketController < WebsocketRails::BaseController
       scores.push({ username: username, score: player.score, })
     end
 
+    if game.word_id
+      game.word_id = nil
+      game.save
+      game.players.each do |player|
+        player.has_drawn = false
+        player.save
+      end
+    end
+
     WebsocketRails[:game].trigger :game_over, scores
+
+    return game
   end
 
   def end_round
