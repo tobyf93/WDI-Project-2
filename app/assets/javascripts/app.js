@@ -47,6 +47,10 @@ $(function(){
 	app.gameChannel.bind('dictator', function(data) {
     console.log(data);
   });
+	app.gameChannel.bind('toby', function(data) {
+		console.warn(data);
+	});
+
 	app.router = new app.Router();
 	Backbone.history.start();	
 });
