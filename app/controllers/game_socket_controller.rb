@@ -176,17 +176,10 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def start_phase
-    #IF A GAME DOES NOT EXIST CREATE A GAME
     game = Game.last
-    game = Game.create unless game
 
     selected = false
-    user = ""
-    #ASSOCIATE A RANDOM WORD WITH THE GAME
-    game.word_id = (Word.all).sample.id
-
-    #SAVE GAME
-    game.save
+    user = nil
 
     game.players.shuffle.each do |player|
       if player.has_drawn == false && selected == false
@@ -195,7 +188,7 @@ class GameSocketController < WebsocketRails::BaseController
         player.save
 
         selected = true
-        user = User.find player.user_id
+        user = player.user
       else
         player.state = "guessing"
         player.save
@@ -204,24 +197,16 @@ class GameSocketController < WebsocketRails::BaseController
     game.players_left = game.players.length
     game.save
 
-    if user == ""
+    if !user
       scores = []
       sorted_by_score = game.players.sort_by &:score
 
       sorted_by_score.each do |player|
-        username = (User.find player.user_id).username
+        username = player.user.username
         scores.push({ username: username, score: player.score, })
-      end
-
-      
+      end      
 
       WebsocketRails[:game].trigger :game_over, scores
-    else
-      data = {
-        username: (User.find user.id).username
-      }
-      # TODO: End the game if no player to draw was found.
-      WebsocketRails[:game].trigger :start_phase, data
     end    
   end
 
