@@ -37,7 +37,6 @@ app.PreGameView = Backbone.View.extend({
 		// SETUP BIND TO LISTEN FOR THREE OR MORE READY USERS //
 		//****************************************************// 
 		app.gameChannel.bind('tell_players_start', function(){
-			console.log("this game is starting now");
 			app.router.navigate('game', true);
 		});
 
@@ -46,15 +45,12 @@ app.PreGameView = Backbone.View.extend({
 	reloadCollection: function(data){
 		app.playersList.reset();
 		for (var i = 0; i < data.length; i++) {
-			console.log("THIS MOTHERFUCKER RAN");
-			console.log("PLAYER: ", data[i].player, " Username: ", data[i].username);
 			app.playersList.add({
 				username: data[i].username,
 				user_id: data[i].player.user_id,
 				state: data[i].player.state
 			});
 		}
-		console.log('Here is the players list: ', app.playersList);
 		this.renderList(); 
 	},
 	initialize: function(){
@@ -78,7 +74,6 @@ app.PreGameView = Backbone.View.extend({
 	},
 
 	markReady:function(event){
-		console.log(event.currentTarget);
 		app.dispatcher.trigger('game.mark_ready');
 		this.buttonToggle();
 	},
@@ -95,8 +90,6 @@ app.PreGameView = Backbone.View.extend({
 		this.joinGame();
 	},
 	playerCancel: function(){
-		console.log(event.currentTarget);
-		console.log("Cancelling ready state");
 		app.dispatcher.trigger('game.mark_ready');
 		this.buttonToggle();
 	},
