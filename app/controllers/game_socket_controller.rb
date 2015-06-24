@@ -47,22 +47,17 @@ class GameSocketController < WebsocketRails::BaseController
     game.save
 
     start_phase
-    # WebsocketRails[:game].trigger :dictator, "\t\t#{player.user.username} Is Now Drawing"
-    sleep(1.minute)
+    WebsocketRails[:game].trigger :tell_players_start
+
+    WebsocketRails[:game].trigger :dictator, "\t\t#{player.user.username} Is Now Drawing"
+
+    sleep(3.second)
   end
 
   def _phase_summary
   end
 
   ###########################################################################
-
-
-
-
-
-
-
-
 
   def mark_ready
     game = Game.last
@@ -103,7 +98,6 @@ class GameSocketController < WebsocketRails::BaseController
 
     if game.players.length >= 2 && allReady
       _start
-      WebsocketRails[:game].trigger :tell_players_start
     end
   end
 
@@ -185,6 +179,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     #SAVE GAME
     game.save
+
     game.players.shuffle.each do |player|
       if player.has_drawn == false && selected == false
         player.state = "drawing"
@@ -198,7 +193,6 @@ class GameSocketController < WebsocketRails::BaseController
         player.save
       end
     end
-
     game.players_left = game.players.length
     game.save
 
@@ -218,7 +212,7 @@ class GameSocketController < WebsocketRails::BaseController
         username: (User.find user.id).username
       }
       # TODO: End the game if no player to draw was found.
-      WebsocketRails[:game].trigger :start_round, data
+      WebsocketRails[:game].trigger :start_phase, data
     end    
   end
 
@@ -230,6 +224,7 @@ class GameSocketController < WebsocketRails::BaseController
     current_player = Player.where({ :user_id => session[:user_id] }) 
 
     if current_player.first.state == "drawing"
+      binding.pry
       my_turn = true
       this_word = Word.find game.word_id
 
