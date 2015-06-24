@@ -215,12 +215,11 @@ class GameSocketController < WebsocketRails::BaseController
   def get_role
     game = Game.last
     unless game.word_id
-      game.word_id = (Word.all).sample.id
+      game.word_id = Word.all.sample.id
       game.save
     end
 
-    # my_turn = false
-    current_player = Player.where({ :user_id => session[:user_id] }) 
+    current_player = game.players.where :user_id => session[:user_id] 
 
     if current_player.first.state == "drawing"
       # my_turn = true
