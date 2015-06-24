@@ -1,7 +1,7 @@
 class GameSocketController < WebsocketRails::BaseController
-  ###########################################################################
+  ##############################################################################
   # Game Dictator
-  ###########################################################################
+  ##############################################################################
   # start     Begins a game with X rounds.
 
   # round     Initially called by start.  A round consists of X phases where X
@@ -71,7 +71,9 @@ class GameSocketController < WebsocketRails::BaseController
   def _phase_summary
   end
 
-  ###########################################################################
+  private :_start, :_start_round, :_round_summary, :_start_phase, :_phase_summary
+  ##############################################################################
+  
 
   def mark_ready
     game = Game.last
@@ -119,27 +121,23 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.last
     game = Game.create if !game
     user = User.find session[:user_id]
-    player = Player.find_by :user_id => user.id
+    player = user.players.first
 
     if !player
+      # Restrict user to one player for now
+      Player.where(:user_id => user.id).destroy_all
+
       player = Player.create :user_id => user.id
       game.players << player
     end
 
+    users = game.players.map { |player| player.user }
 
-    users = game.players.map do |player|
-      player.user
-    end
- 
-    players = game.players.pluck(:user_id).uniq
-
-    data = []
-
-    game.players.each do |player|
-      data.push ({
-        player: player,
-        username: (User.find player.user_id).username
-      })
+    data = game.players.map do |player|
+      {
+        player: player.id,
+        username: player.user.username
+      }
     end
 
     WebsocketRails[:game].trigger :join, data
