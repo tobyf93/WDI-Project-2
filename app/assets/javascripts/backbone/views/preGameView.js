@@ -30,6 +30,14 @@ app.PreGameView = Backbone.View.extend({
 		//*************************************// 
 		app.gameChannel.bind('player_states',function(player_states){
 			view.reloadCollection(player_states);
+			// app.dispatcher.trigger('game.check_for_game_start');
+		});
+
+		//****************************************************//
+		// SETUP BIND TO LISTEN FOR THREE OR MORE READY USERS //
+		//****************************************************// 
+		app.gameChannel.bind('tell_players_start', function(){
+			console.log("start the game motherfucker");
 		});
 	},
 	reloadCollection: function(data){
@@ -95,8 +103,6 @@ app.PreGameView = Backbone.View.extend({
 		$('#playerReady').toggleClass('hidden');
 		$('#playerCancel').toggleClass('hidden');
 		// app.dispatcher.trigger('game.start_round', "ready");
-		// app.gameChannel.bind('start_round', function(data){
-		// 	console.log(data);
-		// });
+
 	}
 });
