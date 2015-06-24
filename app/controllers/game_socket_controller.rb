@@ -224,7 +224,6 @@ class GameSocketController < WebsocketRails::BaseController
     current_player = Player.where({ :user_id => session[:user_id] }) 
 
     if current_player.first.state == "drawing"
-      binding.pry
       my_turn = true
       this_word = Word.find game.word_id
 
