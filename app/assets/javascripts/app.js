@@ -44,11 +44,12 @@ $(function(){
 	app.dispatcher = new WebSocketRails(window.location.host + '/websocket');
 	app.messageChannel = app.dispatcher.subscribe('message');
 	app.gameChannel = app.dispatcher.subscribe('game');
-	
-	// FETCH CHANNEL HAS NOW BEEN DEPRECATED, WILL REMOVE IN THE FUTURE. 
-	// app.fetchChannel = app.dispatcher.subscribe('fetch');
-	
-	//BINDING DICTATOR BEFORE THE GAME BEGINS 
+
+	app.mikedebugChannel = app.dispatcher.subscribe('mikedebug');
+	app.mikedebugChannel.bind('mikestatus', function(data) {
+		console.log('mikedebug', data);
+	});
+
 	app.gameChannel.bind('dictator', function(data) {
     	console.log(data);
   	});
