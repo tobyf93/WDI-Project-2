@@ -23,4 +23,8 @@ WebsocketRails::EventMap.describe do
     subscribe :get_score, 'game_socket#get_score'
     subscribe :start, 'game_socket#start'
   end
+
+  namespace :message do
+    subscribe :send, 'message_socket#send'
+  end
 end
