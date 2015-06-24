@@ -20,14 +20,14 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def _start_round game, round
-    Thread.new do 
+    Thread.new do
       if round <= 3
         game.word_id = nil
 
       game.players.each do |player|
         player.has_drawn = false
       end
-      
+
         WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
         game.players.each { |player| _start_phase player }
         
@@ -205,14 +205,15 @@ class GameSocketController < WebsocketRails::BaseController
     game.save
 
     if user == ""
-      username = (User.find player.user_id).username
-
       scores = []
       sorted_by_score = game.players.sort_by &:score
 
       sorted_by_score.each do |player|
+        username = (User.find player.user_id).username
         scores.push({ player: player, username: username })
       end
+
+      
 
       WebsocketRails[:game].trigger :game_over, scores
     else
