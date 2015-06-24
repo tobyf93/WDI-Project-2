@@ -182,7 +182,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     #SAVE GAME
     game.save
-    game.players.each do |player|
+    game.players.shuffle.each do |player|
       if player.has_drawn == false && selected == false
         player.state = "drawing"
         player.has_drawn = true
@@ -282,7 +282,8 @@ class GameSocketController < WebsocketRails::BaseController
     correct_answer = (Word.find game.word_id).name.downcase
 
     if current_guess == correct_answer
-      score = (current_player.first.time_of_guess * 10)
+      time_difference = current_player.first.time_of_guess - game.phase_start_time
+      score = (time_difference * 10)
       current_player.first.score += score
       current_player.first.save
 
