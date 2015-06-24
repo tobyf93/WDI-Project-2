@@ -1,14 +1,15 @@
 class GameSocketController < WebsocketRails::BaseController
 
-  # This is waiting till the function end to publish to channel.  Would be good
-  # if there was a way to flush channel before each sleep...
-  # def start
-  #   WebsocketRails[:game].trigger :start, 'beginning game'
-  #   sleep(1.seconds)
-  #   WebsocketRails[:game].trigger :start, '1 second passed on server'
-  #   sleep(5.seconds)
-  #   WebsocketRails[:game].trigger :start, 'finishing game'
-  # end
+  ###########################################################################
+  # Game Administrator
+  ###########################################################################
+  # start     Begins a game with X rounds.
+
+  # round     Initially called by start.  A round consists of X phases where X
+  #           is the number of players in the game.
+
+  # phase     A phase consists of a single player drawing a given word and the
+  #           remaining players submiting guesses based on the realtime drawing.
 
   def start
     WebsocketRails[:game].trigger :start, 'Beginning game'
@@ -16,7 +17,7 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def round_start round
-    if round <= 3
+    if round <= 2
       Thread.new do
         WebsocketRails[:game].trigger :start, "Starting round #{round}"
         start_round # We will need to rename these methods
@@ -34,6 +35,19 @@ class GameSocketController < WebsocketRails::BaseController
     round += 1
     self.round_start round
   end
+
+  ###########################################################################
+
+
+
+
+
+
+
+
+
+
+
 
   def join
     game = Game.last
