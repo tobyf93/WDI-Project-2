@@ -3,15 +3,14 @@ var app = app || {};
 $(document).ready(function(){
   console.log("socket chat demo ");
   
-
-  
   channel = app.dispatcher.subscribe('message')
-
 
   channel.bind('transmit', function(data){
 
     console.log(data);
-    $('#messages').append("")
+    var message = "<p>" +  data.currtime + ':: ' + data.user + ':: ' + data.message + "</p> " ;
+    console.log(message);
+    $('#messages').append(message);
 
   })
 
@@ -23,8 +22,10 @@ $(document).ready(function(){
     console.log('You hit enter');
     message = $this.val();
     $this.val('');
+
     app.dispatcher.trigger('message.transmit', message);
   }
 });
+
 
 });

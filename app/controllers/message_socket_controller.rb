@@ -6,6 +6,15 @@ class MessageSocketController < WebsocketRails::BaseController
   end
 
   def transmit
-    WebsocketRails[:message].trigger(:transmit, message)
+
+    user = User.find session[:user_id]
+    currtime = Time.new.strftime("%I:%M:%S %P")
+
+    chatobj = {
+      user: user.username.capitalize,
+      currtime: currtime,
+      message: message
+    }
+    WebsocketRails[:message].trigger(:transmit, chatobj)
   end 
 end
