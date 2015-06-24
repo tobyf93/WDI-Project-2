@@ -48,7 +48,6 @@ class GameSocketController < WebsocketRails::BaseController
 
     start_phase
     WebsocketRails[:game].trigger :tell_players_start
-
     WebsocketRails[:game].trigger :dictator, "\t\t#{player.user.username} Is Now Drawing"
 
     sleep(3.second)
@@ -228,13 +227,13 @@ class GameSocketController < WebsocketRails::BaseController
       this_word = Word.find game.word_id
 
       data = {
-        my_turn: my_turn,
+        my_turn: my_turn || "default_data",
         word: this_word.name
       }
       send_message :my_turn, data, :namespace => :game
     else
       data = {
-        my_turn: my_turn
+        my_turn: my_turn || "default_data"
       }
       send_message :my_turn, data, :namespace => :game
     end
