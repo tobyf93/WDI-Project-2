@@ -47,22 +47,16 @@ class GameSocketController < WebsocketRails::BaseController
     game.save
 
     start_phase
-    # WebsocketRails[:game].trigger :dictator, "\t\t#{player.user.username} Is Now Drawing"
-    sleep(1.minute)
+    WebsocketRails[:game].trigger :tell_players_start
+    WebsocketRails[:game].trigger :dictator, "\t\t#{player.user.username} Is Now Drawing"
+
+    sleep(3.second)
   end
 
   def _phase_summary
   end
 
   ###########################################################################
-
-
-
-
-
-
-
-
 
   def mark_ready
     game = Game.last
@@ -103,7 +97,6 @@ class GameSocketController < WebsocketRails::BaseController
 
     if game.players.length >= 2 && allReady
       _start
-      WebsocketRails[:game].trigger :tell_players_start
     end
   end
 
@@ -176,7 +169,7 @@ class GameSocketController < WebsocketRails::BaseController
   def start_phase
     #IF A GAME DOES NOT EXIST CREATE A GAME
     game = Game.last
-    game = Game.create if !game
+    game = Game.create unless game
 
     selected = false
     user = ""
@@ -185,6 +178,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     #SAVE GAME
     game.save
+
     game.players.shuffle.each do |player|
       if player.has_drawn == false && selected == false
         player.state = "drawing"
@@ -198,7 +192,6 @@ class GameSocketController < WebsocketRails::BaseController
         player.save
       end
     end
-
     game.players_left = game.players.length
     game.save
 
@@ -218,29 +211,37 @@ class GameSocketController < WebsocketRails::BaseController
         username: (User.find user.id).username
       }
       # TODO: End the game if no player to draw was found.
-      WebsocketRails[:game].trigger :start_round, data
+      WebsocketRails[:game].trigger :start_phase, data
     end    
   end
 
   def get_role
     game = Game.last
-    game = Game.create if !game
+    unless game.word_id
+      game.word_id = (Word.all).sample.id
+      game.save
+    end
 
-    my_turn = false
+    # my_turn = false
     current_player = Player.where({ :user_id => session[:user_id] }) 
 
     if current_player.first.state == "drawing"
-      my_turn = true
-      this_word = Word.find game.word_id
-
+      # my_turn = true
+      # this_word = Word.find game.word_id
+      kal = Word.find( game.word_id ) if game && game.word_id
       data = {
-        my_turn: my_turn,
-        word: this_word.name
+        test_data: "Is my turn.",
+        my_turn: true,
+        test_dalkn: kal || "NO WORD FOUND",
+        test_game: game,
+
+        # word: this_word.name
       }
       send_message :my_turn, data, :namespace => :game
     else
       data = {
-        my_turn: my_turn
+        test_data: "Is not my turn",
+        my_turn: false
       }
       send_message :my_turn, data, :namespace => :game
     end

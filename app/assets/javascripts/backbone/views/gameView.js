@@ -8,9 +8,13 @@ app.GameView = Backbone.View.extend({
 			console.log("THIS IS THE DATA" + data);
 			view.getRole(data);
 		});
-
+		app.gameChannel.bind('tell_player_start', function(){
+			console.log("New round starting");
+			app.router.navigate('game',true);
+		})
 	},
 	getRole: function(data){
+
 		if (data.my_turn){
 	  		this.drawView(data);  
 		} else {
@@ -21,11 +25,9 @@ app.GameView = Backbone.View.extend({
 		// this.$el.append("You're going to be guessing shit!");
 		// var canvasTemplate = new app.CanvasView();
 		// canvasTemplate.renderGuesser();
-
 		this.$el.append("You're going to be drawing shit!");
 		var canvasTemplate = new app.CanvasView();
-		canvasTemplate.renderDrawer();
-
+		canvasTemplate.renderGuesser();
 	},
 	drawView: function(data){
 		this.$el.append("You're going to be drawing shit!");
