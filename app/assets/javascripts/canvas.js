@@ -11,6 +11,7 @@ $(document).ready(function() {
 
 app.canvas = {
 	initPaper: function(){
+		// debugger;
 		this.setupPaperJS();
 	},
 	initGuesser: function() {
@@ -23,6 +24,7 @@ app.canvas = {
 	},
 
 	setupPaperJS: function() {
+		// debugger;
 		paper.install(window);
 		paper.setup('drawsomeCanv');
 	},

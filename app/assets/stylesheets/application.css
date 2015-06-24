@@ -15,17 +15,3 @@
  */
 
 
-#drawsomeCanv{
-  position:absolute;
-  z-index: 1;
-  overflow:auto; /* to make the div element scrollable */
-}
-
-.chatBox{
-  position:absolute;
-  z-index:4;
-  width:100%;
-  height:100%;
-
-
-}

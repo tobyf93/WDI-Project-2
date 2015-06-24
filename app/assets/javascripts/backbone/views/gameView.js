@@ -14,7 +14,6 @@ app.GameView = Backbone.View.extend({
 		})
 	},
 	getRole: function(data){
-
 		if (data.my_turn){
 	  		this.drawView(data);  
 		} else {
@@ -25,14 +24,19 @@ app.GameView = Backbone.View.extend({
 		// this.$el.append("You're going to be guessing shit!");
 		// var canvasTemplate = new app.CanvasView();
 		// canvasTemplate.renderGuesser();
+		// debugger;
 		this.$el.append("You're going to be drawing shit!");
-		var canvasTemplate = new app.CanvasView();
-		canvasTemplate.renderGuesser();
+		app.guessCanvasView = new app.CanvasView();
+		app.guessCanvasView.renderGuesser();
+		app.chatBox = new app.ChatboxView();
+		app.chatBox.render();
+
 	},
 	drawView: function(data){
+		// debugger;
 		this.$el.append("You're going to be drawing shit!");
-		var canvasTemplate = new app.CanvasView();
-		canvasTemplate.renderDrawer();
+		app.drawCanvasView = new app.CanvasView();
+		app.drawCanvasView.renderDrawer();
 	},
 	renderStatus: function(){
 
