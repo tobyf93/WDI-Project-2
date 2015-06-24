@@ -11,6 +11,10 @@ WebsocketRails::EventMap.describe do
     subscribe :players, 'fetch_socket#players'
   end
 
+  namespace :mikedebug do
+    subscribe :mikedebug, 'mikedebug_socket#current_status'
+  end
+
   namespace :game do
     subscribe :join, 'game_socket#join'
     subscribe :leave, 'game_socket#leave'
