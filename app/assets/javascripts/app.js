@@ -42,11 +42,18 @@ $(function(){
 	// 	this.getRole(data);
 	// });	
 	app.dispatcher = new WebSocketRails(window.location.host + '/websocket');
-	app.fetchChannel = app.dispatcher.subscribe('fetch');
+	app.messageChannel = app.dispatcher.subscribe('message');
 	app.gameChannel = app.dispatcher.subscribe('game');
+
+	app.mikedebugChannel = app.dispatcher.subscribe('mikedebug');
+	app.mikedebugChannel.bind('mikestatus', function(data) {
+		console.log('mikedebug', data);
+	});
+
 	app.gameChannel.bind('dictator', function(data) {
-    console.log(data);
-  });
+    	console.log(data);
+  	});
+
 	app.gameChannel.bind('toby', function(data) {
 		console.warn(data);
 	});

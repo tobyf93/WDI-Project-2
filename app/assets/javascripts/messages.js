@@ -1,50 +1,51 @@
-var app = app || {};
-
-$(document).ready(function(){
-  // console.log("socket chat demo ");
+// var app = app || {};
+// $(document).ready(function(){
+//   console.log("socket chat demo ");
   
-  channel = app.dispatcher.subscribe('message')
+//   channel = app.dispatcher.subscribe('message')
 
-  channel.bind('transmit', function(data){
+//   channel.bind('transmit', function(data){
 
-    // console.log(data);
-    var message = "<p>" +  data.currtime + ':: ' + data.user + ':: ' + data.message + "</p> " ;
-    // console.log(message);
-    $('#messages').append(message);
 
-  })
-  // submit chat via chat button 
-  $('#chat').on('click',function(e){
-    var $this = $('#message');
-     message = $this.val();
-     $this.val('');
+//     console.log(data);
+//     var message = "<p>" +  data.currtime + ':: ' + data.user + ':: ' + data.message + "</p> " ;
+//     console.log(message);
+//     $('#messages').append(message);
 
-    app.dispatcher.trigger('message.transmit', message);
 
-  });
-  // submit chat via enter key 
-  $('#message').on('keydown', function(e) {
-    var $this = $(this);
+//   })
+//   // submit chat via chat button 
+//   $('#chat').on('click',function(e){
+//     var $this = $('#message');
+//      message = $this.val();
+//      $this.val('');
 
-  if (e.keyCode === 13) {
-    console.log('You hit enter');
-    message = $this.val();
-    $this.val('');
+//     app.dispatcher.trigger('message.transmit', message);
 
-    app.dispatcher.trigger('message.transmit', message);
-  }
-});
+//   });
+//   // submit chat via enter key 
+//   $('#message').on('keydown', function(e) {
+//     var $this = $(this);
 
-// submit the guess 
-$('#submitresult').on('click', function(e){
-  var $this = $('#guess');
-  message = $this.val();
+//   if (e.keyCode === 13) {
+//     console.log('You hit enter');
+//     message = $this.val();
+//     $this.val('');
 
-  data = {
-    message: message
-  };
+//     app.dispatcher.trigger('message.transmit', message);
+//   }
+// });
 
-  app.dispatcher.trigger('game.submit_guess',data);
-})
+// // submit the guess 
+// $('#submitresult').on('click', function(e){
+//   var $this = $('#guess');
+//   message = $this.val();
 
-});
+//   data = {
+//     message: message
+//   };
+
+//   app.dispatcher.trigger('game.submit_guess',data);
+// })
+
+// });

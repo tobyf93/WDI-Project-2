@@ -19,11 +19,23 @@
     overflow: scroll;
   }
 </style>
+<script id="chatBoxTemplate" type="text/template">
+  <div id="chatbox" class="chat-wrapper">
+    <h1>Chat</h1>
+    <div id="messages">
+    </div>
+    <div id="chatMsgSubmit" class="chatBoxSubmission">
+      <input id="message" type="text" placeholder="lets chat" autofocus>
+      <button type="submit" id="chat">Chat</button>
+    </div>
+  </div>
+</script>
 
-<h1>Live Chat via Sockets</h1>
-<div id="messages">
-</div>
-<input id="message" type="text" placeholder="lets chat" autofocus>
-<button type="submit" id="chat">Chat</button>
-<input id="guess" type="text" placeholder="submitguess">
-<button type="submit" id="submitresult">Submit</button>
+
+<script id="guessSubmitTemplate" type="text/template">
+  <div id="guessSubmit" class="chatBoxSubmission">
+    <input id="guess" type="text" placeholder="submitguess">
+    <button type="submit" id="submitresult">Submit</button>
+  </div>
+</script>
+
