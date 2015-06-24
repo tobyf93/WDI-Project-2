@@ -68,7 +68,7 @@ app.PreGameView = Backbone.View.extend({
 					user_id: data[i].player.user_id,
 					state: data[i].player.state
 				});
-			}
+			};
 					
 			console.log("Leave players collection is here: " + app.playersList);
 			$('#playerTiles').empty();
@@ -78,6 +78,3 @@ app.PreGameView = Backbone.View.extend({
 		view.joinGame();
 	}
 });
-
-
-
