@@ -3,8 +3,7 @@ var app = app || {};
 app.Router = Backbone.Router.extend({
 	routes:{
 		'':'index',
-		'guesser':'guesserView',
-		'drawer':'drawerView'
+		'game':'gameStart',
 		},
 	index: function(){
 		console.log("Hello this is the index");
@@ -12,8 +11,10 @@ app.Router = Backbone.Router.extend({
 		app.preGamePg = new app.PreGameView();
 		app.preGamePg.render();
 	},
-	guesser: function(){
-		return "hello"
+	gameStart: function(){
+		console.log("We are now rendering the Game View");
+		app.gameStart = new app.GameView();
+		app.gameStart.render();
 	},
 	drawer: function(){
 		return "hello"

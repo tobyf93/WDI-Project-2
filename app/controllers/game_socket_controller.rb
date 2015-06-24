@@ -75,7 +75,7 @@ class GameSocketController < WebsocketRails::BaseController
       end
     end
 
-    if game.players.length >= 3 && allReady
+    if game.players.length >= 2 && allReady
       start
       WebsocketRails[:game].trigger :tell_players_start
     end
@@ -211,7 +211,6 @@ class GameSocketController < WebsocketRails::BaseController
         my_turn: my_turn,
         word: this_word.name
       }
-
       send_message :my_turn, data, :namespace => :game
     else
       data = {
