@@ -8,30 +8,49 @@ app.GameView = Backbone.View.extend({
 		app.dispatcher.bind('game.my_turn', function(data) {
 			view.getRole(data);
 		});
+
+		// app.gameChannel.bind('tell_player_start', function(){
+		// 	debugger;
+		// 	console.log("New round starting");
+		// 	app.router.navigate('game',true);
+		// });
+
 	},
 	getRole: function(data){
-
 		if (data.my_turn){
-	  		this.drawView(data.word);  
+	  		this.drawView(data);  
 		} else {
-	  		this.guessView();
+	  		this.guessView(data);
 		};
 	},
 
-	guessView: function(){
-		this.$el.append("You're going to be guessing shit!");
-	},
-	drawView: function(data){
+	guessView: function(data){
+		// this.$el.append("You're going to be guessing shit!");
+		// var canvasTemplate = new app.CanvasView();
+		// canvasTemplate.renderGuesser();
+		// debugger;
 		this.$el.append("You're going to be drawing shit!");
-		// console.log('you are going to be drawing', data);
+		app.guessCanvasView = new app.CanvasView();
+		app.guessCanvasView.renderGuesser();
+		app.chatBox = new app.ChatboxView();
+		app.chatBox.render();
+	},
+
+	drawView: function(data){
+		// debugger;
+		this.$el.append("You're going to be drawing shit!");
+
+		app.drawCanvasView = new app.CanvasView();
+		app.drawCanvasView.renderDrawer();
 	},
 	renderStatus: function(){
-
 		//GAME LOGIC TO HANDLE WHAT GETS DISPLAYED IN THE STATUS BAR
 		//GOES HERE
 		statusBar.render("This is a message");
 	},
 	render: function(){
+		console.log("Triggering get role call");
+		app.dispatcher.trigger('game.start_phase');
 		app.dispatcher.trigger('game.get_role');
 		chatBoxTemplate = $('#chatBoxTemplate').html();
 		this.$el.html("Hello, ");
