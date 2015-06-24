@@ -1,15 +1,15 @@
 var app = app || {};
 
 $(document).ready(function(){
-  console.log("socket chat demo ");
+  // console.log("socket chat demo ");
   
   channel = app.dispatcher.subscribe('message')
 
   channel.bind('transmit', function(data){
 
-    console.log(data);
+    // console.log(data);
     var message = "<p>" +  data.currtime + ':: ' + data.user + ':: ' + data.message + "</p> " ;
-    console.log(message);
+    // console.log(message);
     $('#messages').append(message);
 
   })

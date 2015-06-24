@@ -180,18 +180,11 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def start_phase
-    #IF A GAME DOES NOT EXIST CREATE A GAME
     game = Game.last
-    game = Game.create unless game
 
     selected = false
-    user = ""
-    #ASSOCIATE A RANDOM WORD WITH THE GAME
-    game.word_id = (Word.all).sample.id
+    user = nil
 
-    #SAVE GAME
-    game.save
-    # binding.pry
     game.players.shuffle.each do |player|
       if player.has_drawn == false && selected == false
         player.state = "drawing"
@@ -199,7 +192,7 @@ class GameSocketController < WebsocketRails::BaseController
         player.save
 
         selected = true
-        user = User.find player.user_id
+        user = player.user
       else
         player.state = "guessing"
         player.save
@@ -207,6 +200,7 @@ class GameSocketController < WebsocketRails::BaseController
     end
     game.players_left = game.players.length
     game.save
+
   end
 
   def get_role
