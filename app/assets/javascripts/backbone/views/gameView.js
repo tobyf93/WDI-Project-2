@@ -4,7 +4,7 @@ app.GameView = Backbone.View.extend({
 	events:{},
 	initialize:function(){
 		var view = this;
-		console.log("initialize role binding");
+		// console.log("initialize role binding");
 		app.dispatcher.bind('game.my_turn', function(data) {
 			view.getRole(data);
 		})
@@ -23,7 +23,7 @@ app.GameView = Backbone.View.extend({
 	},
 	drawView: function(data){
 		this.$el.append("You're going to be drawing shit!");
-		console.log('you are going to be drawing', data);
+		// console.log('you are going to be drawing', data);
 	},
 	renderStatus: function(){
 
