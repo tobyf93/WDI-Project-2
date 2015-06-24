@@ -169,7 +169,7 @@ class GameSocketController < WebsocketRails::BaseController
   def start_phase
     #IF A GAME DOES NOT EXIST CREATE A GAME
     game = Game.last
-    game = Game.create if !game
+    game = Game.create unless game
 
     selected = false
     user = ""
@@ -217,7 +217,6 @@ class GameSocketController < WebsocketRails::BaseController
 
   def get_role
     game = Game.last
-    game = Game.create if !game
 
     # my_turn = false
     current_player = Player.where({ :user_id => session[:user_id] }) 
@@ -225,10 +224,13 @@ class GameSocketController < WebsocketRails::BaseController
     if current_player.first.state == "drawing"
       # my_turn = true
       # this_word = Word.find game.word_id
-
+      kal = Word.find( game.word_id ) if game && game.word_id
       data = {
         test_data: "Is my turn.",
         my_turn: true,
+        test_dalkn: kal || "NO WORD FOUND",
+        test_game: game,
+
         # word: this_word.name
       }
       send_message :my_turn, data, :namespace => :game
