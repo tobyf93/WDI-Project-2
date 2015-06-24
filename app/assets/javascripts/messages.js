@@ -1,16 +1,23 @@
 // var app = app || {};
 
+<<<<<<< HEAD
 // $(document).ready(function(){
 //   console.log("socket chat demo ");
+=======
+$(document).ready(function(){
+  // console.log("socket chat demo ");
+>>>>>>> 7c5eaee664b28f7f1678276428e4d188bc8e1737
   
 //   channel = app.dispatcher.subscribe('message')
 
 //   channel.bind('transmit', function(data){
 
+
 //     console.log(data);
 //     var message = "<p>" +  data.currtime + ':: ' + data.user + ':: ' + data.message + "</p> " ;
 //     console.log(message);
 //     $('#messages').append(message);
+
 
 //   })
 //   // submit chat via chat button 

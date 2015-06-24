@@ -20,8 +20,15 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def _start_round game, round
-    Thread.new do 
+    Thread.new do
       if round <= 3
+
+        game.word_id = nil
+
+        game.players.each do |player|
+          player.has_drawn = false
+        end
+
         WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
         game.players.each { |player| _start_phase player }
         
@@ -35,6 +42,10 @@ class GameSocketController < WebsocketRails::BaseController
 
   def _round_summary game, round
     WebsocketRails[:game].trigger :dictator, "\tRound #{round} Summary"
+    # end_round
+
+    round_summary game
+
     sleep(3.seconds)
 
     round += 1
@@ -134,8 +145,8 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.last
     game = Game.create if !game
 
-    if (Player.where ("user_id = #{session[:user_id]}")).any?
-      (Player.where ("user_id = #{session[:user_id]}")).destroy_all
+    if (Player.where ({ :user_id => session[:user_id] })).any?
+      (Player.where ({ :user_id => session[:user_id] })).destroy_all
 
       if game.players.length < 1
         game.destroy
@@ -167,17 +178,10 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def start_phase
-    #IF A GAME DOES NOT EXIST CREATE A GAME
     game = Game.last
-    game = Game.create unless game
 
     selected = false
-    user = ""
-    #ASSOCIATE A RANDOM WORD WITH THE GAME
-    game.word_id = (Word.all).sample.id
-
-    #SAVE GAME
-    game.save
+    user = nil
 
     game.players.shuffle.each do |player|
       if player.has_drawn == false && selected == false
@@ -186,7 +190,7 @@ class GameSocketController < WebsocketRails::BaseController
         player.save
 
         selected = true
-        user = User.find player.user_id
+        user = player.user
       else
         player.state = "guessing"
         player.save
@@ -195,23 +199,16 @@ class GameSocketController < WebsocketRails::BaseController
     game.players_left = game.players.length
     game.save
 
-    if user == ""
-      username = (User.find player.user_id).username
-
+    if !user
       scores = []
       sorted_by_score = game.players.sort_by &:score
 
       sorted_by_score.each do |player|
-        scores.push({ player: player, username: username })
-      end
+        username = player.user.username
+        scores.push({ username: username, score: player.score, })
+      end      
 
       WebsocketRails[:game].trigger :game_over, scores
-    else
-      data = {
-        username: (User.find user.id).username
-      }
-      # TODO: End the game if no player to draw was found.
-      WebsocketRails[:game].trigger :start_phase, data
     end    
   end
 
@@ -230,17 +227,14 @@ class GameSocketController < WebsocketRails::BaseController
       # this_word = Word.find game.word_id
       kal = Word.find( game.word_id ) if game && game.word_id
       data = {
-        test_data: "Is my turn.",
         my_turn: true,
-        test_dalkn: kal || "NO WORD FOUND",
-        test_game: game,
+        word: kal.name || "NO WORD FOUND"
 
         # word: this_word.name
       }
       send_message :my_turn, data, :namespace => :game
     else
       data = {
-        test_data: "Is not my turn",
         my_turn: false
       }
       send_message :my_turn, data, :namespace => :game
@@ -269,6 +263,19 @@ class GameSocketController < WebsocketRails::BaseController
     if game.players_left == 0
       end_round
     end
+  end
+
+  def round_summary game
+    
+    scores = []
+    sorted_by_score = game.players.sort_by &:score
+
+    sorted_by_score.each do |player|
+      username = player.user.username
+      scores.push({ username: username, score: player.score, })
+    end
+
+    WebsocketRails[:game].trigger :game_over, scores
   end
 
   def end_round

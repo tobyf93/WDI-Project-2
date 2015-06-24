@@ -41,14 +41,18 @@ $(function(){
 	// 	console.log("THIS IS THE DATA" + data);
 	// 	this.getRole(data);
 	// });	
-	
 	app.dispatcher = new WebSocketRails(window.location.host + '/websocket');
 	app.messageChannel = app.dispatcher.subscribe('message');
 	app.gameChannel = app.dispatcher.subscribe('game');
-
+	
 	// FETCH CHANNEL HAS NOW BEEN DEPRECATED, WILL REMOVE IN THE FUTURE. 
 	// app.fetchChannel = app.dispatcher.subscribe('fetch');
 	
+	//BINDING DICTATOR BEFORE THE GAME BEGINS 
+	app.gameChannel.bind('dictator', function(data) {
+    console.log(data);
+  });
+
 	app.router = new app.Router();
 	Backbone.history.start();	
 });

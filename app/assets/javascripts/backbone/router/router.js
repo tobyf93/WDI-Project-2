@@ -6,18 +6,18 @@ app.Router = Backbone.Router.extend({
 		'game':'gameStart',
 		},
 	index: function(){
-		console.log("Hello this is the index");
+		// console.log("Hello this is the index");
 		app.playersList = new app.Players(); 
 		app.preGamePg = new app.PreGameView();
 		app.preGamePg.render();
 	},
 	gameStart: function(){
-		console.log("We are now rendering the Game View");
+		// console.log("We are now rendering the Game View");
 		app.gameStart = new app.GameView();
 		app.gameStart.render();
 	},
 	drawer: function(){
-		return "hello"
+		return "hello";
 		}	
 	});
 
