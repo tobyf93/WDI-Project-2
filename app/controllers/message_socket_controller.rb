@@ -5,7 +5,7 @@ class MessageSocketController < WebsocketRails::BaseController
     controller_store[:message_count] = 0
   end
 
-  def send
-    WebsocketRails[:message].trigger :send, message
+  def transmit
+    WebsocketRails[:message].trigger(:transmit, message)
   end 
 end

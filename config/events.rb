@@ -27,6 +27,6 @@ WebsocketRails::EventMap.describe do
   end
 
   namespace :message do
-    subscribe :send, 'message_socket#send'
+    subscribe :transmit, 'message_socket#transmit'
   end
 end

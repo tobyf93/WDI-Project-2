@@ -8,7 +8,7 @@ $(document).ready(function(){
   channel = app.dispatcher.subscribe('message')
 
 
-  channel.bind('send', function(data){
+  channel.bind('transmit', function(data){
 
     console.log(data);
     $('#messages').append("")
@@ -23,7 +23,7 @@ $(document).ready(function(){
     console.log('You hit enter');
     message = $this.val();
     $this.val('');
-    app.dispatcher.trigger('message.send', message);
+    app.dispatcher.trigger('message.transmit', message);
   }
 });
 
