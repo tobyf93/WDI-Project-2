@@ -10,6 +10,10 @@ class GameSocketController < WebsocketRails::BaseController
   # phase     A phase consists of a single player drawing a given word and the
   #           remaining players submiting guesses based on the realtime drawing.
 
+  def toby_debug data
+    WebsocketRails[:game].trigger :toby, data
+  end
+
   def _start
     # Temporary - eventually we will pass the game into the _start method
     game = Game.last
@@ -181,25 +185,13 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.last
 
     selected = false
-    user = nil
 
-    game.players.shuffle.each do |player|
-      if player.has_drawn == false && selected == false
-        player.state = "drawing"
-        player.has_drawn = true
-        player.save
+    game.players.update_all :state => 'guessing'
+    drawer = game.players.find_by :has_drawn => false
 
-        selected = true
-        user = player.user
-      else
-        player.state = "guessing"
-        player.save
-      end
-    end
-    game.players_left = game.players.length
-    game.save
-
-    if !user
+    if drawer
+      drawer.update :state => 'drawing'
+    else
       scores = []
       sorted_by_score = game.players.sort_by &:score
 
@@ -215,12 +207,11 @@ class GameSocketController < WebsocketRails::BaseController
   def get_role
     game = Game.last
     unless game.word_id
-      game.word_id = (Word.all).sample.id
+      game.word_id = Word.all.sample.id
       game.save
     end
 
-    # my_turn = false
-    current_player = Player.where({ :user_id => session[:user_id] }) 
+    current_player = game.players.where :user_id => session[:user_id] 
 
     if current_player.first.state == "drawing"
       # my_turn = true
