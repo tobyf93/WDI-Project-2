@@ -4,24 +4,33 @@ app.GameView = Backbone.View.extend({
 	events:{},
 	initialize:function(){
 		var view = this;
-		console.log("initialize role binding");
 		app.dispatcher.bind('game.my_turn', function(data) {
 			console.log("THIS IS THE DATA" + data);
 			view.getRole(data);
-		})
+		});
+
 	},
 	getRole: function(data){
 		if (data.my_turn){
-	  		this.drawView(data.word);  
+	  		this.drawView(data);  
 		} else {
-	  		this.guessView();
+	  		this.guessView(data);
 		};
 	},
 	guessView: function(data){
-		this.$el.append("You're going to be guessing shit!");
+		// this.$el.append("You're going to be guessing shit!");
+		// var canvasTemplate = new app.CanvasView();
+		// canvasTemplate.renderGuesser();
+
+		this.$el.append("You're going to be drawing shit!");
+		var canvasTemplate = new app.CanvasView();
+		canvasTemplate.renderDrawer();
+
 	},
 	drawView: function(data){
 		this.$el.append("You're going to be drawing shit!");
+		var canvasTemplate = new app.CanvasView();
+		canvasTemplate.renderDrawer();
 	},
 	renderStatus: function(){
 
@@ -31,6 +40,7 @@ app.GameView = Backbone.View.extend({
 	},
 	render: function(){
 		console.log("Triggering get role call");
+		app.dispatcher.trigger('game.start_phase');
 		app.dispatcher.trigger('game.get_role');
 		console.log("This shit is happening now");
 		chatBoxTemplate = $('#chatBoxTemplate').html();

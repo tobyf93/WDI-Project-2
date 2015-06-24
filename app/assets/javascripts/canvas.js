@@ -18,6 +18,7 @@ app.canvas = {
 		this.setupListener();
 	},
 	initDrawer: function(){
+		this.setupDefaults();
 		this.setupEvents();
 	},
 
@@ -63,7 +64,7 @@ app.canvas = {
 	    strokeWidth: app.canvas.strokeWidth
 	  };
 
-	  this.dispatcher.trigger('game.draw', data);
+	  app.dispatcher.trigger('game.draw', data);
 	},
 
 	mouseDownEvent: function(e) {
@@ -78,6 +79,7 @@ app.canvas = {
 	},
 
 	changeColorEvent: function() {
+		console.log("I am changing color");
 		var classes = $(this).attr('class').split(' ');
 		app.canvas.strokeColor = classes[1];
 	},
