@@ -22,6 +22,12 @@ class GameSocketController < WebsocketRails::BaseController
   def _start_round game, round
     Thread.new do 
       if round <= 3
+        game.word_id = nil
+
+      game.players.each do |player|
+        player.has_drawn = false
+      end
+      
         WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
         game.players.each { |player| _start_phase player }
         
@@ -35,6 +41,9 @@ class GameSocketController < WebsocketRails::BaseController
 
   def _round_summary game, round
     WebsocketRails[:game].trigger :dictator, "\tRound #{round} Summary"
+    # end_round
+
+
     sleep(3.seconds)
 
     round += 1
@@ -230,17 +239,14 @@ class GameSocketController < WebsocketRails::BaseController
       # this_word = Word.find game.word_id
       kal = Word.find( game.word_id ) if game && game.word_id
       data = {
-        test_data: "Is my turn.",
         my_turn: true,
-        test_dalkn: kal || "NO WORD FOUND",
-        test_game: game,
+        word: kal.name || "NO WORD FOUND"
 
         # word: this_word.name
       }
       send_message :my_turn, data, :namespace => :game
     else
       data = {
-        test_data: "Is not my turn",
         my_turn: false
       }
       send_message :my_turn, data, :namespace => :game
