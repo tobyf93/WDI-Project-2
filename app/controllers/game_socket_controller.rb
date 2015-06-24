@@ -22,11 +22,12 @@ class GameSocketController < WebsocketRails::BaseController
   def _start_round game, round
     Thread.new do
       if round <= 3
+
         game.word_id = nil
 
-      game.players.each do |player|
-        player.has_drawn = false
-      end
+        game.players.each do |player|
+          player.has_drawn = false
+        end
 
         WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
         game.players.each { |player| _start_phase player }
@@ -43,6 +44,7 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :dictator, "\tRound #{round} Summary"
     # end_round
 
+    round_summary game
 
     sleep(3.seconds)
 
@@ -143,8 +145,8 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.last
     game = Game.create if !game
 
-    if (Player.where ("user_id = #{session[:user_id]}")).any?
-      (Player.where ("user_id = #{session[:user_id]}")).destroy_all
+    if (Player.where ({ :user_id => session[:user_id] })).any?
+      (Player.where ({ :user_id => session[:user_id] })).destroy_all
 
       if game.players.length < 1
         game.destroy
@@ -261,6 +263,19 @@ class GameSocketController < WebsocketRails::BaseController
     if game.players_left == 0
       end_round
     end
+  end
+
+  def round_summary game
+    
+    scores = []
+    sorted_by_score = game.players.sort_by &:score
+
+    sorted_by_score.each do |player|
+      username = player.user.username
+      scores.push({ username: username, score: player.score, })
+    end
+
+    WebsocketRails[:game].trigger :game_over, scores
   end
 
   def end_round
