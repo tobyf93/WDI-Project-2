@@ -10,6 +10,10 @@ class GameSocketController < WebsocketRails::BaseController
   # phase     A phase consists of a single player drawing a given word and the
   #           remaining players submiting guesses based on the realtime drawing.
 
+  def toby_debug data
+    WebsocketRails[:game].trigger :toby, data
+  end
+
   def _start
     # Temporary - eventually we will pass the game into the _start method
     game = Game.last
@@ -59,8 +63,6 @@ class GameSocketController < WebsocketRails::BaseController
 
     start_phase game
 
-    # player_real = game.players.find_by :state => 'drawing' - THIS IS WHAT IS FUCKING EVERYTHING UP
-    # 
     WebsocketRails[:game].trigger :tell_players_start
 
     sleep(3.second)
@@ -180,41 +182,22 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def start_phase game
+    game.players.update_all :state => 'guessing'
+    drawer = game.players.find_by :has_drawn => false
 
-    selected = false
-    user = nil
+    WebsocketRails[:game].trigger :dictator, "\t\t #{drawer.user.username} is drawing"
 
-
-    # TODO: Find out why this isn't running after one round is complete
-    # =================================================================
-    game.players.shuffle.each do |player|
-      if player.has_drawn == false && selected == false
-        player.state = "drawing"
-        player.has_drawn = true
-        player.save
-
-        WebsocketRails[:game].trigger :dictator, "\t\t#{player.user.username} Is Now Drawing"
-
-        selected = true
-        user = player.user
-      else
-        player.state = "guessing"
-        player.save
-      end
-    end
-    game.players_left = game.players.length
-    game.save
+    drawer.update :state => 'drawing'
   end
 
   def get_role
     game = Game.last
     unless game.word_id
-      game.word_id = (Word.all).sample.id
+      game.word_id = Word.all.sample.id
       game.save
     end
 
-    # my_turn = false
-    current_player = Player.where({ :user_id => session[:user_id] }) 
+    current_player = game.players.where :user_id => session[:user_id] 
 
     if current_player.first.state == "drawing"
       # my_turn = true
