@@ -38,7 +38,7 @@ app.PreGameView = Backbone.View.extend({
 		//****************************************************// 
 		app.gameChannel.bind('tell_players_start', function(){
 			console.log("this game is starting now");
-			app.router.navigate('game',true);
+			app.router.navigate('game', true);
 		});
 	},
 	reloadCollection: function(data){
