@@ -38,10 +38,8 @@ app.PreGameView = Backbone.View.extend({
 		//****************************************************// 
 		app.gameChannel.bind('tell_players_start', function(){
 			console.log("This bind to navigate to the game route has now been executed");
-			app.router.navigate('game', {trigger: true});
-			// app.gameStart = new app.GameView();
-			// app.gameStart.render();
-
+			// app.router.navigate('game', {trigger: true})			
+			app.gameStart.render();
 		});
 
 
@@ -68,8 +66,10 @@ app.PreGameView = Backbone.View.extend({
 	},
 	initialize: function(){
 		this.players = app.playersList;
+		app.gameStart = new app.GameView;
 		this.initBinds();
 		this.fetchPlayers(); 
+
 	},
 
 	render: function() {
