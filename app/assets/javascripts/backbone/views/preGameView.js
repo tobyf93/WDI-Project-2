@@ -1,4 +1,4 @@
-var app = app || {}
+var app = app || {};
 
 app.PreGameView = Backbone.View.extend({
 	el:'#main',
@@ -9,12 +9,15 @@ app.PreGameView = Backbone.View.extend({
 		this.players = app.playersList;
 		this.fetchPlayers(); 
 	},
-	render: function(){
+
+	render: function() {
 		preGameTemplate = $('#preGameTemplate').html();
 		this.$el.html(preGameTemplate);
 		this.renderList();
 	},
-	renderList: function(){
+
+	renderList: function() {
+		$('#playerTiles').empty();
 		app.playersList.each(function(player){
 			playertile = new app.PreGamePlayerView({model:player});
 			playertile.render();
@@ -29,29 +32,34 @@ app.PreGameView = Backbone.View.extend({
 
 		this.startRd();
 	},
-	joinGame: function(){
-		if($('#main').length===0){
+
+	joinGame: function() {
+		// Not sure that this is an appropriate spot for this check
+		if($('#main').length===0) {
 			return;
 		}
+
 		app.dispatcher.trigger('game.join');
 		// this.fetchPlayers();
 	},
-	fetchPlayers: function(){
+
+	fetchPlayers: function() {
 		var view = this;
-		view.joinGame();
 		if ($('#main').length === 0) {
 			return;
 		}
 		app.gameChannel.bind('join', function(data) {
 			app.playersList.reset();
+
 			for (var i = 0; i < data.players.length; i++) {
+				console.log("THIS MOTHERFUCKER RAN");
+				console.log("PLAYER: ", data.players[i], " USER: ", data.users[i]);
 				app.playersList.add({
 					username: data.users[i].username,
 					id: data.players[i].user_id,
 					state: data.players[i].state
 				});
-			};
-			$('#playerTiles').empty();
+			}
 			view.renderList();
 		});
 
@@ -63,18 +71,18 @@ app.PreGameView = Backbone.View.extend({
 					user_id: data.players[i].user_id,
 					state: data.players[i].state
 				});
-			};		
+			}
+					
+			console.log("Leave players collection is here: " + app.playersList);
 			$('#playerTiles').empty();
 			view.renderList();
 		});
-
+		view.joinGame();
 	},
 	startRd: function(){
 		console.log("This function happened");
-		debugger;
 		app.dispatcher.trigger('game.start_round', "ready");
 		app.gameChannel.bind('start_round', function(data){
-			debugger;
 			console.log(data);
 		});
 	}
