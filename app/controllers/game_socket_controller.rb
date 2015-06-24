@@ -38,19 +38,6 @@ class GameSocketController < WebsocketRails::BaseController
 
   ###########################################################################
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   def mark_ready
     game = Game.last
     game = Game.create if !game
@@ -61,12 +48,12 @@ class GameSocketController < WebsocketRails::BaseController
 
     check_for_game_start
 
-    player_states = []
+    player_states = [] 
+    username = (User.find player.user_id).username
 
     game.players.each do |player|
-      player_states.push({:id => player.id, :state => player.state})
+      player_states.push({:player => player, :username => username})
     end
-
     WebsocketRails[:game].trigger :player_states, player_states
   end
 
@@ -106,11 +93,14 @@ class GameSocketController < WebsocketRails::BaseController
  
     players = game.players.pluck(:user_id).uniq
 
-    data = {
-      players: game.players,
-      username: user.username,
-      users: users
-    }
+    data = []
+
+    game.players.each do |player|
+      data.push ({
+        player: player,
+        username: (User.find player.user_id).username
+      })
+    end
 
     WebsocketRails[:game].trigger :join, data
   end
@@ -119,30 +109,24 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.last
     game = Game.create if !game
 
+    if (Player.where ("user_id = #{session[:user_id]}")).any?
+      (Player.where ("user_id = #{session[:user_id]}")).destroy_all
+
       if game.players.length < 1
         game.destroy
       else
-        if (Player.where ("user_id = #{session[:user_id]}")).any?
-          # player = (Player.where ("user_id = #{session[:user_id]}"))
-          # user = User.find session[:user_id]
-          
-          (Player.where ("user_id = #{session[:user_id]}")).destroy_all
+        data = []
 
-          users = []
-          game.players.each do |player|
-            user = User.find player.user_id
-            users.push user
-
-          data = {
-            username: 'A player',
-            players: game.players,
-            users: users
-          }
-
-          WebsocketRails[:game].trigger :leave, data
-        end
+        game.players.each do |player|
+          data.push ({
+            player: player,
+            username: (User.find player.user_id).username
+          })
+        
+        WebsocketRails[:game].trigger :leave, data
       end
     end
+  end
   end
 
   def draw
