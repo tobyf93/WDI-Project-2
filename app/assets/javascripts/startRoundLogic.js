@@ -110,7 +110,19 @@ $(document).ready(function() {
 
   $('#resetRoles').on('click', function(e) {
     e.preventDefault();
+
+    markReady();
   });
 
-  joinGame();
+  var markReady = function() {
+    console.log('triggering ready function');
+    dispatcher.trigger('game.mark_ready');
+  };
+
+  channel.bind('player_states', function(data) {
+    console.log('Here is the player IDs and states');
+    console.log(data);
+  });
+
+  joinGame();  
 });

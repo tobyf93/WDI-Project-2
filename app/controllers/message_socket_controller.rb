@@ -1,0 +1,2 @@
+class MessageSocketController < ApplicationController
+end
