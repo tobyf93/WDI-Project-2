@@ -15,17 +15,17 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.last
     game = Game.create if !game
 
-    WebsocketRails[:game].trigger :dictator, 'Beginning game'
+    WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
     _start_round game, 1
   end
 
   def _start_round game, round
     Thread.new do 
       if round <= 3
-        WebsocketRails[:game].trigger :dictator, "Starting Round"
+        WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
         game.players.each { |player| _start_phase player }
         
-        WebsocketRails[:game].trigger :dictator, "Ending Round"
+        WebsocketRails[:game].trigger :dictator, "\tEnding Round #{round}"
         _round_summary game, round
       else
         WebsocketRails[:game].trigger :dictator, "Ending Game"
@@ -34,7 +34,7 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def _round_summary game, round
-    WebsocketRails[:game].trigger :dictator, "Round #{round} summary"
+    WebsocketRails[:game].trigger :dictator, "\tRound #{round} Summary"
     sleep(3.seconds)
 
     round += 1
@@ -46,7 +46,7 @@ class GameSocketController < WebsocketRails::BaseController
     game.phase_start_time = Time.new
     game.save
 
-    WebsocketRails[:game].trigger :dictator, "#{player.user.username} is now drawing"
+    WebsocketRails[:game].trigger :dictator, "\t\t#{player.user.username} Is Now Drawing"
     sleep(3.seconds)
   end
 
