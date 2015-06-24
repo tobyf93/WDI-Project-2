@@ -11,26 +11,25 @@ class GameSocketController < WebsocketRails::BaseController
   #           remaining players submiting guesses based on the realtime drawing.
 
   def _start
+    # Temporary - eventually we will pass the game into the _start method
+    game = Game.last
+    game = Game.create if !game
+
     WebsocketRails[:game].trigger :dictator, 'Beginning game'
-    _start_round 1
+    _start_round game, 1
   end
 
-  def _start_round round
-    no_of_rounds = 2
-
-    if round <= no_of_rounds
-      Thread.new do
-        WebsocketRails[:game].trigger :dictator, "Starting round #{round}"
-        sleep(3.seconds)
-        _round_summary round
-      end
-    else
-      WebsocketRails[:game].trigger :dictator, "Ending game"
+  def _start_round game, round
+    Thread.new do 
+      WebsocketRails[:game].trigger :dictator, "Starting Round"
+      game.players.each {|player| _start_phase player}
+      WebsocketRails[:game].trigger :dictator, "Ending Round"
     end
   end
 
-  def _start_phase
-
+  def _start_phase player
+    WebsocketRails[:game].trigger :dictator, "#{player.user.username} is now drawing"
+    sleep(3.seconds)
   end
 
   def _round_summary round
