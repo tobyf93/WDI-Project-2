@@ -5,3 +5,8 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Word.destroy_all
+w1 = Word.create :name => 'cat'
+w2 = Word.create :name => 'giraffe'
+w3 = Word.create :name => 'Joel Turnbull'
+w4 = Word.create :name => 'Reena'
