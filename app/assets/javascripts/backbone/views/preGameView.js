@@ -4,7 +4,7 @@ app.PreGameView = Backbone.View.extend({
 	el:'#main',
 	events:{
 		'click #playerReady':'markReady',
-		'click #playerCancel':'cancel',
+		'click #playerCancel':'playerCancel',
 		},
 	initBinds: function(){
 		var view = this;
@@ -30,7 +30,18 @@ app.PreGameView = Backbone.View.extend({
 		//*************************************// 
 		app.gameChannel.bind('player_states',function(player_states){
 			view.reloadCollection(player_states);
+			// app.dispatcher.trigger('game.check_for_game_start');
 		});
+
+		//****************************************************//
+		// SETUP BIND TO LISTEN FOR THREE OR MORE READY USERS //
+		//****************************************************// 
+		app.gameChannel.bind('tell_players_start', function(){
+			console.log("this game is starting now");
+			app.router.navigate('game',true);
+		});
+
+
 	},
 	reloadCollection: function(data){
 		app.playersList.reset();
@@ -69,28 +80,29 @@ app.PreGameView = Backbone.View.extend({
 	markReady:function(event){
 		console.log(event.currentTarget);
 		app.dispatcher.trigger('game.mark_ready');
-		this.playerReady();
+		this.buttonToggle();
 	},
 
 	joinGame: function() {
 		// Not sure that this is an appropriate spot for this check
-		if($('#main').length===0) {
+		if($('#main').length === 0) {
 			return;
 		}
-
 		app.dispatcher.trigger('game.join');
 		// this.fetchPlayers();
 	},
 	fetchPlayers: function() {
-
 		this.joinGame();
 	},
-	playerReady: function(){
-		$('#playerReady').addClass('hidden');
-		$('#playerCancel').removeClass('hidden');
+	playerCancel: function(){
+		console.log(event.currentTarget);
+		console.log("Cancelling ready state");
+		app.dispatcher.trigger('game.mark_ready');
+		this.buttonToggle();
+	},
+	buttonToggle: function(){
+		$('#playerReady').toggleClass('hidden');
+		$('#playerCancel').toggleClass('hidden');
 		// app.dispatcher.trigger('game.start_round', "ready");
-		app.gameChannel.bind('start_round', function(data){
-			console.log(data);
-		});
 	}
 });

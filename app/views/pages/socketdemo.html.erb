@@ -3,8 +3,12 @@
     text-align: center;
   }
 
-  #messages, #message {
+  #messages{
     width: 600px;
+  }
+  #message ,#guess{
+   width: 500px; 
+   display:block;
   }
 
   #messages {
@@ -19,4 +23,7 @@
 <h1>Live Chat via Sockets</h1>
 <div id="messages">
 </div>
-<input id="message" type="text" autofocus>
+<input id="message" type="text" placeholder="lets chat" autofocus>
+<button type="submit" id="chat">Chat</button>
+<input id="guess" type="text" placeholder="submitguess">
+<button type="submit" id="submitresult">Submit</button>
