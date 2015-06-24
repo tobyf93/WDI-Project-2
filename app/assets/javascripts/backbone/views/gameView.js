@@ -54,6 +54,7 @@ app.GameView = Backbone.View.extend({
 
 		console.log("Triggering get role call");
 		app.dispatcher.trigger('game.get_role');
+		
 		chatBoxTemplate = $('#chatBoxTemplate').html();
 		this.$el.html("Hello, ");
 	},

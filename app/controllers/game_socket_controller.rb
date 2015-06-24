@@ -192,6 +192,7 @@ class GameSocketController < WebsocketRails::BaseController
 
   def get_role
     game = Game.last
+
     unless game.word_id
       game.word_id = Word.all.sample.id
       game.save
@@ -206,16 +207,14 @@ class GameSocketController < WebsocketRails::BaseController
       data = {
         my_turn: true,
         word: kal.name || "NO WORD FOUND"
-
         # word: this_word.name
       }
-      send_message :my_turn, data, :namespace => :game
     else
       data = {
         my_turn: false
       }
-      send_message :my_turn, data, :namespace => :game
     end
+    send_message :my_turn, data, :namespace => :game
   end
 
   def submit_guess
