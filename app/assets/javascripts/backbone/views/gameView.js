@@ -7,10 +7,6 @@ app.GameView = Backbone.View.extend({
 		app.dispatcher.bind('game.my_turn', function(data) {
 			view.getRole(data);
 		});
-		app.dispatcher.bind('game.game_over', function(data) {
-			console.log(data);
-		});
-
 	},
 	getRole: function(data){
 
