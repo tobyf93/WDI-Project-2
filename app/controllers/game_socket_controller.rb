@@ -46,26 +46,15 @@ class GameSocketController < WebsocketRails::BaseController
     game.phase_start_time = Time.new
     game.save
 
-    WebsocketRails[:game].trigger :dictator, "\t\t#{player.user.username} Is Now Drawing"
-    sleep(3.seconds)
+    start_phase
+    # WebsocketRails[:game].trigger :dictator, "\t\t#{player.user.username} Is Now Drawing"
+    sleep(1.minute)
   end
 
   def _phase_summary
   end
 
   ###########################################################################
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -184,7 +173,7 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :draw, data
   end
 
-  def start_round
+  def start_phase
     #IF A GAME DOES NOT EXIST CREATE A GAME
     game = Game.last
     game = Game.create if !game
