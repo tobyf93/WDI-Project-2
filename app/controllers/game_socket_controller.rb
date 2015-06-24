@@ -44,6 +44,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     player = Player.where({ :user_id => session[:user_id] }).first
 
+    # Swaps the player state between ready and not ready.
     if player.state != "ready"
       player.state = "ready"
     else
@@ -54,9 +55,9 @@ class GameSocketController < WebsocketRails::BaseController
     check_for_game_start
 
     player_states = [] 
-    username = (User.find player.user_id).username
 
     game.players.each do |player|
+      username = (User.find player.user_id).username
       player_states.push({:player => player, :username => username})
     end
     WebsocketRails[:game].trigger :player_states, player_states
@@ -179,10 +180,16 @@ class GameSocketController < WebsocketRails::BaseController
     game.save
 
     if user == ""
-      data = {
-        message: "the game is over"
-      }
-      WebsocketRails[:game].trigger :game_over, data
+      username = (User.find player.user_id).username
+
+      scores = []
+      sorted_by_score = game.players.sort_by &:score
+
+      sorted_by_score.each do |player|
+        scores.push({ player: player, username: username })
+      end
+
+      WebsocketRails[:game].trigger :game_over, scores
     else
       data = {
         username: (User.find user.id).username

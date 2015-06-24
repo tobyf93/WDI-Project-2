@@ -43,6 +43,7 @@ app.PreGameView = Backbone.View.extend({
 				state: data[i].player.state
 			});
 		}
+		console.log('Here is the players list: ', app.playersList);
 		this.renderList(); 
 	},
 	initialize: function(){
