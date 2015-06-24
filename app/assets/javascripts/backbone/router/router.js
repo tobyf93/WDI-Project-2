@@ -12,7 +12,7 @@ app.Router = Backbone.Router.extend({
 		app.preGamePg.render();
 	},
 	gameStart: function(){
-		debugger;
+		// debugger;
 		console.log("We are now reRendering the Game View");
 		app.gameStart = new app.GameView();
 		app.gameStart.render();

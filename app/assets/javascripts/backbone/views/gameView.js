@@ -6,6 +6,7 @@ app.GameView = Backbone.View.extend({
 		var view = this;
 
 		app.dispatcher.bind('game.my_turn', function(data) {
+			console.log(data);
 			view.getRole(data);
 		});
 
@@ -29,6 +30,7 @@ app.GameView = Backbone.View.extend({
 		// var canvasTemplate = new app.CanvasView();
 		// canvasTemplate.renderGuesser();
 		// debugger;
+		$('#main').empty();
 		this.$el.append("You're going to be drawing shit!");
 		app.guessCanvasView = new app.CanvasView();
 		app.guessCanvasView.renderGuesser();
@@ -49,8 +51,8 @@ app.GameView = Backbone.View.extend({
 		statusBar.render("This is a message");
 	},
 	render: function(){
+
 		console.log("Triggering get role call");
-		app.dispatcher.trigger('game.start_phase');
 		app.dispatcher.trigger('game.get_role');
 		chatBoxTemplate = $('#chatBoxTemplate').html();
 		this.$el.html("Hello, ");
