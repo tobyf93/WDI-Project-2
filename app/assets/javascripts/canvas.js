@@ -12,7 +12,7 @@ $(document).ready(function() {
 app.canvas = {
 	initPaper: function(){
 		this.setupPaperJS();
-	}
+	},
 	initGuesser: function() {
 		this.setupDefaults();
 		this.setupListener();

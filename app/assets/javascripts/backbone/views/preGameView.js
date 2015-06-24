@@ -12,7 +12,7 @@ app.PreGameView = Backbone.View.extend({
 	},
 
 	render: function() {
-		preGameTemplate = $('#preGameTemplate').html();
+		var preGameTemplate = $('#preGameTemplate').html();
 		this.$el.html(preGameTemplate);
 		this.renderList();
 	},
