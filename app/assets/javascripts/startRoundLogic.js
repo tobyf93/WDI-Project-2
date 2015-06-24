@@ -78,11 +78,9 @@ $(document).ready(function() {
   $('#guessButton').on('click', function(e) {
     e.preventDefault();
     // TODO: This variable will need to be replaced with the actual time from the timer at the time the submit function runs.
-    var timeOfGuess = 1;
 
     var data = {
       guess: $('#guessField').val(),
-      time: timeOfGuess
     }
     // var guess = $('#guessField').val();
     dispatcher.trigger('game.submit_guess', data);

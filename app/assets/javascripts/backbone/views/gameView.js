@@ -11,13 +11,14 @@ app.GameView = Backbone.View.extend({
 		})
 	},
 	getRole: function(data){
+
 		if (data.my_turn){
 	  		this.drawView(data.word);  
 		} else {
 	  		this.guessView();
 		};
 	},
-	guessView: function(data){
+	guessView: function(){
 		this.$el.append("You're going to be guessing shit!");
 	},
 	drawView: function(data){
