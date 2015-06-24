@@ -1,7 +1,6 @@
 class GameSocketController < WebsocketRails::BaseController
-
   ###########################################################################
-  # Game Administrator
+  # Game Dictator
   ###########################################################################
   # start     Begins a game with X rounds.
 
@@ -11,32 +10,57 @@ class GameSocketController < WebsocketRails::BaseController
   # phase     A phase consists of a single player drawing a given word and the
   #           remaining players submiting guesses based on the realtime drawing.
 
-  def start
-    WebsocketRails[:game].trigger :start, 'Beginning game'
-    round_start 1
+  def _start
+    WebsocketRails[:game].trigger :dictator, 'Beginning game'
+    _start_round 1
   end
 
-  def round_start round
-    if round <= 2
+  def _start_round round
+    no_of_rounds = 2
+
+    if round <= no_of_rounds
       Thread.new do
-        WebsocketRails[:game].trigger :start, "Starting round #{round}"
-        start_round # We will need to rename these methods
+        WebsocketRails[:game].trigger :dictator, "Starting round #{round}"
         sleep(3.seconds)
-        round_summary round
+        _round_summary round
       end
     else
-      WebsocketRails[:game].trigger :start, "Ending game"
+      WebsocketRails[:game].trigger :dictator, "Ending game"
     end
   end
 
-  def round_summary round
-    WebsocketRails[:game].trigger :start, "Round #{round} summary"
+  def _start_phase
+
+  end
+
+  def _round_summary round
+    WebsocketRails[:game].trigger :dictator, "Round #{round} summary"
     sleep(3.seconds)
     round += 1
-    self.round_start round
+    _start_round round
   end
 
   ###########################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   def mark_ready
     game = Game.last
