@@ -25,4 +25,8 @@ WebsocketRails::EventMap.describe do
     subscribe :player_states, 'game_socket#player_states'
     subscribe :mark_ready, 'game_socket#mark_ready'
   end
+
+  namespace :message do
+    subscribe :send, 'message_socket#send'
+  end
 end
