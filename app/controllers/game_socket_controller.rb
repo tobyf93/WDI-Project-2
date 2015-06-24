@@ -1,4 +1,5 @@
 class GameSocketController < WebsocketRails::BaseController
+  private :_start, :_start_round, :_round_summary, :_start_phase, :_phase_summary
   ###########################################################################
   # Game Dictator
   ###########################################################################
