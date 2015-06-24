@@ -3,7 +3,8 @@ var app = app || {};
 app.PreGameView = Backbone.View.extend({
 	el:'#main',
 	events:{
-		'click #playerReady':'ready'
+		'click #playerReady':'ready',
+		'click #playerCancel':'cancel',
 		},
 	initialize: function(){
 		this.players = app.playersList;
@@ -26,10 +27,7 @@ app.PreGameView = Backbone.View.extend({
 	ready:function(event){
 		debugger;
 		console.log(event.currentTarget);
-		$(event.currentTarget).addClass('ready');
-		me = app.playersList.get(1);
-		me.set('state','ready');
-
+		app.dispatcher.trigger('mark_ready');
 		this.startRd();
 	},
 
@@ -80,7 +78,8 @@ app.PreGameView = Backbone.View.extend({
 		view.joinGame();
 	},
 	startRd: function(){
-		console.log("This function happened");
+		$('#playerReady').addClass('hidden');
+		$('#playerCancel').removeClass('hidden');
 		app.dispatcher.trigger('game.start_round', "ready");
 		app.gameChannel.bind('start_round', function(data){
 			console.log(data);

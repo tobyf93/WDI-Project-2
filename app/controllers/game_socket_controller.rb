@@ -57,7 +57,6 @@ class GameSocketController < WebsocketRails::BaseController
       players: game.players,
       username: user.username,
       users: users
-      currentUser: current_user_id
     }
 
     WebsocketRails[:game].trigger :join, data
