@@ -13,8 +13,8 @@
 #  has_drawn     :boolean          default(FALSE)
 #  time_of_guess :integer          default(0)
 #  guess_time    :datetime
-#
 
 class Player < ActiveRecord::Base
   belongs_to :user
+  belongs_to :game
 end

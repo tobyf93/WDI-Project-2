@@ -25,4 +25,4 @@ $(document).ready ->
       console.log 'You hit enter'
       task.message = $this.val()
       $this.val ''
-      dispatcher.trigger 'test', task
+      dispatcher.trigger 'message.send', $(this).val()
