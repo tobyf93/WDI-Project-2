@@ -40,6 +40,8 @@ app.PreGameView = Backbone.View.extend({
 			console.log("this game is starting now");
 			app.router.navigate('game',true);
 		});
+
+
 	},
 	reloadCollection: function(data){
 		app.playersList.reset();
