@@ -43,13 +43,13 @@ app.PreGameView = Backbone.View.extend({
 		app.gameChannel.bind('join', function(data) {
 			app.playersList.reset();
 
-			for (var i = 0; i < data.players.length; i++) {
+			for (var i = 0; i < data.length; i++) {
 				console.log("THIS MOTHERFUCKER RAN");
-				console.log("PLAYER: ", data.players[i], " USER: ", data.users[i]);
+				console.log("PLAYER: ", data[i].player, " Username: ", data[i].username);
 				app.playersList.add({
-					username: data.users[i].username,
-					user_id: data.players[i].user_id,
-					state: data.players[i].state
+					username: data[i].username,
+					user_id: data[i].player.user_id,
+					state: data[i].player.state
 				});
 			}
 
@@ -60,13 +60,13 @@ app.PreGameView = Backbone.View.extend({
 		app.gameChannel.bind('leave', function(data) {
 			app.playersList.reset();
 			console.log("reset players collection is here: " + app.playersList);
-			console.log(data.players.length);
-			for (var i = 0; i < data.players.length; i++) {
+			console.log(data.length);
+			for (var i = 0; i < data.length; i++) {
 				console.log("this is running");
 					app.playersList.add({
-					username: data.users[i].username,
-					user_id: data.players[i].user_id,
-					state: data.players[i].state
+					username: data[i].username,
+					user_id: data[i].player.user_id,
+					state: data[i].player.state
 				});
 			}
 					
