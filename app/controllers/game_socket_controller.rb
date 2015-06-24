@@ -22,11 +22,13 @@ class GameSocketController < WebsocketRails::BaseController
   def _start_round game, round
     Thread.new do
       if round <= 3
+        
+        if game.word_id
+          game.word_id = nil
+          game.players.each do |player|
+            player.has_drawn = false
+          end
 
-        game.word_id = nil
-
-        game.players.each do |player|
-          player.has_drawn = false
         end
 
         WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
@@ -205,12 +207,6 @@ class GameSocketController < WebsocketRails::BaseController
     end
     game.players_left = game.players.length
     game.save
-
-    data = {
-      username: (User.find user.id).username
-    }
-    # TODO: End the game if no player to draw was found.
-    WebsocketRails[:game].trigger :start_phase, data
   end
 
   def get_role
