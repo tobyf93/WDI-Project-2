@@ -43,10 +43,11 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.create if !game
 
     player = Player.where({ :user_id => session[:user_id] }).first
-    if player.state == "ready"
-      player.state = "not ready"
+
+    if player.state != "ready"
+      player.state = "ready"
     else
-      player_state = "ready"
+      player.state = "not ready"
     end
     player.save
 
