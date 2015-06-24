@@ -214,13 +214,11 @@ class GameSocketController < WebsocketRails::BaseController
         my_turn: my_turn,
         word: this_word.name
       }
-
       send_message :my_turn, data, :namespace => :game
     else
       data = {
         my_turn: my_turn
       }
-
       send_message :not_turn, data, :namespace => :game
     end
   end

@@ -37,7 +37,8 @@ app.PreGameView = Backbone.View.extend({
 		// SETUP BIND TO LISTEN FOR THREE OR MORE READY USERS //
 		//****************************************************// 
 		app.gameChannel.bind('tell_players_start', function(){
-			console.log("start the game motherfucker");
+			console.log("this game is starting now");
+			app.router.navigate('game',true);
 		});
 	},
 	reloadCollection: function(data){
@@ -82,15 +83,13 @@ app.PreGameView = Backbone.View.extend({
 
 	joinGame: function() {
 		// Not sure that this is an appropriate spot for this check
-		if($('#main').length===0) {
+		if($('#main').length === 0) {
 			return;
 		}
-
 		app.dispatcher.trigger('game.join');
 		// this.fetchPlayers();
 	},
 	fetchPlayers: function() {
-
 		this.joinGame();
 	},
 	playerCancel: function(){
@@ -103,6 +102,5 @@ app.PreGameView = Backbone.View.extend({
 		$('#playerReady').toggleClass('hidden');
 		$('#playerCancel').toggleClass('hidden');
 		// app.dispatcher.trigger('game.start_round', "ready");
-
 	}
 });
