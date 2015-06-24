@@ -13,10 +13,18 @@ $(document).ready(function(){
     $('#messages').append(message);
 
   })
+  // submit chat via chat button 
+  $('#chat').on('click',function(e){
+    var $this = $('#message');
+     message = $this.val();
+     $this.val('');
 
+    app.dispatcher.trigger('message.transmit', message);
+
+  });
+  // submit chat via enter key 
   $('#message').on('keydown', function(e) {
-  var $this;
-  $this = $(this);
+    var $this = $(this);
 
   if (e.keyCode === 13) {
     console.log('You hit enter');
@@ -27,5 +35,16 @@ $(document).ready(function(){
   }
 });
 
+// submit the guess 
+$('#submitresult').on('click', function(e){
+  var $this = $('#guess');
+  message = $this.val();
+
+  data = {
+    message: message
+  };
+
+  app.dispatcher.trigger('game.submit_guess',data);
+})
 
 });
