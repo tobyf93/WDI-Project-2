@@ -2,6 +2,9 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import 'utilities.scss';
+.hidden{
+	display: none !important;
+}
 *{
 	box-sizing: border-box;
 }
@@ -30,10 +33,20 @@
 	border-radius: 5px;
 	text-transform: uppercase;
 	transition: background .2s, color .2s;
+	&:disabled{
+		background: $lightBorderGrey;
+	}
 	&:hover{
 		background:$teal;
 		color: $white;
 	}
+	&:focus{
+		outline: none;
+		background: #00e7a8;
+	}
+}
+.ready{
+	background:#00e7a8;
 }
 form{
 	input{
