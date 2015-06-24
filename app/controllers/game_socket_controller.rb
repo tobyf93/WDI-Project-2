@@ -22,7 +22,7 @@ class GameSocketController < WebsocketRails::BaseController
   def _start_round game, round
     Thread.new do 
       WebsocketRails[:game].trigger :dictator, "Starting Round"
-      game.players.each {|player| _start_phase player}
+      game.players.each { |player| _start_phase player }
       WebsocketRails[:game].trigger :dictator, "Ending Round"
     end
   end
@@ -33,6 +33,7 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def _round_summary round
+    
     WebsocketRails[:game].trigger :dictator, "Round #{round} summary"
     sleep(3.seconds)
     round += 1
