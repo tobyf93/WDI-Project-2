@@ -41,10 +41,12 @@ $(function(){
 	// 	console.log("THIS IS THE DATA" + data);
 	// 	this.getRole(data);
 	// });	
-	
 	app.dispatcher = new WebSocketRails(window.location.host + '/websocket');
 	app.fetchChannel = app.dispatcher.subscribe('fetch');
 	app.gameChannel = app.dispatcher.subscribe('game');
+	app.gameChannel.bind('dictator', function(data) {
+    console.log(data);
+  });
 	app.router = new app.Router();
 	Backbone.history.start();	
 });
