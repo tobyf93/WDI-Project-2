@@ -47,15 +47,40 @@ app.GameView = Backbone.View.extend({
     // canvasTemplate.renderGuesser();
     // debugger;
     $('#main').empty();
+    this.gameTimer();
     app.canvasView = new app.CanvasView();
     app.canvasView.renderGuesser();
     app.chatBox.render();
-    app.chatBox.renderGuesser();
+    app.chatBox.renderGuesser(); 
+
   },
 
+  gameTimer: function(){
+	$('#main').append('<progress id="progressTimer" value="0" class="progress default">.2</progress>');
+	var timeLimit = app.host.settings.phaseLength/1000;
+	app.timer = new Timer({
+		tick: 1,
+		ontick: function(sec) {
+			var offset = timeLimit - sec;
+			var percentage = offset/timeLimit; 
+			if(sec <= 5){
+				$('#progressTimer').removeClass('default');
+				$('#progressTimer').addClass('finalMoments');
+			}
+			$('#progressTimer').attr('value',percentage);
+		},
+		onstart: function() {
+			console.log('timer started');
+		},
+		onend: function() {
+			console.log('timer ended normally');  
+		}
+	});
+	app.timer.start(timeLimit);
+  },
   drawView: function(data) {
     // debugger;
-    // this.$el.append("You're going to be drawing shit!");
+    this.gameTimer();
     app.canvasView = new app.CanvasView();
     app.canvasView.renderDrawer(data);
     app.chatBox.render();

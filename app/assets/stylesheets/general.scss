@@ -4,6 +4,8 @@
 @import 'utilities.scss';
 body{
 	height: 100vh;
+	background-image: url('swirl_pattern.png');
+	background-repeat: repeat;
 }
 button{
 	border:0px;
@@ -11,11 +13,15 @@ button{
 button:disabled{
 	border:0px;
 }
+.progress{
+	margin:0px;
+}
 .container{
 	max-width: 960px;
 	padding:0 30px;
 }
 #main{
+
 	height: -webkit-calc(100% - 70px);
 	position:relative; //This could cause z-indexing issues with canvas and chat. 
 }
@@ -24,6 +30,7 @@ button:disabled{
 	height:100%;
 	padding-top: 60px;
 	.content{
+		background: $white;
 		padding:12px 30px;
 		border:1px solid #aaa; // placeholder color;
 		h2{

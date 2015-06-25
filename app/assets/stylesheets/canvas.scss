@@ -2,6 +2,12 @@
 @import 'utilities.scss';
 $toolSize: 60px;
 $inUseToolSize: 100px;
+.default{
+	color: $highlightGreen;
+}
+.finalMoments{
+	color: $finalRed;
+}
 .toolsWrap{
 	z-index:200;
 	position:absolute;
