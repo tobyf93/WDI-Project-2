@@ -55,7 +55,16 @@ $(function(){
 		app.scoresSummary = new app.ScoresSummaryView();
 		app.scoresSummary.render();
 	});
-	
+	// $(window).resize(function(){
+	// 	if($('#drawsomeCanv').length===0){
+	// 		return;
+	// 	}else{
+	// 		var height = $('#main').innerHeight();
+	// 		var width = $('#main').innerWidth();
+	// 		$('#drawsomeCanv').height(height).width(width);
+	// 		console.log(paperScope);
+	// 	}
+	// })
 	app.dispatcher.bind('game.user_id', function(user_id) {
    	app.user_id = user_id;
   });

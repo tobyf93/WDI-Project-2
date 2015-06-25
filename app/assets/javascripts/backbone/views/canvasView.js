@@ -6,6 +6,10 @@ app.CanvasView = Backbone.View.extend({
 		// debugger;
 		var canvasTemplate = $('#canvasTemplate').html();
 		this.$el.append(canvasTemplate);
+		// var height = $('#main').innerHeight();
+		// var width = $('#main').innerWidth();
+		// $('#drawsomeCanv').width(width);
+		// $('#drawsomeCanv').height(height);
 		app.canvas.initPaper();
 	},
 	render: function(){

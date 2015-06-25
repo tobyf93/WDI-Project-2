@@ -18,7 +18,7 @@ app.GameView = Backbone.View.extend({
     	console.log(data);
   	});
     
-    submitGuessHandler();
+    // submitGuessHandler();
 
     // app.gameChannel.bind('tell_player_start', function(){
     // 	debugger;
@@ -41,7 +41,6 @@ app.GameView = Backbone.View.extend({
     // canvasTemplate.renderGuesser();
     // debugger;
     $('#main').empty();
-    this.$el.append("You're going to be drawing shit!");
     app.canvasView = new app.CanvasView();
     app.canvasView.renderGuesser();
     app.chatBox.render();
@@ -50,8 +49,6 @@ app.GameView = Backbone.View.extend({
 
   drawView: function(data) {
     // debugger;
-    console.log( "\tWOLF DRAW TURN" );
-    this.$el.append("You're going to be drawing shit!");
     app.canvasView = new app.CanvasView();
     app.canvasView.renderDrawer();
     app.chatBox.render();
@@ -71,16 +68,16 @@ app.GameView = Backbone.View.extend({
   },
 });
 
-var submitGuessHandler = function() {
-  $('#main').on('click', '#submitresult', function() {
-    $answer = $('#guess').val();
+// var submitGuessHandler = function() {
+//   $('#main').on('click', '#submitresult', function() {
+//     $answer = $('#guess').val();
 
-    data = {
-      guess: $answer
-    }
+//     data = {
+//       guess: $answer
+//     }
 
-    app.dispatcher.trigger('game.submit_guess', data);
-    $('#submit_guess').off();
-  });
-}
+//     app.dispatcher.trigger('game.submit_guess', data);
+//     $('#submit_guess').off();
+//   });
+// }
 
