@@ -15,28 +15,44 @@ app.canvas = {
 		this.setupPaperJS();
 	},
 	initGuesser: function() {
+		console.log( " \tWOLF INIT GUESSER " )
+		if ( this.tool ) {
+			this.tool.onMouseDown = null;
+			this.tool.onMouseDrag = null;	
+		}
 		this.setupDefaults();
 		this.setupListener();
 	},
 	initDrawer: function(){
+		if ( this.tool ) {
+			this.tool.onMouseDown = this.mouseDownEvent;
+			this.tool.onMouseDrag = this.mouseDragEvent;	
+		}
+		console.log( " \tWOLF INIT DRAWER " )
 		this.setupDefaults();
 		this.setupEvents();
 	},
 
 	setupPaperJS: function() {
 		// debugger;
-		paper.install(window);
+		// paper = null;
+		// debugger;
 		paper.setup('drawsomeCanv');
+		// this.setupEvents();
 	},
 
 	setupDefaults: function() {
+		console.log( "\t\tWOLF DEFAULTS" )
 		this.tool = new Tool();
 		this.path = undefined;
 		this.strokeColor = 'black';
 		this.strokeWidth = 1;
+		this.tool.onMouseDown = this.mouseDownEvent;
+		this.tool.onMouseDrag = this.mouseDragEvent;
 	},
 
 	setupListener: function() {
+		console.log( "\t\tWOLF SET UP LISTENER" )
 		app.gameChannel.bind('draw', function(data) {
 		  app.canvas.path = app.canvas.path || new Path();
 		  if (data.new_path) {
@@ -51,8 +67,10 @@ app.canvas = {
 	},
 
 	setupEvents: function() {
-		this.tool.onMouseDown = this.mouseDownEvent;
-		this.tool.onMouseDrag = this.mouseDragEvent;
+		console.log( "\t\tWOLF SET UP EVENTS" )
+		console.log("SET UP EVENTS CALLED");
+		// this.tool.onMouseDown = this.mouseDownEvent;
+		// this.tool.onMouseDrag = this.mouseDragEvent;
 		$('.color').on('click', this.changeColorEvent);
 		$('#strokeWidth').on('input', this.changeStrokeWidthEvent);
 	},
@@ -70,6 +88,7 @@ app.canvas = {
 	},
 
 	mouseDownEvent: function(e) {
+		console.log("MOUSE DOWN EVENT CALLED");
 		path = new Path();
 		app.canvas.sendDrawData(e, true);
 		app.canvas.addPoint(e.point);
@@ -78,6 +97,7 @@ app.canvas = {
 	mouseDragEvent: function(e) {
 		app.canvas.sendDrawData(e);
 		app.canvas.addPoint(e.point);
+		console.log("MOUSE DRAG!!!");
 	},
 
 	changeColorEvent: function() {
@@ -98,7 +118,7 @@ app.canvas = {
 		path.strokeWidth = strokeWidth;
 		path.add(point);
 		view.draw();	
-		console.log(path);
+		// console.log(path);
 	}
 
 };
