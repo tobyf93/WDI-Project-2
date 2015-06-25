@@ -4,7 +4,9 @@ app.ChatboxView = Backbone.View.extend({
 	el: '#main',
 	events: {
 		'click #chat':'clickSubmitMessage',
-		'keydown #messageField': 'keySubmitMessage'
+		'keydown #messageField': 'keySubmitMessage',
+		'click #submitresult': 'clickGuess',
+		'keydown #guess': 'keySubmitGuess'
 	},
 	initialize: function(){
 		var view = this;
@@ -15,7 +17,6 @@ app.ChatboxView = Backbone.View.extend({
 	render: function(){
 		var chatBoxTemplate = $('#chatBoxTemplate').html();
 		this.$el.append(chatBoxTemplate);
-		;
 	},
 	renderMsg: function(data){
 		var message = "<p><span class='timestamp'>" + data.currtime + "</span>:: <span class='user'>" + data.user + '</span>:: <span class="message">' + data.message + "</span></p> ";
@@ -45,5 +46,23 @@ app.ChatboxView = Backbone.View.extend({
 	},
 	submitMessage: function(message){
 		app.dispatcher.trigger('message.transmit', message); 
+	},
+	clickGuess: function() {
+		this.submitGuess();
+	},
+	keySubmitGuess:function(e){
+		var code = e.keyCode || e.which;
+		if(code === 13){
+			this.submitGuess();
+		}
+	},
+	submitGuess:function(){
+		$answer = $('#guess').val();
+		data = {
+		  guess: $answer
+		}
+		console.log("THIS IS FIRING")
+		app.dispatcher.trigger('game.submit_guess', data);
+		$('#guessSubmit').remove();
 	}
 });

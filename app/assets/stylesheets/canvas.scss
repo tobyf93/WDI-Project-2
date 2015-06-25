@@ -1,10 +1,20 @@
 //TEMPORARY STYLING FOR COLORS
 @import 'utilities.scss';
-.color {
-	height: 50px;
-	width: 50px;
+$toolSize: 50px;
+$inUseToolSize: 100px;
+.tool {
+	height: $toolSize;
+	width: $toolSize;
 	border: 1px solid black;
-	display: inline-block;
+	display: block;
+	cursor:pointer;
+	margin: 10px auto;
+}
+.color{
+	@extend .tool;
+}
+.inUse{
+	border: 4px solid black;
 }
 .black {
 	background-color: black;
@@ -31,14 +41,22 @@
 	right:0px;
 	left:0px;
 	bottom:0px;
-	border:5px solid $lightBorderGrey;
+	// border:5px solid $lightBorderGrey;
+}
+.canvas[resize]{
+	width: 100%;
+	height: 100%;
 }
 .guessCanvas{
 	z-index:-500;
 }
 
+
 .toolsWrap{
+	padding:0 10px;
 	z-index:200;
 	position:absolute;
+	top:20px;
 	left:0;
+	background: #aaa;
 }

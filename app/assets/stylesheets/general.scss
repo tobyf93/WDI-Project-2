@@ -12,13 +12,14 @@ button:disabled{
 	border:0px;
 }
 #main{
-	height: 100%;
+	height: -webkit-calc(100% - 70px);
 	position:relative; //This could cause z-indexing issues with canvas and chat. 
 }
 
 .waitingViewWrapper{
 	height:100%;
 	.content{
+		margin-top:60px;
 		padding:12px 30px;
 		border:1px solid #aaa; // placeholder color;
 		h2{
@@ -70,6 +71,9 @@ button:disabled{
 	padding-top: 25px;
 	padding-bottom: 25px;
 	background: $white;
+	-webkit-box-shadow: -1px 5px 3px -5px rgba(199,199,199,1);
+	-moz-box-shadow: -1px 5px 3px -5px rgba(199,199,199,1);
+	box-shadow: -1px 5px 3px -5px rgba(199,199,199,1);
 }
 
 .form-wrapper{
