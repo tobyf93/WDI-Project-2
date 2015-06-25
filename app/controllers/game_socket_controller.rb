@@ -133,7 +133,7 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :draw, data
   end
 
-  def reset_players
+  def start_round
     game = Game.last
 
     game.players.each do |player|
