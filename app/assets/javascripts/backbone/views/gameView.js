@@ -11,7 +11,6 @@ app.GameView = Backbone.View.extend({
 
     app.gameChannel.bind('guess_response', function(data) {
     	if (data.correct === "true") {
-    		$('#guessSubmit').remove();
     		
     		message = "<p><span class='timestamp'>at " + data.currtime + "</span>, <span class='user'>" + data.username + ' </span><span class="message">' + " submitted a correct answer!" + "</span></p>";
     		$('#messageDisplay').append(message);
@@ -23,7 +22,11 @@ app.GameView = Backbone.View.extend({
     		message = "<p><span class='message'>Your guess was incorrect, try again.</span></p>"
     		$('#messageDisplay').append(message);
     		$('#messageDisplay')[0].scrollTop = $('#messageDisplay')[0].scrollHeight;
-    })
+    });
+
+    app.dispatcher.bind('game.right_guess', function() {
+      $('#guessSubmit').remove();
+    });
     // submitGuessHandler();
 
     // app.gameChannel.bind('tell_player_start', function(){

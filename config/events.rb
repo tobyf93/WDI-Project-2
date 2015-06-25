@@ -28,6 +28,7 @@ WebsocketRails::EventMap.describe do
     subscribe :submit_guess, 'game_socket#submit_guess'
     subscribe :guess_response, 'game_socket#guess_response'
     subscribe :wrong_guess, 'game_socket#wrong_guess'
+    subscribe :right_guess, 'game_socket#right_guess'
     subscribe :end_round, 'game_socket#end_round'
     subscribe :phase_summary, 'game_socket#phase_summary'
     subscribe :game_over, 'game_socket#game_over'
