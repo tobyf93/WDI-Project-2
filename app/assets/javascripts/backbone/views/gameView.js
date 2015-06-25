@@ -13,7 +13,7 @@ app.GameView = Backbone.View.extend({
     	console.log("OH MY GOD WE GOT A RESPONSE TO OUR GUESS");
     	console.log(data);
   	});
-
+    
     submitGuessHandler();
 
     // app.gameChannel.bind('tell_player_start', function(){
@@ -24,9 +24,12 @@ app.GameView = Backbone.View.extend({
 
   },
   getRole: function(data) {
+  	console.log(" WOLF - GET ROLE");
     if (data.my_turn) {
+    console.log(" \tWOLF - MY TURN ")
       this.drawView(data);
     } else {
+    	console.log(" \tWOLF - NOT MY TURN ")
       this.guessView(data);
     };
   },
@@ -36,20 +39,20 @@ app.GameView = Backbone.View.extend({
     // var canvasTemplate = new app.CanvasView();
     // canvasTemplate.renderGuesser();
     // debugger;
+    console.log( "\tWOLF GUESS TURN" );
     $('#main').empty();
     this.$el.append("You're going to be drawing shit!");
-    app.guessCanvasView = new app.CanvasView();
-    app.guessCanvasView.renderGuesser();
-    app.chatBox = new app.ChatboxView();
+    app.canvasView = new app.CanvasView();
+    app.canvasView.renderGuesser();
     app.chatBox.render();
   },
 
   drawView: function(data) {
     // debugger;
+    console.log( "\tWOLF DRAW TURN" );
     this.$el.append("You're going to be drawing shit!");
-
-    app.drawCanvasView = new app.CanvasView();
-    app.drawCanvasView.renderDrawer();
+    app.canvasView = new app.CanvasView();
+    app.canvasView.renderDrawer();
   },
 
   renderStatus: function() {
@@ -61,7 +64,7 @@ app.GameView = Backbone.View.extend({
   render: function() {
 
     app.dispatcher.trigger('game.get_role');
-
+	
     chatBoxTemplate = $('#chatBoxTemplate').html();
     this.$el.html("Hello, ");
   },

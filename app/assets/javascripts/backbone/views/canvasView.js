@@ -9,15 +9,12 @@ app.CanvasView = Backbone.View.extend({
 		app.canvas.initPaper();
 	},
 	render: function(){
-
 		// IF THE PERSON IS THE DRAWER 
 		// RENDER THE GUESSER;
 		// OTHERWISE IF THE PERSON IS THE GUESSER
-
 	},
 	renderGuesser:function(data){
 		// debugger;
-		$('#drawsomeCanv').addClass('guessCanvas');
 		app.canvas.initGuesser();
 	},
 	renderDrawer: function(data){
