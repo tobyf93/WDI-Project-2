@@ -22,17 +22,16 @@ class GameSocketController < WebsocketRails::BaseController
 
   def _start
     Thread.new do
-    # Temporary - eventually we will pass the game into the _start method
-    game = Game.last
-    game = Game.create if !game
+      game = Game.last
 
-    WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
-    _start_round game, 1
+      sleep(@game_start_delay)
+      WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
+      _start_round game, 1
     end
   end
 
   def _start_round game, round
-    if round <= 3
+    if round <= @no_of_rounds
 
       game.players.each do |player|
         player.state = "ready"
@@ -56,7 +55,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     game = round_summary game
 
-    sleep(3.seconds)
+    sleep(@round_summary_time)
 
     round += 1
     _start_round game, round
@@ -71,7 +70,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     WebsocketRails[:game].trigger :tell_players_start
 
-    sleep(3.second)
+    sleep(@phase_time)
   end
 
   def _phase_summary
@@ -80,10 +79,15 @@ class GameSocketController < WebsocketRails::BaseController
   private :_start, :_start_round, :_round_summary, :_start_phase, :_phase_summary
   ##############################################################################
   
+  def initialize
+    @game_start_delay = 0.seconds
+    @no_of_rounds = 1
+    @phase_time = 10.seconds
+    @round_summary_time = 5.seconds
+  end
 
   def mark_ready
     game = Game.last
-    game = Game.create if !game
 
     player = Player.where({ :user_id => session[:user_id] }).first
 
@@ -108,7 +112,6 @@ class GameSocketController < WebsocketRails::BaseController
 
   def check_for_game_start
     game = Game.last
-    game = Game.create if !game
 
     allReady = true
 
@@ -151,7 +154,6 @@ class GameSocketController < WebsocketRails::BaseController
 
   def leave
     game = Game.last
-    game = Game.create if !game
 
     if (Player.where ({ :user_id => session[:user_id] })).any?
       (Player.where ({ :user_id => session[:user_id] })).destroy_all
@@ -201,29 +203,42 @@ class GameSocketController < WebsocketRails::BaseController
       word = Word.all.sample
       game.word_id = word.id
       game.save
+      # toby_debug("Selected #{word.name}")
     end
 
-    mike_debug(word.name);
-    current_player = game.players.find_by user_id: session[:user_id] 
-    mike_debug(current_player.id);
+    mike_debug("Word this round is: #{word.name}")
+    
+    current_player = game.players.find_by :user_id => session[:user_id] 
+    
+    mike_debug("Current User_ID checking is: #{session[:user_id]}")
+    mike_debug("Current Player checking is: #{current_player.id}")
 
-    mike_debug(current_player.state);
-    if current_player.first.state == "drawing"
-      # my_turn = true
-      # this_word = Word.find game.word_id
-      kal = Word.find( game.word_id ) if game && game.word_id
+    mike_debug("Current Player state is: #{current_player.state}")
+    
+    
+    if current_player.state == "drawing"
+
+      # word = Word.find( game.word_id ) if game && game.word_id
+      
       data = {
         my_turn: true,
-        word: kal.name || "NO WORD FOUND"
-        # word: this_word.name
+        word: word.name
       }
+
+      mike_debug(data.my_turn)
+      mike_debug(data.word)
+
     else
       data = {
         my_turn: false
       }
+
+      mike_debug(data.my_turn)
     end
+
+
     send_message :my_turn, data, :namespace => :game
-    WebsocketRails[]
+    # WebsocketRails[:game].trigger :my_turn, data
   end
 
   def submit_guess
@@ -245,9 +260,9 @@ class GameSocketController < WebsocketRails::BaseController
     game.players_left = game.players_left - 1
     game.save
 
-    if game.players_left == 0
-      end_round
-    end
+    # if game.players_left == 0
+    #   TODO: End a round early if everyone has guessed
+    # end
   end
 
   def round_summary game
@@ -274,11 +289,13 @@ class GameSocketController < WebsocketRails::BaseController
     return game
   end
 
-  def end_round
-    game = Game.last
 
-    WebsocketRails[:game].trigger :end_round
-  end
+  # I think this function is useless.
+  # def end_round
+  #   game = Game.last
+
+  #   WebsocketRails[:game].trigger :end_round
+  # end
 
   def get_score
     game = Game.last
