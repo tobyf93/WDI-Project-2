@@ -15,18 +15,18 @@ app.canvas = {
     this.setupPaperJS();
   },
   initGuesser: function() {
-    if (this.tool) {
-      this.tool.onMouseDown = null;
-      this.tool.onMouseDrag = null;
-    }
+    // if (this.tool) {
+    //   this.tool.onMouseDown = null;
+    //   this.tool.onMouseDrag = null;
+    // }
     this.setupDefaults();
     this.setupListener();
   },
   initDrawer: function() {
-    if (this.tool) {
-      this.tool.onMouseDown = this.mouseDownEvent;
-      this.tool.onMouseDrag = this.mouseDragEvent;
-    }
+    // if (this.tool) {
+    //   this.tool.onMouseDown = this.mouseDownEvent;
+    //   this.tool.onMouseDrag = this.mouseDragEvent;
+    // }
     this.setupDefaults();
     this.setupEvents();
   },
