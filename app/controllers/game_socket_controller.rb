@@ -19,13 +19,14 @@ class GameSocketController < WebsocketRails::BaseController
     Thread.new do
       game = Game.last
 
+      sleep(@game_start_delay)
       WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
       _start_round game, 1
     end
   end
 
   def _start_round game, round
-    if round <= 3
+    if round <= @no_of_rounds
 
       game.players.each do |player|
         player.state = "ready"
@@ -49,7 +50,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     game = round_summary game
 
-    sleep(3.seconds)
+    sleep(@round_summary_time)
 
     round += 1
     _start_round game, round
@@ -64,7 +65,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     WebsocketRails[:game].trigger :tell_players_start
 
-    sleep(3.second)
+    sleep(@phase_time)
   end
 
   def _phase_summary
@@ -73,6 +74,12 @@ class GameSocketController < WebsocketRails::BaseController
   private :_start, :_start_round, :_round_summary, :_start_phase, :_phase_summary
   ##############################################################################
   
+  def initialize
+    @game_start_delay = 0.seconds
+    @no_of_rounds = 1
+    @phase_time = 10.seconds
+    @round_summary_time = 5.seconds
+  end
 
   def mark_ready
     game = Game.last
