@@ -4,7 +4,7 @@
 @import 'utilities.scss';
 body{
 	height: 100vh;
-	background-image: url('swirl_pattern.png');
+	background-image: asset-url('swirl_pattern.png');
 	background-repeat: repeat;
 }
 button{
