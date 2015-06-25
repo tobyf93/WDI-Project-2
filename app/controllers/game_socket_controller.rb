@@ -160,7 +160,7 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.last
     game.update :word_id => Word.all.sample.id, :players_left => game.players.length, :phase_start_time => Time.new
 
-    game.players.update_all :state => 'guessing'
+    game.players.update_all :state => 'guessing', :guess => ""
     drawer = game.players.find_by :has_drawn => false
     drawer.update :state => 'drawing', :has_drawn => true
 
@@ -178,7 +178,9 @@ class GameSocketController < WebsocketRails::BaseController
     if current_player.state == "drawing"
       word = Word.find game.word_id
       data[:my_turn] = true
-      data[:word] = word.name  
+      data[:word] = word.name
+
+      mike_debug("The word is #{word.name}, you cheating piece of shit")
     end
 
     send_message :my_turn, data, :namespace => :game
@@ -190,30 +192,41 @@ class GameSocketController < WebsocketRails::BaseController
     correct_answer = (Word.find game.word_id).name.downcase
 
     mike_debug("This guess was submitted: #{message['guess']}")
+    mike_debug("The correct word is #{correct_answer}")
 
     player = (Player.where({ :user_id => session[:user_id] }))
     player.first.update :state => "guessed", :time_of_guess => Time.new, :guess => message['guess'].downcase
 
-    score = 0
-    time_dif = (player.first.time_of_guess - game.phase_start_time).to_i
+    mike_debug("The player id submitting the guess is #{player.first.id}")
 
-    score = 100 / time_dif if player.first.guess == correct_answer
-    player.update :score => (player.first.score + score)
+    score = 0
+    time_dif = (player.first.time_of_guess.to_i) - (game.phase_start_time.to_i)
+
+    mike_debug("The time it took to guess was #{time_dif} seconds.")
+
+    score = (10000 / time_dif) if player.first.guess == correct_answer
+
+    mike_debug("the score to be awarded is #{score}")
+
+    mike_debug("The submitted guess was right, champ") if player.first.guess == correct_answer
+    mike_debug("The submitted guess was wrong, chump") unless player.first.guess == correct_answer
+
+    player.first.update :score => (player.first.score + score)
   end
 
   def phase_summary
-    game.update :players_left => (game.players_left - 1)
-
-    over = true
-    game.players.each do |player|
-      over = false unless player.has_drawn
-    end
-
-    round_summary if over
-
     game = Game.last
 
-    mike_debug("Starting the phase summary")
+    game.update :players_left => (game.players_left - 1)
+
+    # over = true
+    # game.players.each do |player|
+    #   over = false unless player.has_drawn
+    # end
+
+    # round_summary if over
+
+    
     
     scores = []
     sorted_by_score = game.players
@@ -225,7 +238,7 @@ class GameSocketController < WebsocketRails::BaseController
       username = player.user.username
       scores.push({ username: username, player: player })
     end
-    binding.pry
+
     WebsocketRails[:game].trigger :game_over, scores
   end
 
