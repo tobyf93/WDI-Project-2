@@ -21,6 +21,7 @@ app.ChatboxView = Backbone.View.extend({
 	renderMsg: function(data){
 		var message = "<p><span class='timestamp'>" + data.currtime + "</span>:: <span class='user'>" + data.user + '</span>:: <span class="message">' + data.message + "</span></p> ";
 		$('#messageDisplay').append(message);
+		$('#messageDisplay')[0].scrollTop = $('#messageDisplay')[0].scrollHeight;
 	},
 	renderGuesser:function(){
 		var guessSubmitTemplate = $('#guessSubmitTemplate').html();
@@ -42,7 +43,6 @@ app.ChatboxView = Backbone.View.extend({
 			this.submitMessage(message);
 			$(target).val('');
 		} 
-		
 	},
 	submitMessage: function(message){
 		app.dispatcher.trigger('message.transmit', message); 
@@ -63,6 +63,5 @@ app.ChatboxView = Backbone.View.extend({
 		}
 		console.log("THIS IS FIRING")
 		app.dispatcher.trigger('game.submit_guess', data);
-		$('#guessSubmit').remove();
 	}
 });
