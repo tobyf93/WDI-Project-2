@@ -41,6 +41,7 @@ $(function(){
 	// 	console.log("THIS IS THE DATA" + data);
 	// 	this.getRole(data);
 	// });	
+	
 	app.dispatcher = new WebSocketRails(window.location.host + '/websocket');
 	app.messageChannel = app.dispatcher.subscribe('message');
 	app.gameChannel = app.dispatcher.subscribe('game');
