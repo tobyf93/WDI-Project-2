@@ -12,7 +12,7 @@ app.host = {
     rounds: 1,
     players: 0,
     phaseLength: 10000,
-    roundSummaryLength: 5000
+    phaseSummaryLength: 5000
   },
 
   start: function() {
@@ -42,13 +42,20 @@ app.host = {
 
       app.dispatcher.trigger('game.start_phase');
       $.wait(app.host.settings.phaseLength).then(function() {
-        app.dispatcher.trigger('game.phase_summary'); 
-        app.host.startPhase(roundNumber, ++phaseNumber);
+        app.host.startPhaseSummary(roundNumber, phaseNumber);
       });
     } else {
       console.log('\tEnding Round');
       app.host.startRound(++roundNumber);
     }
   },
+
+  startPhaseSummary: function(roundNumber, phaseNumber) {
+    app.dispatcher.trigger('game.phase_summary'); 
+
+    $.wait(app.host.settings.phaseSummaryLength).then(function() {
+      app.host.startPhase(roundNumber, ++phaseNumber);
+    });
+  }
 
 };
