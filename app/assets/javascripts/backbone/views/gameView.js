@@ -6,7 +6,6 @@ app.GameView = Backbone.View.extend({
 		var view = this;
 
 		app.dispatcher.bind('game.my_turn', function(data) {
-			console.log(data);
 			view.getRole(data);
 		});
 
@@ -53,6 +52,7 @@ app.GameView = Backbone.View.extend({
 	render: function(){
 		console.log("Triggering get role call");
 		app.dispatcher.trigger('game.get_role');
+		
 		chatBoxTemplate = $('#chatBoxTemplate').html();
 		this.$el.html("Hello, ");
 	},

@@ -1,7 +1,7 @@
 class MikedebugSocketController < WebsocketRails::BaseController
 
   def current_status
-    message
+    WebsocketRails[:mikedebug].trigger :mikedebug, message
   end
 
 end

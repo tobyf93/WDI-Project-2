@@ -1,7 +1,7 @@
 class GameSocketController < WebsocketRails::BaseController
-  ###########################################################################
+  ##############################################################################
   # Game Dictator
-  ###########################################################################
+  ##############################################################################
   # start     Begins a game with X rounds.
 
   # round     Initially called by start.  A round consists of X phases where X
@@ -11,36 +11,42 @@ class GameSocketController < WebsocketRails::BaseController
   #           remaining players submiting guesses based on the realtime drawing.
 
   def toby_debug data
+    data = "#{Time.new} - #{data}"
     WebsocketRails[:game].trigger :toby, data
   end
 
-  def _start
-    # Temporary - eventually we will pass the game into the _start method
-    game = Game.last
-    game = Game.create if !game
-
-    WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
-    _start_round game, 1
+  def mike_debug data
+    data = "#{Time.new} - #{data}"
+    WebsocketRails[:game].trigger :mike, data
   end
 
-  def _start_round game, round
+  def _start
     Thread.new do
-      if round <= 3
+      game = Game.last
 
-        game.players.each do |player|
-          player.state = "ready"
-          player.has_drawn = false
-          player.save
-        end
+      sleep(@game_start_delay)
+      WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
+      _start_round 1
+    end
+  end
 
-        WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
-        game.players.each { |player| _start_phase player }
-        
-        WebsocketRails[:game].trigger :dictator, "\tEnding Round #{round}"
-        _round_summary game, round
-      else
-        WebsocketRails[:game].trigger :dictator, "Ending Game"
+  def _start_round round
+    game = Game.last
+      if round <= @no_of_rounds
+
+      game.players.each do |player|
+        player.state = "ready"
+        player.has_drawn = false
+        player.save
       end
+
+      WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
+      game.players.each { |player| _start_phase player }
+      
+      WebsocketRails[:game].trigger :dictator, "\tEnding Round #{round}"
+      _round_summary game, round
+    else
+      WebsocketRails[:game].trigger :dictator, "Ending Game"
     end
   end
 
@@ -50,57 +56,69 @@ class GameSocketController < WebsocketRails::BaseController
 
     game = round_summary game
 
-    sleep(3.seconds)
+    sleep(@round_summary_time)
 
     round += 1
     _start_round game, round
   end
 
   def _start_phase player
-    game = player.game
+    game = Game.last
     game.phase_start_time = Time.new
     game.save
 
-    start_phase game
+    start_phase
+
+    begin 
+      mike_debug(Game.last.to_json)
+    end until Game.last.word_id == nil
 
     WebsocketRails[:game].trigger :tell_players_start
 
-    sleep(3.second)
+    sleep(@phase_time)
   end
 
   def _phase_summary
   end
 
-  ###########################################################################
+  private :_start, :_start_round, :_round_summary, :_start_phase, :_phase_summary
+  ##############################################################################
+  
+  def initialize
+    @game_start_delay = 0.seconds
+    @no_of_rounds = 1
+    @phase_time = 4.seconds
+    @round_summary_time = 5.seconds
+  end
 
   def mark_ready
     game = Game.last
-    game = Game.create if !game
 
-    player = Player.where({ :user_id => session[:user_id] }).first
+    player = Player.find_by :user_id => session[:user_id]
 
     # Swaps the player state between ready and not ready.
     if player.state != "ready"
-      player.state = "ready"
+      player.update :state => "ready"
     else
-      player.state = "not ready"
+      player.update :state => "not ready"
     end
-    player.save
 
     check_for_game_start
 
-    player_states = [] 
+    player_states = game.players.map do |player|
+      username = player.user.username
 
-    game.players.each do |player|
-      username = (User.find player.user_id).username
-      player_states.push({:player => player, :username => username})
+      {
+        :player => player, 
+        :username => username
+      }
     end
+    
     WebsocketRails[:game].trigger :player_states, player_states
   end
 
   def check_for_game_start
     game = Game.last
-    game = Game.create if !game
 
     allReady = true
 
@@ -119,27 +137,23 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.last
     game = Game.create if !game
     user = User.find session[:user_id]
-    player = Player.find_by :user_id => user.id
+    player = user.players.first
 
     if !player
+      # Restrict user to one player for now
+      Player.where(:user_id => user.id).destroy_all
+
       player = Player.create :user_id => user.id
       game.players << player
     end
 
+    users = game.players.map { |player| player.user }
 
-    users = game.players.map do |player|
-      player.user
-    end
- 
-    players = game.players.pluck(:user_id).uniq
-
-    data = []
-
-    game.players.each do |player|
-      data.push ({
-        player: player,
-        username: (User.find player.user_id).username
-      })
+    data = game.players.map do |player|
+      {
+        player: player.id,
+        username: player.user.username
+      }
     end
 
     WebsocketRails[:game].trigger :join, data
@@ -147,7 +161,6 @@ class GameSocketController < WebsocketRails::BaseController
 
   def leave
     game = Game.last
-    game = Game.create if !game
 
     if (Player.where ({ :user_id => session[:user_id] })).any?
       (Player.where ({ :user_id => session[:user_id] })).destroy_all
@@ -181,41 +194,38 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :draw, data
   end
 
-  def start_phase game
+  def start_phase
+    game = Game.last
     game.players.update_all :state => 'guessing'
     drawer = game.players.find_by :has_drawn => false
+    drawer.update :state => 'drawing', :has_drawn => true
+    game.update :word_id => nil
 
-    WebsocketRails[:game].trigger :dictator, "\t\t #{drawer.user.username} is drawing"
+    mike_debug("THIS IS THE DRAWER ID THIS PHASE: #{drawer.id}")
 
-    drawer.update :state => 'drawing'
+    WebsocketRails[:game].trigger :dictator, "\t\t #{drawer.user.username} is drawing"    
   end
 
   def get_role
     game = Game.last
+    mike_debug("get_role word_id: #{game.word_id}, game_id #{game.id}")
+    
     unless game.word_id
-      game.word_id = Word.all.sample.id
-      game.save
+      word = Word.all.sample
+      game.update :word_id => word.id
     end
 
-    current_player = game.players.where :user_id => session[:user_id] 
+    current_player = game.players.find_by :user_id => session[:user_id] 
 
-    if current_player.first.state == "drawing"
-      # my_turn = true
-      # this_word = Word.find game.word_id
-      kal = Word.find( game.word_id ) if game && game.word_id
-      data = {
-        my_turn: true,
-        word: kal.name || "NO WORD FOUND"
+    data = { :my_turn => false }
+    if current_player.state == "drawing"
+      word = Word.find game.word_id
 
-        # word: this_word.name
-      }
-      send_message :my_turn, data, :namespace => :game
-    else
-      data = {
-        my_turn: false
-      }
-      send_message :my_turn, data, :namespace => :game
+      data[:my_turn] = true
+      data[:word] = word.name  
     end
+
+    send_message :my_turn, data, :namespace => :game
   end
 
   def submit_guess
@@ -237,9 +247,9 @@ class GameSocketController < WebsocketRails::BaseController
     game.players_left = game.players_left - 1
     game.save
 
-    if game.players_left == 0
-      end_round
-    end
+    # if game.players_left == 0
+    #   TODO: End a round early if everyone has guessed
+    # end
   end
 
   def round_summary game
@@ -256,11 +266,9 @@ class GameSocketController < WebsocketRails::BaseController
     end
 
     if game.word_id
-      game.word_id = nil
-      game.save
+      game.update :word_id => nil
       game.players.each do |player|
-        player.has_drawn = false
-        player.save
+        player.update :has_drawn => false
       end
     end
 
@@ -269,11 +277,13 @@ class GameSocketController < WebsocketRails::BaseController
     return game
   end
 
-  def end_round
-    game = Game.last
 
-    WebsocketRails[:game].trigger :end_round
-  end
+  # I think this function is useless.
+  # def end_round
+  #   game = Game.last
+
+  #   WebsocketRails[:game].trigger :end_round
+  # end
 
   def get_score
     game = Game.last
