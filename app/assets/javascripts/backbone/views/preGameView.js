@@ -40,6 +40,7 @@ app.PreGameView = Backbone.View.extend({
 			// app.router.navigate('game', {trigger: true})			
 			app.gameStart.render();
 		});
+		
 
 
 		//*****************************************************//
