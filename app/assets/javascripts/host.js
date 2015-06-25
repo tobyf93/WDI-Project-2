@@ -30,9 +30,8 @@ app.host = {
   },
 
   startPhase: function(roundNumber, phaseNumber) {
-    console.log('\t\tStarting Phase', phaseNumber);
-
     if (phaseNumber <= app.host.settings.players) {
+      console.log('\t\tStarting Phase', phaseNumber);
       app.dispatcher.trigger('game.start_phase');
 
       setTimeout(function() {
