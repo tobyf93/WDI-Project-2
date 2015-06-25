@@ -50,7 +50,6 @@ app.GameView = Backbone.View.extend({
 
   drawView: function(data) {
     // debugger;
-    console.log( "\tWOLF DRAW TURN" );
     this.$el.append("You're going to be drawing shit!");
     app.canvasView = new app.CanvasView();
     app.canvasView.renderDrawer();
