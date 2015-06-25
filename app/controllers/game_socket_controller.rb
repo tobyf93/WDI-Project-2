@@ -102,6 +102,7 @@ class GameSocketController < WebsocketRails::BaseController
 
       WebsocketRails[:game].trigger :join, data
     end
+      send_message
   end
 
   def leave
@@ -211,7 +212,7 @@ class GameSocketController < WebsocketRails::BaseController
       currtime: time,
       correct: correct
     }
-
+    send_message :right_guess, "lol", :namespace => :game
     WebsocketRails[:game].trigger :guess_response, data
     else
       send_message :wrong_guess, "lol", :namespace => :game
