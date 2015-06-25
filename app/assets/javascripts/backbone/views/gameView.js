@@ -51,7 +51,7 @@ app.GameView = Backbone.View.extend({
     // debugger;
 
     $('#main').empty();
-    $guessPrompt = $('<div class="guessPrompt">Guess the Word!</div>');
+    $guessPrompt = $('<div class="guessPrompt active">Chat</div>');
     
     this.gameTimer();
     app.canvasView = new app.CanvasView();
@@ -109,6 +109,11 @@ app.GameView = Backbone.View.extend({
   },
   toggleInput: function(e){
   	console.log("CLICKED");
+  	if($('.guessPrompt').hasClass('active')){
+  		$('.guessPrompt').text('Guess Word').removeClass('active');
+  	}else{
+  		$('.guessPrompt').text('Chat').addClass('active');
+  	}
   	$('#guessSubmit').toggleClass('slideDown');
   	$('#chatMsgSubmit').toggleClass('slideDown');
   }

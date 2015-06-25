@@ -7,17 +7,17 @@
   overflow-y:auto; 
 }
 .chatWrapper{
-	padding-top: 25px;
+	padding: 25px 0;
 	background: rgba(0,0,0,0.4);
 	z-index:500;
-	bottom:0;
+	bottom:0px;
 	left:0;
 	right:0;
 	position:fixed;
 	#messageDisplay{
 		padding: 12px;
-		max-height:150px;
-		height: 100px;
+		max-height:200px;
+		height: 150px;
 		overflow-x: scroll;
 	}
 	.chatBoxSubmission{
