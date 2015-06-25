@@ -190,9 +190,8 @@ class GameSocketController < WebsocketRails::BaseController
     game.update :players_left => (game.players_left - 1)
 
     over = true
-    for game.players.each do |player|
-        over = false unless player.has_drawn
-      end
+    game.players.each do |player|
+      over = false unless player.has_drawn
     end
 
     round_summary if over
