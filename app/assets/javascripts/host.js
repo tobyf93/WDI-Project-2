@@ -4,7 +4,7 @@ app.host = {
   settings: {
     gameStartDelay: 0,
     rounds: 1,
-    players: 3,
+    players: 0,
     phaseLength: 4000,
     roundSummaryLength: 5000
   },
