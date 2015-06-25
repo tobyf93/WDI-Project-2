@@ -69,10 +69,6 @@ class GameSocketController < WebsocketRails::BaseController
 
     start_phase
 
-    begin 
-      mike_debug(Game.last.to_json)
-    end until Game.last.word_id == nil
-
     WebsocketRails[:game].trigger :tell_players_start
 
     sleep(@phase_time)
@@ -135,7 +131,7 @@ class GameSocketController < WebsocketRails::BaseController
 
   def join
     game = Game.last
-    game = Game.create if !game
+    game = Game.create unless game
     user = User.find session[:user_id]
     player = user.players.first
 
@@ -196,36 +192,46 @@ class GameSocketController < WebsocketRails::BaseController
 
   def start_phase
     game = Game.last
+    game.update :word_id => Word.all.sample.id
+
     game.players.update_all :state => 'guessing'
     drawer = game.players.find_by :has_drawn => false
     drawer.update :state => 'drawing', :has_drawn => true
-    game.update :word_id => nil
+    # last_word = game.word_id
+    
+    mike_debug("start_phase game object: #{game.to_json}")
+    # begin 
+    #   mike_debug(Game.last.to_json)
+    # end until Game.last.word_id != last_word
 
-    mike_debug("THIS IS THE DRAWER ID THIS PHASE: #{drawer.id}")
 
     WebsocketRails[:game].trigger :dictator, "\t\t #{drawer.user.username} is drawing"    
   end
 
   def get_role
-    game = Game.last
-    mike_debug("get_role word_id: #{game.word_id}, game_id #{game.id}")
-    
-    unless game.word_id
-      word = Word.all.sample
-      game.update :word_id => word.id
+    # I don't know why this works.
+    Thread.new do
+      game = Game.last
+
+      mike_debug("get_role game object: #{game.to_json}")
+      
+      # unless game.word_id
+      #   word = Word.all.sample
+      #   game.update :word_id => word.id
+      # end
+
+      current_player = game.players.find_by :user_id => session[:user_id] 
+
+      data = { :my_turn => false }
+      if current_player.state == "drawing"
+        word = Word.find game.word_id
+
+        data[:my_turn] = true
+        data[:word] = word.name  
+      end
+
+      send_message :my_turn, data, :namespace => :game
     end
-
-    current_player = game.players.find_by :user_id => session[:user_id] 
-
-    data = { :my_turn => false }
-    if current_player.state == "drawing"
-      word = Word.find game.word_id
-
-      data[:my_turn] = true
-      data[:word] = word.name  
-    end
-
-    send_message :my_turn, data, :namespace => :game
   end
 
   def submit_guess
