@@ -1,0 +1,44 @@
+//TEMPORARY STYLING FOR COLORS
+@import 'utilities.scss';
+.color {
+	height: 50px;
+	width: 50px;
+	border: 1px solid black;
+	display: inline-block;
+}
+.black {
+	background-color: black;
+}
+.green {
+	background-color: green;
+}
+.red {
+	background-color: red;
+}
+.blue {
+	background-color: blue;
+}
+
+#strokeWidth {
+	display: block;
+}
+
+.canvas{
+	z-index:0;
+	background: #lightBorderGrey;
+	position:absolute;
+	top:0px;
+	right:0px;
+	left:0px;
+	bottom:0px;
+	border:5px solid $lightBorderGrey;
+}
+.guessCanvas{
+	z-index:-500;
+}
+
+.toolsWrap{
+	z-index:200;
+	position:absolute;
+	left:0;
+}

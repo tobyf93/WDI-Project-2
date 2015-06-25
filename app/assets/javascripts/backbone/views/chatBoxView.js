@@ -30,6 +30,7 @@ app.ChatboxView = Backbone.View.extend({
 		console.log("This is actually doing something");
 		var message = $('#messageField').val();
 		this.submitMessage(message); 
+		$('#messageField').val('');
 	},
 	keySubmitMessage: function(e){
 		var code = e.keyCode || e.which;
@@ -38,7 +39,9 @@ app.ChatboxView = Backbone.View.extend({
 			console.log('you hit enter!');
 			message = $(target).val();
 			this.submitMessage(message);
+			$(target).val('');
 		} 
+		
 	},
 	submitMessage: function(message){
 		app.dispatcher.trigger('message.transmit', message); 
