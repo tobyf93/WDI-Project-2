@@ -1,10 +1,32 @@
 //TEMPORARY STYLING FOR COLORS
 @import 'utilities.scss';
-.color {
-	height: 50px;
-	width: 50px;
-	border: 1px solid black;
-	display: inline-block;
+$toolSize: 60px;
+$inUseToolSize: 100px;
+.toolsWrap{
+	z-index:200;
+	position:absolute;
+	width: $toolSize;
+	top:20px;
+	left:0;
+	border: 1px solid $lightBorderGrey;
+	border-radius: 2px;
+	background: $white;
+	padding-top: 20px;
+}
+.tool {
+	transition: all .4s;
+	width:100%;
+	height: $toolSize - 20;
+	display: block;
+	cursor:pointer;
+	margin:0px
+}
+.color{
+	@extend .tool;
+}
+.inUse{
+	transition: all .4s;
+	width: 120%;
 }
 .black {
 	background-color: black;
@@ -18,7 +40,9 @@
 .blue {
 	background-color: blue;
 }
-
+.strokeWidth{
+	border: 1px solid #aaa;
+}
 #strokeWidth {
 	display: block;
 }
@@ -31,14 +55,15 @@
 	right:0px;
 	left:0px;
 	bottom:0px;
-	border:5px solid $lightBorderGrey;
+	// border:5px solid $lightBorderGrey;
+}
+.canvas[resize]{
+	width: 100%;
+	height: 100%;
 }
 .guessCanvas{
 	z-index:-500;
 }
 
-.toolsWrap{
-	z-index:200;
-	position:absolute;
-	left:0;
-}
+
+

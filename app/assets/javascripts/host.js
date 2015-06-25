@@ -9,7 +9,7 @@ $(document).ready(function() {
 app.host = {
   settings: {
     gameStartDelay: 0,
-    rounds: 1,
+    rounds: 1, 
     players: 0,
     phaseLength: 10000,
     phaseSummaryLength: 5000

@@ -11,13 +11,18 @@ button{
 button:disabled{
 	border:0px;
 }
+.container{
+	max-width: 960px;
+	padding:0 30px;
+}
 #main{
-	height: 100%;
+	height: -webkit-calc(100% - 70px);
 	position:relative; //This could cause z-indexing issues with canvas and chat. 
 }
 
 .waitingViewWrapper{
 	height:100%;
+	padding-top: 60px;
 	.content{
 		padding:12px 30px;
 		border:1px solid #aaa; // placeholder color;
@@ -56,10 +61,7 @@ button:disabled{
 .hidden{
 	display: none !important;
 }
-.container{
-	max-width: 960px;
-	padding:0 30px;
-}
+
 *{
 	box-sizing: border-box;
 }
@@ -70,6 +72,9 @@ button:disabled{
 	padding-top: 25px;
 	padding-bottom: 25px;
 	background: $white;
+	-webkit-box-shadow: -1px 5px 3px -5px $lightBorderGrey;
+	-moz-box-shadow: -1px 5px 3px -5px $lightBorderGrey;
+	box-shadow: -1px 5px 3px -5px $lightBorderGrey;
 }
 
 .form-wrapper{
@@ -83,8 +88,8 @@ button:disabled{
 	-webkit-appearance:none;
 	appearance:none;
 	background: none;
-	color: $lightBorderGrey;
-	border: 2px solid $lightBorderGrey;
+	color: $teal;
+	border: 2px solid $teal;
 	padding: 25px 0px;
 	text-transform: uppercase;
 	transition: background .2s, color .2s;
@@ -93,14 +98,15 @@ button:disabled{
 		background: $lightBorderGrey;
 	}
 	&:hover{
-		border:1px solid $teal;
+		border:2px solid $teal;
 		background:$teal;
 		color: $white;
 	}
 	&:focus{
 		border:0px;
 		outline: none;
-		background: #00e7a8;
+		border:2px solid $highlightGreen;
+		background: $highlightGreen;
 	}
 }
 .startBtn{

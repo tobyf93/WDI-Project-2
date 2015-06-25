@@ -76,7 +76,17 @@ app.canvas = {
   setupEvents: function() {
     // this.tool.onMouseDown = this.mouseDownEvent;
     // this.tool.onMouseDrag = this.mouseDragEvent;
-    $('.color').on('click', this.changeColorEvent);
+    var view = this;
+    $('.color').on('click', function(e){
+    	console.log("THIS IS CLICKED");
+    	target = e.currentTarget; 
+    	$('.color').removeClass('inUse');
+    	view.changeColorEvent(target);
+    	$(target).addClass('inUse');
+	});
+	$('.strokeWidth').on('click',function(e){
+		$('#strokeWidth').toggleClass('hidden');
+	});
     $('#strokeWidth').on('input', this.changeStrokeWidthEvent);
   },
 
@@ -109,8 +119,8 @@ app.canvas = {
       app.canvas.addPoint(e.point);
   },
 
-  changeColorEvent: function() {
-    var classes = $(this).attr('class').split(' ');
+  changeColorEvent: function(target) {
+    var classes = $(target).attr('class').split(' ');
     app.canvas.strokeColor = classes[1];
   },
 

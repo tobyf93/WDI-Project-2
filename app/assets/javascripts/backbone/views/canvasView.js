@@ -6,6 +6,10 @@ app.CanvasView = Backbone.View.extend({
 		// debugger;
 		var canvasTemplate = $('#canvasTemplate').html();
 		this.$el.append(canvasTemplate);
+		// var height = $('#main').innerHeight();
+		// var width = $('#main').innerWidth();
+		// $('#drawsomeCanv').width(width);
+		// $('#drawsomeCanv').height(height);
 		app.canvas.initPaper();
 	},
 	render: function(){
@@ -19,7 +23,14 @@ app.CanvasView = Backbone.View.extend({
 	},
 	renderDrawer: function(data){
 		var drawerToolsTemplate = $('#drawerToolsTemplate').html();
+
+		var $theWord = $('<p class="THEFKWORD">' + data.word + '</p>');
+		console.log($theWord);
+		
+		$('#main').prepend($theWord);
+		
 		this.$el.append(drawerToolsTemplate);
+
 		app.canvas.initDrawer();
 	}
 })
