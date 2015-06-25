@@ -16,30 +16,30 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def _start
-    game = Game.last
+    Thread.new do
+      game = Game.last
 
-    WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
-    _start_round game, 1
+      WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
+      _start_round game, 1
+    end
   end
 
   def _start_round game, round
-    Thread.new do
-      if round <= 3
+    if round <= 3
 
-        game.players.each do |player|
-          player.state = "ready"
-          player.has_drawn = false
-          player.save
-        end
-
-        WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
-        game.players.each { |player| _start_phase player }
-        
-        WebsocketRails[:game].trigger :dictator, "\tEnding Round #{round}"
-        _round_summary game, round
-      else
-        WebsocketRails[:game].trigger :dictator, "Ending Game"
+      game.players.each do |player|
+        player.state = "ready"
+        player.has_drawn = false
+        player.save
       end
+
+      WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
+      game.players.each { |player| _start_phase player }
+      
+      WebsocketRails[:game].trigger :dictator, "\tEnding Round #{round}"
+      _round_summary game, round
+    else
+      WebsocketRails[:game].trigger :dictator, "Ending Game"
     end
   end
 
