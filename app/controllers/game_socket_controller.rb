@@ -16,9 +16,7 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def _start
-    # Temporary - eventually we will pass the game into the _start method
     game = Game.last
-    game = Game.create if !game
 
     WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
     _start_round game, 1
@@ -78,7 +76,6 @@ class GameSocketController < WebsocketRails::BaseController
 
   def mark_ready
     game = Game.last
-    game = Game.create if !game
 
     player = Player.where({ :user_id => session[:user_id] }).first
 
@@ -103,7 +100,6 @@ class GameSocketController < WebsocketRails::BaseController
 
   def check_for_game_start
     game = Game.last
-    game = Game.create if !game
 
     allReady = true
 
@@ -146,7 +142,6 @@ class GameSocketController < WebsocketRails::BaseController
 
   def leave
     game = Game.last
-    game = Game.create if !game
 
     if (Player.where ({ :user_id => session[:user_id] })).any?
       (Player.where ({ :user_id => session[:user_id] })).destroy_all
@@ -191,6 +186,7 @@ class GameSocketController < WebsocketRails::BaseController
 
   def get_role
     game = Game.last
+
     unless game.word_id
       word = Word.all.sample
       game.word_id = word.id
