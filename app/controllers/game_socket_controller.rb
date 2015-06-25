@@ -27,7 +27,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     user_id = game.players.pluck(:user_id).sample
     # WebsocketRails[:game].trigger :dictator, "User #{user_id} is the host"
-    WebsocketRails[:game].trigger :host, "User #{user_id} is the host"
+    WebsocketRails[:game].trigger :host, user_id
   end
 
   def mark_ready

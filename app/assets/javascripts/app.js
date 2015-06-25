@@ -55,8 +55,10 @@ $(function(){
    	console.log(data);
   });
 
-	app.gameChannel.bind('host', function(data) {
-   	console.log(data);
+	app.gameChannel.bind('host', function(host_id) {
+   	if (host_id === app.user_id) {
+   		app.host.start();
+   	}
   });
 
 	app.gameChannel.bind('mike', function(data) {
