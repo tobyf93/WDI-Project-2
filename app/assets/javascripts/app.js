@@ -7,6 +7,8 @@ _.templateSettings = {
 };
 
 $(function(){
+
+
 	// //*************************************************//
 	// // SETUP BIND TO LISTEN FOR USERS JOINING THE GAME //
 	// //*************************************************// 
@@ -46,6 +48,14 @@ $(function(){
 	app.messageChannel = app.dispatcher.subscribe('message');
 	app.gameChannel = app.dispatcher.subscribe('game');
 
+	app.gameChannel.bind('game_over', function(data) {
+		// console.log('This data should appear at the end of a round', data);
+		app.utility.reloadCollection(data);
+		// console.log(app.playersList);
+		app.scoresSummary = new app.ScoresSummaryView();
+		app.scoresSummary.render();
+	});
+	
 	app.dispatcher.bind('game.user_id', function(user_id) {
    	app.user_id = user_id;
   });

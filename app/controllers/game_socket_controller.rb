@@ -225,7 +225,7 @@ class GameSocketController < WebsocketRails::BaseController
       username = player.user.username
       scores.push({ username: username, player: player })
     end
-    
+    binding.pry
     WebsocketRails[:game].trigger :game_over, scores
   end
 

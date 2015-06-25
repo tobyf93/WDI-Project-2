@@ -1,13 +1,20 @@
 var app = app || {};
+app.utility = {
+	reloadCollection: function(data){
+		app.playersList.reset();
+		for (var i = 0; i < data.length; i++) {
+			var playerScore = 0;
 
-$(document).ready(function() {
-
-  if ($('#drawsomeCanv').length === 0) {
-    return;
-  };
-
-  app.canvas.init();
-});
+			app.playersList.add({
+				username: data[i].username,
+				user_id: data[i].player.user_id,
+				state: data[i].player.state,
+				score: data[i].player.score,
+				guess: data[i].player.guess
+			});
+		}
+	},
+}
 
 app.canvas = {
   initPaper: function() {
@@ -15,18 +22,18 @@ app.canvas = {
     this.setupPaperJS();
   },
   initGuesser: function() {
-    if (this.tool) {
-      this.tool.onMouseDown = null;
-      this.tool.onMouseDrag = null;
-    }
+    // if (this.tool) {
+    //   this.tool.onMouseDown = null;
+    //   this.tool.onMouseDrag = null;
+    // }
     this.setupDefaults();
     this.setupListener();
   },
   initDrawer: function() {
-    if (this.tool) {
-      this.tool.onMouseDown = this.mouseDownEvent;
-      this.tool.onMouseDrag = this.mouseDragEvent;
-    }
+    // if (this.tool) {
+    //   this.tool.onMouseDown = this.mouseDownEvent;
+    //   this.tool.onMouseDrag = this.mouseDragEvent;
+    // }
     this.setupDefaults();
     this.setupEvents();
   },
