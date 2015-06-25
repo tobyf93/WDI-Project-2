@@ -1,15 +1,10 @@
 var app = app || {};
 
-sleep = function(delay) {
-  var startTime = new Date().getTime();
-  while (true) {
-    var currentTime = new Date().getTime();
-    var timeElapsed = currentTime - startTime;
-    if (timeElapsed >= delay) {
-      break;
-    }
-  }
-},
+$(document).ready(function() {
+  $.wait = function(time) {
+    return $.Deferred(function(dfd) { setTimeout(dfd.resolve, time); });
+  };
+});
 
 app.host = {
   settings: {
@@ -21,7 +16,7 @@ app.host = {
   },
 
   start: function() {
-    setTimeout(app.host.startGame, this.settings.gameStartDelay);
+    $.wait(this.settings.gameStartDelay).then(app.host.startGame);
   },
 
   startGame: function() {
@@ -31,10 +26,11 @@ app.host = {
 
   startRound: function(roundNumber) {
     if (roundNumber <= app.host.settings.rounds) {
-      console.log('\tStarting Round', roundNumber);
 
+      console.log('\tStarting Round', roundNumber);
       app.dispatcher.trigger('game.start_round');
       app.host.startPhase(roundNumber, 1);
+
     } else {
       console.log('Ending Game');
     }
@@ -43,22 +39,16 @@ app.host = {
   startPhase: function(roundNumber, phaseNumber) {
     if (phaseNumber <= app.host.settings.players) {
       console.log('\t\tStarting Phase', phaseNumber);
+
       app.dispatcher.trigger('game.start_phase');
-
-      setTimeout(function() {
-        app.dispatcher.trigger('game.phase_summary');
-        
+      $.wait(app.host.settings.phaseLength).then(function() {
+        app.dispatcher.trigger('game.phase_summary'); 
         app.host.startPhase(roundNumber, ++phaseNumber);
-      }, app.host.settings.phaseLength);
-
+      });
     } else {
       console.log('\tEnding Round');
-
       app.host.startRound(++roundNumber);
     }
   },
-
-
-
 
 };
