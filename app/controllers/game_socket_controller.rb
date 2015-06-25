@@ -198,30 +198,20 @@ class GameSocketController < WebsocketRails::BaseController
 
     unless game.word_id
       word = Word.all.sample
-      game.word_id = word.id
-      game.save
-      toby_debug("Selected #{word.name}")
+      game.update :word_id => word.id
     end
 
-    current_player = game.players.where :user_id => session[:user_id] 
+    current_player = game.players.find_by :user_id => session[:user_id] 
 
-    if current_player.first.state == "drawing"
-      # my_turn = true
-      # this_word = Word.find game.word_id
-      kal = Word.find( game.word_id ) if game && game.word_id
-      data = {
-        my_turn: true,
-        word: kal.name || "NO WORD FOUND"
-
-        # word: this_word.name
-      }
-      send_message :my_turn, data, :namespace => :game
-    else
-      data = {
-        my_turn: false
-      }
-      send_message :my_turn, data, :namespace => :game
+    data = { :my_turn => false }
+    if current_player.state == "drawing"
+      word = Word.find game.word_id
+      
+      data[:my_turn] = true
+      data[:word] = word.name  
     end
+
+    send_message :my_turn, data, :namespace => :game
   end
 
   def submit_guess
