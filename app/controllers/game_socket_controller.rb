@@ -26,12 +26,13 @@ class GameSocketController < WebsocketRails::BaseController
 
       sleep(@game_start_delay)
       WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
-      _start_round game, 1
+      _start_round 1
     end
   end
 
-  def _start_round game, round
-    if round <= @no_of_rounds
+  def _start_round round
+    game = Game.last
+      if round <= @no_of_rounds
 
       game.players.each do |player|
         player.state = "ready"
@@ -62,11 +63,15 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def _start_phase player
-    game = player.game
+    game = Game.last
     game.phase_start_time = Time.new
     game.save
 
     start_phase
+
+    begin 
+      mike_debug(Game.last.to_json)
+    end until Game.last.word_id == nil
 
     WebsocketRails[:game].trigger :tell_players_start
 
@@ -82,7 +87,7 @@ class GameSocketController < WebsocketRails::BaseController
   def initialize
     @game_start_delay = 0.seconds
     @no_of_rounds = 1
-    @phase_time = 10.seconds
+    @phase_time = 4.seconds
     @round_summary_time = 5.seconds
   end
 
@@ -196,19 +201,14 @@ class GameSocketController < WebsocketRails::BaseController
     drawer.update :state => 'drawing', :has_drawn => true
     game.update :word_id => nil
 
-    begin 
-      mike_debug(Game.last.to_json)
-    end until Game.last.word_id == nil
-
     mike_debug("THIS IS THE DRAWER ID THIS PHASE: #{drawer.id}")
-    
 
     WebsocketRails[:game].trigger :dictator, "\t\t #{drawer.user.username} is drawing"    
   end
 
   def get_role
     game = Game.last
-    mike_debug("get_role word_id: #{game.word_id}")
+    mike_debug("get_role word_id: #{game.word_id}, game_id #{game.id}")
     
     unless game.word_id
       word = Word.all.sample
