@@ -1,20 +1,32 @@
 //TEMPORARY STYLING FOR COLORS
 @import 'utilities.scss';
-$toolSize: 50px;
+$toolSize: 60px;
 $inUseToolSize: 100px;
-.tool {
-	height: $toolSize;
+.toolsWrap{
+	z-index:200;
+	position:absolute;
 	width: $toolSize;
-	border: 1px solid black;
+	top:20px;
+	left:0;
+	border: 1px solid $lightBorderGrey;
+	border-radius: 2px;
+	background: $white;
+	padding-top: 20px;
+}
+.tool {
+	transition: all .4s;
+	width:100%;
+	height: $toolSize - 20;
 	display: block;
 	cursor:pointer;
-	margin: 10px auto;
+	margin:0px
 }
 .color{
 	@extend .tool;
 }
 .inUse{
-	border: 4px solid black;
+	transition: all .4s;
+	width: 120%;
 }
 .black {
 	background-color: black;
@@ -28,7 +40,9 @@ $inUseToolSize: 100px;
 .blue {
 	background-color: blue;
 }
-
+.strokeWidth{
+	border: 1px solid #aaa;
+}
 #strokeWidth {
 	display: block;
 }
@@ -52,11 +66,4 @@ $inUseToolSize: 100px;
 }
 
 
-.toolsWrap{
-	padding:0 10px;
-	z-index:200;
-	position:absolute;
-	top:20px;
-	left:0;
-	background: #aaa;
-}
+
