@@ -89,24 +89,26 @@ class GameSocketController < WebsocketRails::BaseController
   def mark_ready
     game = Game.last
 
-    player = Player.where({ :user_id => session[:user_id] }).first
+    player = Player.find_by :user_id => session[:user_id]
 
     # Swaps the player state between ready and not ready.
     if player.state != "ready"
-      player.state = "ready"
+      player.update :state => "ready"
     else
-      player.state = "not ready"
+      player.update :state => "not ready"
     end
-    player.save
 
     check_for_game_start
 
-    player_states = [] 
+    player_states = game.players.map do |player|
+      username = player.user.username
 
-    game.players.each do |player|
-      username = (User.find player.user_id).username
-      player_states.push({:player => player, :username => username})
+      {
+        :player => player, 
+        :username => username
+      }
     end
+    
     WebsocketRails[:game].trigger :player_states, player_states
   end
 
