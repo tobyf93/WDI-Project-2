@@ -29,7 +29,7 @@ app.ChatboxView = Backbone.View.extend({
 	},
 	clickSubmitMessage:function(e){
 		// debugger;
-		console.log("This is actually doing something");
+		// console.log("This is actually doing something");
 		var message = $('#messageField').val();
 		this.submitMessage(message); 
 		$('#messageField').val('');
@@ -38,7 +38,7 @@ app.ChatboxView = Backbone.View.extend({
 		var code = e.keyCode || e.which;
 		var target = e.currentTarget;
 		if(code === 13){
-			console.log('you hit enter!');
+			// console.log('you hit enter!');
 			message = $(target).val();
 			this.submitMessage(message);
 			$(target).val('');
@@ -61,7 +61,8 @@ app.ChatboxView = Backbone.View.extend({
 		data = {
 		  guess: $answer
 		}
-		console.log("THIS IS FIRING")
 		app.dispatcher.trigger('game.submit_guess', data);
+		$('#guess').val("")
+		$('#guess').focus()
 	}
 });

@@ -221,7 +221,7 @@ class GameSocketController < WebsocketRails::BaseController
   def phase_summary
     game = Game.last
 
-    game.update :players_left => (game.players_left - 1)
+    game.update :players_left => (game.players_left - 1), :word_id => nil
     
     scores = []
     sorted_by_score = game.players
