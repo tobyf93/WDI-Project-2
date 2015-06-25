@@ -10,14 +10,20 @@ app.GameView = Backbone.View.extend({
     });
 
     app.gameChannel.bind('guess_response', function(data) {
-    	// ==========================================================
-    	// CHARLES: This is where everyone sees that someone guessed.
-    	// CHARLES: The properties are data.username and data.time
-    	// CHARLES: Both of them are strings.
-    	// ==========================================================
-    	console.log(data);
+    	if (data.correct === "true") {
+    		$('#guessSubmit').remove();
+    		
+    		message = "<p><span class='timestamp'>at " + data.currtime + "</span>, <span class='user'>" + data.username + ' </span><span class="message">' + " submitted a correct answer!" + "</span></p>";
+    		$('#messageDisplay').append(message);
+    		$('#messageDisplay')[0].scrollTop = $('#messageDisplay')[0].scrollHeight;
+    	};
   	});
     
+    app.dispatcher.bind('game.wrong_guess', function() {
+    		message = "<p><span class='message'>Your guess was incorrect, try again.</span></p>"
+    		$('#messageDisplay').append(message);
+    		$('#messageDisplay')[0].scrollTop = $('#messageDisplay')[0].scrollHeight;
+    })
     // submitGuessHandler();
 
     // app.gameChannel.bind('tell_player_start', function(){
@@ -76,7 +82,7 @@ app.GameView = Backbone.View.extend({
     // debugger;
     this.gameTimer();
     app.canvasView = new app.CanvasView();
-    app.canvasView.renderDrawer();
+    app.canvasView.renderDrawer(data);
     app.chatBox.render();
   },
 
@@ -90,7 +96,7 @@ app.GameView = Backbone.View.extend({
     app.dispatcher.trigger('game.get_role');
 	
     chatBoxTemplate = $('#chatBoxTemplate').html();
-    this.$el.html("Hello, ");
+    // this.$el.html("Hello, ");
   },
 });
 

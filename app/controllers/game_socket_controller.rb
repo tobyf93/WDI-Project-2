@@ -20,8 +20,6 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :mike, data
   end
 
-  # Selects a host for the game and notifies them.  They are now in charge of
-  # running the game!
   def select_game_host
     game = Game.last
 
@@ -191,41 +189,43 @@ class GameSocketController < WebsocketRails::BaseController
 
     correct_answer = (Word.find game.word_id).name.downcase
 
-    mike_debug("This guess was submitted: #{message['guess']}")
-    mike_debug("The correct word is #{correct_answer}")
-
     player = (Player.where({ :user_id => session[:user_id] }))
     player.first.update :state => "guessed", :time_of_guess => Time.new, :guess => message['guess'].downcase
 
     score = 0
     time_dif = (player.first.time_of_guess.to_i) - (game.phase_start_time.to_i)
 
-    score = (10000 / time_dif) if player.first.guess == correct_answer
-
+    correct = "false"
+    if player.first.guess == correct_answer
+      score = (10000 / time_dif)
+      correct = "true"
+    
     player.first.update :score => (player.first.score + score)
 
     time = Time.new.strftime("%I:%M:%S %P")
-    user = User.find session[:user_id]
 
+    user = User.find session[:user_id]
+    
     data = {
       username: user.username,
-      time: time
+      currtime: time,
+      correct: correct
     }
 
     WebsocketRails[:game].trigger :guess_response, data
-
+    else
+      send_message :wrong_guess, "lol", :namespace => :game
+    end
   end
 
   def phase_summary
     game = Game.last
 
-    game.update :players_left => (game.players_left - 1)
+    game.update :players_left => (game.players_left - 1), :word_id => nil
     
     scores = []
     sorted_by_score = game.players
     sorted_by_score.sort_by { |player| player.score }
-
-    mike_debug(sorted_by_score)
 
     sorted_by_score.each do |player|
       username = player.user.username

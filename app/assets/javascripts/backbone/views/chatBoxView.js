@@ -21,6 +21,7 @@ app.ChatboxView = Backbone.View.extend({
 	renderMsg: function(data){
 		var message = "<p><span class='timestamp'>" + data.currtime + "</span>:: <span class='user'>" + data.user + '</span>:: <span class="message">' + data.message + "</span></p> ";
 		$('#messageDisplay').append(message);
+		$('#messageDisplay')[0].scrollTop = $('#messageDisplay')[0].scrollHeight;
 	},
 	renderGuesser:function(){
 		var guessSubmitTemplate = $('#guessSubmitTemplate').html();
@@ -28,7 +29,7 @@ app.ChatboxView = Backbone.View.extend({
 	},
 	clickSubmitMessage:function(e){
 		// debugger;
-		console.log("This is actually doing something");
+		// console.log("This is actually doing something");
 		var message = $('#messageField').val();
 		this.submitMessage(message); 
 		$('#messageField').val('');
@@ -37,12 +38,11 @@ app.ChatboxView = Backbone.View.extend({
 		var code = e.keyCode || e.which;
 		var target = e.currentTarget;
 		if(code === 13){
-			console.log('you hit enter!');
+			// console.log('you hit enter!');
 			message = $(target).val();
 			this.submitMessage(message);
 			$(target).val('');
 		} 
-		
 	},
 	submitMessage: function(message){
 		app.dispatcher.trigger('message.transmit', message); 
@@ -61,8 +61,8 @@ app.ChatboxView = Backbone.View.extend({
 		data = {
 		  guess: $answer
 		}
-		console.log("THIS IS FIRING")
 		app.dispatcher.trigger('game.submit_guess', data);
-		$('#guessSubmit').remove();
+		$('#guess').val("")
+		$('#guess').focus()
 	}
 });
