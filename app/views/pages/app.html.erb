@@ -1,9 +1,5 @@
 <% if @current_user %>
 
-Welcome back <%=  %>
-
-<h1>WELCOME TO DRAWSOME, GET READY TO HAVE THE DRAWIEST TIME OF YOUR LIFE.</h1>
-
 <div id="main">
 
 </div>
@@ -16,29 +12,38 @@ Welcome back <%=  %>
 <% end %>
 
 <script id="preGameTemplate" type="template/text">
-  <div id="waitingView">
-    WAITING TO PLAY
-    <div id="playerTiles"></div>
-	<button id="playerReady" class="btn startBtn ready"> Ready </button>
-	<button id="playerCancel" class="btn startBtn hidden">Cancel</button>
-  </div>
+	<div class="container waitingViewWrapper">
+	  <div id="waitingView" class="content">
+	    <h2>WAITING TO PLAY</h2> 
+	    <div id="playerTiles" class="list-container "></div>
+		<button id="playerReady" class="btn startBtn"> Ready </button>
+		<button id="playerCancel" class="btn startBtn  hidden">Cancel</button>
+	  </div>
+	</div>
 </script>
 
 <script id="preGamePlayerTemplate" type="template/text">
-<div>
-	<section style="display: inline-block" id="playerName">{{username}}</section> is <section style="display: inline-block" id="playerState">{{state}}</section>
+<div class="playerTile clearfix">
+	<section id="playerName" class="attribute">{{username}}</section> 
+	<section id="playerState" class="attribute">{{state}}</section>
 </div>
 </script>
 
 <script id="chatBoxTemplate" type="text/template">
   <div id="chatbox" class="chatWrapper">
-    <h1>Chat</h1>
     <div id="messageDisplay">
     </div>
-    <div id="chatMsgSubmit" class="chatBoxSubmission">
-      <input id="messageField" type="text" placeholder="lets chat" autofocus>
+    <div id="chatMsgSubmit" class="chatBoxSubmission full-width">
+      <input id="messageField"  class="textField" type="text" placeholder="lets chat" autofocus>
       <button type="submit" id="chat">Chat</button>
     </div>
+  </div>
+</script>
+
+<script id="guessSubmitTemplate" type="text/template">
+  <div id="guessSubmit" class="chatBoxSubmission full-width">
+    <input id="guess" class="textField" type="text" placeholder="submitguess">
+    <button type="submit" id="submitresult">Submit</button>
   </div>
 </script>
 
@@ -47,12 +52,7 @@ Welcome back <%=  %>
 </script>
 
 
-<script id="guessSubmitTemplate" type="text/template">
-  <div id="guessSubmit" class="chatBoxSubmission">
-    <input id="guess" type="text" placeholder="submitguess">
-    <button type="submit" id="submitresult">Submit</button>
-  </div>
-</script>
+
 
 <script id="drawerToolsTemplate"  type="template/text">
 <div id="drawerTools" class="toolsWrap">
@@ -60,7 +60,8 @@ Welcome back <%=  %>
 	<div class="color green"></div>
 	<div class="color red"></div>	
 	<div class="color blue"></div>
-	<input id="strokeWidth" type="range" min="1" value="1" max="10">
+	<div class="strokeWidth">SW</div>
+	<input class="hidden" id="strokeWidth" type="range" min="1" value="1" max="10">
 </div>
 </script>
 
@@ -83,7 +84,6 @@ Welcome back <%=  %>
 	<div class="modalWrap">
 		<div id="roundSummary" class="modal">
 			<div id="scoresList" class="wrapper">
-
 			</div>
 		</div>
 	</div>

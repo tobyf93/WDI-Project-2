@@ -1,0 +1,36 @@
+@import 'utilities.scss';
+.chatBox{
+  position:absolute;
+  z-index:4;
+  width:100%;
+  height:100%;
+  overflow-y:auto; 
+}
+.chatWrapper{
+	padding-top: 25px;
+	background: rgba(0,0,0,0.4);
+	z-index:500;
+	bottom:0;
+	left:0;
+	right:0;
+	position:fixed;
+	#messageDisplay{
+		padding: 12px;
+		max-height:150px;
+		height: 100px;
+		overflow-x: scroll;
+	}
+	.chatBoxSubmission{
+		display:table;
+		& > *{
+			display:inline-block;
+		}
+		.textField{
+			width:80%;
+			border:0px;
+		}
+		button{
+			width:20%;
+		}
+	}
+}
