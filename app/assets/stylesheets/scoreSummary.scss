@@ -9,7 +9,16 @@
 	position:absolute;
 	background: $blktransparency80;
 }
+.rdAnswer{
+	text-align:center;
+	span{
+		text-transform:uppercase;
+		color: $ctaRed;
+	}
+}
 .modal{
+	padding-top:10px;
+	border-radius:5px;
 	background: $white;
 	vertical-align:middle;
 	max-width:640px;

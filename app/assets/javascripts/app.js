@@ -51,9 +51,10 @@ $(function(){
 	app.gameChannel.bind('game_over', function(data) {
 		// console.log('This data should appear at the end of a round', data);
 		app.utility.reloadCollection(data);
+		console.log(data);
 		// console.log(app.playersList);
 		app.scoresSummary = new app.ScoresSummaryView();
-		app.scoresSummary.render();
+		app.scoresSummary.render(data[0].currentWord);
 	});
 	// $(window).resize(function(){
 	// 	if($('#drawsomeCanv').length===0){

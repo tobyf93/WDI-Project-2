@@ -24,10 +24,10 @@ app.CanvasView = Backbone.View.extend({
 	renderDrawer: function(data){
 		var drawerToolsTemplate = $('#drawerToolsTemplate').html();
 
-		var $theWord = $('<p class="THEFKWORD">' + data.word + '</p>');
+		var $theWord = $('<div class="drawnWord"><h4>Your Word:</h4><h2>' + data.word + '</h2></div>');
 		console.log($theWord);
 		
-		$('#main').prepend($theWord);
+		$('#progressTimer').after($theWord);
 		
 		this.$el.append(drawerToolsTemplate);
 

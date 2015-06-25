@@ -17,13 +17,13 @@
 	    <h2>WAITING TO PLAY</h2> 
 	    <div id="playerTiles" class="list-container "></div>
 		<button id="playerReady" class="btn startBtn"> Ready </button>
-		<button id="playerCancel" class="btn startBtn  hidden">Cancel</button>
+		<button id="playerCancel" class="btn startBtn altBtn hidden">Cancel</button>
 	  </div>
 	</div>
 </script>
 
 <script id="preGamePlayerTemplate" type="template/text">
-<div class="playerTile clearfix">
+<div id="{{username}}" class="playerTile clearfix">
 	<section id="playerName" class="attribute">{{username}}</section> 
 	<section id="playerState" class="attribute">{{state}}</section>
 </div>
@@ -33,7 +33,7 @@
   <div id="chatbox" class="chatWrapper">
     <div id="messageDisplay">
     </div>
-    <div id="chatMsgSubmit" class="chatBoxSubmission full-width">
+    <div id="chatMsgSubmit" class="chatBoxSubmission slideDown full-width">
       <input id="messageField"  class="textField" type="text" placeholder="lets chat" autofocus>
       <button type="submit" id="chat">Chat</button>
     </div>
