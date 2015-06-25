@@ -3,8 +3,8 @@ var app = app || {};
 app.host = {
   settings: {
     gameStartDelay: 0,
-    rounds: 1,
-    players: 5,
+    rounds: 3,
+    players: 3,
     phaseLength: 4000,
     roundSummaryLength: 5000
   },
@@ -20,7 +20,7 @@ app.host = {
 
   startRound: function(roundNumber) {
     if (roundNumber <= app.host.settings.rounds) {
-      console.log('\tStarting Round');
+      console.log('\tStarting Round', roundNumber);
         app.host.startPhase(roundNumber, 1);
     } else {
       console.log('Ending Game');
@@ -33,7 +33,7 @@ app.host = {
     if (phaseNumber < app.host.settings.players) {
       setTimeout(function() {
         app.host.startPhase(roundNumber, ++phaseNumber);
-      }, 1000);
+      }, app.host.settings.phaseLength);
     } else {
       console.log('\tEnding Round');
       app.host.startRound(++roundNumber);
