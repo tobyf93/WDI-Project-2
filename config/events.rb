@@ -22,6 +22,7 @@ WebsocketRails::EventMap.describe do
     subscribe :draw, 'game_socket#draw'
     subscribe :turn, 'game_socket#turn'
     subscribe :start_round, 'game_socket#start_round'
+    subscribe :start_phase, 'game_socket#start_phase'
     subscribe :get_role, 'game_socket#get_role'
     subscribe :my_turn, 'game_socket#my_turn'
     subscribe :submit_guess, 'game_socket#submit_guess'
