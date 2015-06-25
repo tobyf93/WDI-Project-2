@@ -1,13 +1,20 @@
 var app = app || {};
+app.utility = {
+	reloadCollection: function(data){
+		app.playersList.reset();
+		for (var i = 0; i < data.length; i++) {
+			var playerScore = 0;
 
-$(document).ready(function() {
-
-  if ($('#drawsomeCanv').length === 0) {
-    return;
-  };
-
-  app.canvas.init();
-});
+			app.playersList.add({
+				username: data[i].username,
+				user_id: data[i].player.user_id,
+				state: data[i].player.state,
+				score: data[i].player.score,
+				guess: data[i].player.guess
+			});
+		}
+	},
+}
 
 app.canvas = {
   initPaper: function() {
