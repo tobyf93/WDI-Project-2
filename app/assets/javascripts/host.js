@@ -36,6 +36,7 @@ app.host = {
 
       setTimeout(function() {
         app.dispatcher.trigger('game.phase_summary');
+        
         app.host.startPhase(roundNumber, ++phaseNumber);
       }, app.host.settings.phaseLength);
 
