@@ -21,7 +21,7 @@ app.ChatboxView = Backbone.View.extend({
 		var message = "<p><span class='timestamp'>" + data.currtime + "</span>:: <span class='user'>" + data.user + '</span>:: <span class="message">' + data.message + "</span></p> ";
 		$('#messageDisplay').append(message);
 	},
-	renderDrawer:function(){
+	renderGuesser:function(){
 		var guessSubmitTemplate = $('#guessSubmitTemplate').html();
 		$('#chatbox').append(guessSubmitTemplate)
 	},

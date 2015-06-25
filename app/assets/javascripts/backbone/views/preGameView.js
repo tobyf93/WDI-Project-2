@@ -15,21 +15,24 @@ app.PreGameView = Backbone.View.extend({
 		// SETUP BIND TO LISTEN FOR USERS JOINING THE GAME //
 		//*************************************************// 
 		app.gameChannel.bind('join', function(data) {
-			view.reloadCollection(data);
+			app.utility.reloadCollection(data);
+			view.renderList(); 
 		});
 		
 		//*************************************************//
 		// SETUP BIND TO LISTEN FOR USERS LEAVING THE GAME //
 		//*************************************************// 
 		app.gameChannel.bind('leave', function(data) {
-			view.reloadCollection(data);
+			app.utility.reloadCollection(data);
+			view.renderList(); 
 		});
 
 		//*************************************//
 		// SETUP BIND TO LISTEN FOR USER READY //
 		//*************************************// 
 		app.gameChannel.bind('player_states',function(player_states){
-			view.reloadCollection(player_states);
+			app.utility.reloadCollection(player_states);
+			view.renderList(); 
 			// app.dispatcher.trigger('game.check_for_game_start');
 		});
 
@@ -40,39 +43,13 @@ app.PreGameView = Backbone.View.extend({
 			// app.router.navigate('game', {trigger: true})			
 			app.gameStart.render();
 		});
-		
+
 
 
 		//*****************************************************//
 		// SETUP BIND TO LISTEN FOR SCORES AT THE END OF ROUND //
 		//*****************************************************// 
-		app.gameChannel.bind('game_over', function(data) {
-			
-			console.log('This data should appear at the end of a round', data);
-			view.reloadCollection(data);
-			console.log(app.playersList);
-			app.scoresSummary = new app.ScoresSummaryView();
-			app.scoresSummary.render();
 
-		});
-
-
-	},
-	reloadCollection: function(data){
-		app.playersList.reset();
-		for (var i = 0; i < data.length; i++) {
-			var playerScore = 0;
-
-			app.playersList.add({
-				username: data[i].username,
-				user_id: data[i].player.user_id,
-				state: data[i].player.state,
-				score: data[i].player.score,
-				guess: data[i].player.guess
-			});
-		}
-
-		this.renderList(); 
 	},
 	initialize: function(){
 		this.players = app.playersList;

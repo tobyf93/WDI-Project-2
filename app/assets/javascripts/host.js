@@ -35,10 +35,13 @@ app.host = {
       app.dispatcher.trigger('game.start_phase');
 
       setTimeout(function() {
+        app.dispatcher.trigger('game.phase_summary');
         app.host.startPhase(roundNumber, ++phaseNumber);
       }, app.host.settings.phaseLength);
+
     } else {
       console.log('\tEnding Round');
+
       app.host.startRound(++roundNumber);
     }
   }
