@@ -11,6 +11,7 @@ class GameSocketController < WebsocketRails::BaseController
   #           remaining players submiting guesses based on the realtime drawing.
 
   def toby_debug data
+    data = "#{Time.new} - #{data}"
     WebsocketRails[:game].trigger :toby, data
   end
 
@@ -191,8 +192,10 @@ class GameSocketController < WebsocketRails::BaseController
   def get_role
     game = Game.last
     unless game.word_id
-      game.word_id = Word.all.sample.id
+      word = Word.all.sample
+      game.word_id = word.id
       game.save
+      toby_debug("Selected #{word.name}")
     end
 
     current_player = game.players.where :user_id => session[:user_id] 
