@@ -39,11 +39,7 @@ app.canvas = {
   },
 
   setupPaperJS: function() {
-    // debugger;
-    // paper = null;
-    // debugger;
     paper.setup('drawsomeCanv');
-    // this.setupEvents();
   },
 
   setupDefaults: function() {
