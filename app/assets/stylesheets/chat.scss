@@ -22,15 +22,50 @@
 	}
 	.chatBoxSubmission{
 		display:table;
+		position:fixed; 
+		bottom:0px;
+		transition: bottom .4s; 
 		& > *{
 			display:inline-block;
 		}
 		.textField{
+			background-color: $darkGrey;
+			color: $white;
+			outline:none;
 			width:80%;
 			border:0px;
+			&:focus{
+				background: $lightBorderGrey;
+				color: $darkGrey;
+			}
 		}
 		button{
+			outline:none;
+			&:hover{
+				background: $black;
+				color: $white;
+			}
 			width:20%;
 		}
 	}
+	.slideDown{
+		bottom: -100px;
+	}
+
 }
+
+	.guessPrompt{
+		position: absolute;
+		top:20px;
+		text-align:center;
+		right:15px;
+		font-size:16px;
+		text-transform: uppercase;
+		padding:12px 24px; 
+		background: $teal;
+		border-radius: 5px; 
+		cursor:pointer;
+		&:hover{
+			background:#ff4c4c;
+		}
+	}

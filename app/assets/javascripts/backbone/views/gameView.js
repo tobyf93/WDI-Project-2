@@ -1,7 +1,7 @@
 var app = app || {};
 app.GameView = Backbone.View.extend({
   el: '#main',
-  events: {},
+  events: {'click .guessPrompt': 'toggleInput'},
   initialize: function() {
     var view = this;
 
@@ -49,12 +49,16 @@ app.GameView = Backbone.View.extend({
     // var canvasTemplate = new app.CanvasView();
     // canvasTemplate.renderGuesser();
     // debugger;
+
     $('#main').empty();
+    $guessPrompt = $('<div class="guessPrompt">Guess the Word!</div>');
+    
     this.gameTimer();
     app.canvasView = new app.CanvasView();
     app.canvasView.renderGuesser();
     app.chatBox.render();
     app.chatBox.renderGuesser(); 
+    this.$el.append($guessPrompt);
 
   },
 
@@ -88,6 +92,7 @@ app.GameView = Backbone.View.extend({
     app.canvasView = new app.CanvasView();
     app.canvasView.renderDrawer(data);
     app.chatBox.render();
+    $('#chatMsgSubmit').toggleClass('slideDown');
   },
 
   renderStatus: function() {
@@ -102,6 +107,11 @@ app.GameView = Backbone.View.extend({
     chatBoxTemplate = $('#chatBoxTemplate').html();
     // this.$el.html("Hello, ");
   },
+  toggleInput: function(e){
+  	console.log("CLICKED");
+  	$('#guessSubmit').toggleClass('slideDown');
+  	$('#chatMsgSubmit').toggleClass('slideDown');
+  }
 });
 
 // var submitGuessHandler = function() {

@@ -221,7 +221,9 @@ class GameSocketController < WebsocketRails::BaseController
 
   def phase_summary
     game = Game.last
-
+    
+    wordObj = Word.find game.word_id
+    word = wordObj.name
     game.update :players_left => (game.players_left - 1), :word_id => nil
     
     scores = []
@@ -230,7 +232,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     sorted_by_score.each do |player|
       username = player.user.username
-      scores.push({ username: username, player: player })
+      scores.push({ username: username, player: player,currentWord: word})
     end
 
     WebsocketRails[:game].trigger :game_over, scores
