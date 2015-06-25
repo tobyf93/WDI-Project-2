@@ -187,7 +187,7 @@ class GameSocketController < WebsocketRails::BaseController
     score = 0
     time_dif = (player.first.time_of_guess - game.phase_start_time).to_i
 
-    score = 10 * time_dif if player.first.guess == correct_answer
+    score = 100 / time_dif if player.first.guess == correct_answer
     player.update :score => (player.first.score + score)
   end
 
