@@ -48,12 +48,9 @@ $(document).ready(function() {
     dispatcher.trigger('game.start_round');
   });
 
-  channel.bind('game_over', function(msg) {
-    // =====================================================
-    // Insert the code for what to do when the game is over.
-    // =====================================================
-    // Change view on gameover. 
-    console.log(msg);
+  channel.bind('game_over', function(data) {
+
+    console.log(data);
   });
 
   channel.bind('end_round', function() {

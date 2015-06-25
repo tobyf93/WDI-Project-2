@@ -9,6 +9,7 @@ WebsocketRails::EventMap.describe do
 
   namespace :fetch do
     subscribe :players, 'fetch_socket#players'
+    subscribe :user_id, 'fetch_socket#user_id'
   end
 
   namespace :mikedebug do
@@ -21,9 +22,11 @@ WebsocketRails::EventMap.describe do
     subscribe :draw, 'game_socket#draw'
     subscribe :turn, 'game_socket#turn'
     subscribe :start_round, 'game_socket#start_round'
+    subscribe :start_phase, 'game_socket#start_phase'
     subscribe :get_role, 'game_socket#get_role'
     subscribe :my_turn, 'game_socket#my_turn'
     subscribe :submit_guess, 'game_socket#submit_guess'
+    subscribe :guess_response, 'game_socket#guess_response'
     subscribe :end_round, 'game_socket#end_round'
     subscribe :game_over, 'game_socket#game_over'
     subscribe :get_score, 'game_socket#get_score'
