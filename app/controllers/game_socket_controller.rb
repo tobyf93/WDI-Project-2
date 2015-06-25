@@ -192,50 +192,53 @@ class GameSocketController < WebsocketRails::BaseController
   def start_phase game
     game.players.update_all :state => 'guessing'
     drawer = game.players.find_by :has_drawn => false
-
-    WebsocketRails[:game].trigger :dictator, "\t\t #{drawer.user.username} is drawing"
-
     drawer.update :state => 'drawing'
+    game.update :word_id => nil
+
+    mike_debug("THIS IS THE DRAWER ID THIS PHASE: #{drawer.id}")
+
+    WebsocketRails[:game].trigger :dictator, "\t\t #{drawer.user.username} is drawing"    
   end
 
   def get_role
+    mike_debug("STARTING A GET_ROLE CALL")
+
+
     game = Game.last
 
+    mike_debug("this should say nil once per phase: #{game.word_id}")
+
     unless game.word_id
-      word = Word.all.sample
-      game.word_id = word.id
+      game.word_id = Word.all.sample.id
       game.save
       # toby_debug("Selected #{word.name}")
     end
+    
+    word = Word.find game.word_id
 
-    mike_debug("Word this round is: #{word.name}")
+    mike_debug("\t Word this round is: #{word.name}")
     
     current_player = game.players.find_by :user_id => session[:user_id] 
     
-    mike_debug("Current User_ID checking is: #{session[:user_id]}")
-    mike_debug("Current Player checking is: #{current_player.id}")
-
-    mike_debug("Current Player state is: #{current_player.state}")
-    
+    mike_debug("\t Current User_ID checking is: #{session[:user_id]}, player_id is #{current_player.id}, player state is #{current_player.state}")
     
     if current_player.state == "drawing"
 
-      # word = Word.find( game.word_id ) if game && game.word_id
+      real_word = word.name
+      # Word.find( game.word_id ) if game && game.word_id
       
       data = {
         my_turn: true,
-        word: word.name
+        word: real_word
       }
 
-      mike_debug(data.my_turn)
-      mike_debug(data.word)
-
     else
+      
       data = {
         my_turn: false
       }
 
-      mike_debug(data.my_turn)
+      # mike_debug(data['my_turn'])
     end
 
 
