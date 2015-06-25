@@ -1,5 +1,16 @@
 var app = app || {};
 
+sleep = function(delay) {
+  var startTime = new Date().getTime();
+  while (true) {
+    var currentTime = new Date().getTime();
+    var timeElapsed = currentTime - startTime;
+    if (timeElapsed >= delay) {
+      break;
+    }
+  }
+},
+
 app.host = {
   settings: {
     gameStartDelay: 0,
@@ -45,7 +56,9 @@ app.host = {
 
       app.host.startRound(++roundNumber);
     }
-  }
+  },
+
+
 
 
 };
