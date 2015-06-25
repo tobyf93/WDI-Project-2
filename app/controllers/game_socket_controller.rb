@@ -66,7 +66,7 @@ class GameSocketController < WebsocketRails::BaseController
     game.phase_start_time = Time.new
     game.save
 
-    start_phase game
+    start_phase
 
     WebsocketRails[:game].trigger :tell_players_start
 
@@ -189,61 +189,43 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :draw, data
   end
 
-  def start_phase game
+  def start_phase
+    game = Game.last
     game.players.update_all :state => 'guessing'
     drawer = game.players.find_by :has_drawn => false
-    drawer.update :state => 'drawing'
+    drawer.update :state => 'drawing', :has_drawn => true
     game.update :word_id => nil
 
+    begin 
+      mike_debug(Game.last.to_json)
+    end until Game.last.word_id == nil
+
     mike_debug("THIS IS THE DRAWER ID THIS PHASE: #{drawer.id}")
+    
 
     WebsocketRails[:game].trigger :dictator, "\t\t #{drawer.user.username} is drawing"    
   end
 
   def get_role
-    mike_debug("STARTING A GET_ROLE CALL")
-
-
     game = Game.last
-
-    mike_debug("this should say nil once per phase: #{game.word_id}")
-
+    mike_debug("get_role word_id: #{game.word_id}")
+    
     unless game.word_id
-      game.word_id = Word.all.sample.id
-      game.save
-      # toby_debug("Selected #{word.name}")
+      word = Word.all.sample
+      game.update :word_id => word.id
     end
-    
-    word = Word.find game.word_id
 
-    mike_debug("\t Word this round is: #{word.name}")
-    
     current_player = game.players.find_by :user_id => session[:user_id] 
-    
-    mike_debug("\t Current User_ID checking is: #{session[:user_id]}, player_id is #{current_player.id}, player state is #{current_player.state}")
-    
+
+    data = { :my_turn => false }
     if current_player.state == "drawing"
+      word = Word.find game.word_id
 
-      real_word = word.name
-      # Word.find( game.word_id ) if game && game.word_id
-      
-      data = {
-        my_turn: true,
-        word: real_word
-      }
-
-    else
-      
-      data = {
-        my_turn: false
-      }
-
-      # mike_debug(data['my_turn'])
+      data[:my_turn] = true
+      data[:word] = word.name  
     end
-
 
     send_message :my_turn, data, :namespace => :game
-    # WebsocketRails[:game].trigger :my_turn, data
   end
 
   def submit_guess
@@ -281,11 +263,9 @@ class GameSocketController < WebsocketRails::BaseController
     end
 
     if game.word_id
-      game.word_id = nil
-      game.save
+      game.update :word_id => nil
       game.players.each do |player|
-        player.has_drawn = false
-        player.save
+        player.update :has_drawn => false
       end
     end
 
