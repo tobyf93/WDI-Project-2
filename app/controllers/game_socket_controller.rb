@@ -20,58 +20,14 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :mike, data
   end
 
-  def _start
-      game = Game.last
-
-      WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
-      _start_round
-  end
-
-  def _start_round
+  # Selects a host for the game and notifies them.  They are now in charge of
+  # running the game!
+  def select_game_host
     game = Game.last
 
-      game.players.each do |player|
-        player.state = "ready"
-        player.has_drawn = false
-        player.save
-      end
-
-      WebsocketRails[:game].trigger :dictator, "\tStarting Round"
-      game.players.each { |player| start_phase }
-      
-      WebsocketRails[:game].trigger :dictator, "\tEnding Round"
-      round_summary
-  end
-
-  # def _round_summary game, round
-  #   WebsocketRails[:game].trigger :dictator, "\tRound Summary"
-  #   # end_round
-
-  #   game = round_summary game
-
-  #   round += 1
-  #   _start_round round
-  # end
-
-  # def _start_phase
-  #   game = Game.last
-  #   game.update :phase_start_time => Time.new
-
-  #   start_phase
-
-  # end
-
-  # def _phase_summary
-  # end
-
-  private :_start, :_start_round, :_round_summary, :_start_phase, :_phase_summary
-  ##############################################################################
-  
-  def initialize
-    @game_start_delay = 0.seconds
-    @no_of_rounds = 1
-    @phase_time = 4.seconds
-    @round_summary_time = 5.seconds
+    user_id = game.players.pluck(:user_id).sample
+    # WebsocketRails[:game].trigger :dictator, "User #{user_id} is the host"
+    WebsocketRails[:game].trigger :host, "User #{user_id} is the host"
   end
 
   def mark_ready
@@ -112,7 +68,7 @@ class GameSocketController < WebsocketRails::BaseController
     end
 
     if game.players.length >= 2 && allReady
-      _start
+      select_game_host
     end
   end
 
@@ -175,6 +131,23 @@ class GameSocketController < WebsocketRails::BaseController
     }
 
     WebsocketRails[:game].trigger :draw, data
+  end
+
+  def start_round
+    # First thing to be called from client. They will get the option 
+    game = Game.last
+
+    game.players.each do |player|
+      player.state = "ready"
+      player.has_drawn = false
+      player.save
+    end
+
+    WebsocketRails[:game].trigger :dictator, "\tStarting Round"
+    game.players.each { |player| start_phase }
+    
+    WebsocketRails[:game].trigger :dictator, "\tEnding Round"
+    round_summary
   end
 
   def start_phase

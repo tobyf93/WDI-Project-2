@@ -9,6 +9,7 @@ WebsocketRails::EventMap.describe do
 
   namespace :fetch do
     subscribe :players, 'fetch_socket#players'
+    subscribe :user_id, 'fetch_socket#user_id'
   end
 
   namespace :mikedebug do
