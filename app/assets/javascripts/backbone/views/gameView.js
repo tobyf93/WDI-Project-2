@@ -9,8 +9,12 @@ app.GameView = Backbone.View.extend({
       view.getRole(data);
     });
 
-    app.dispatcher.bind('game.guess_response', function(data) {
-    	console.log("OH MY GOD WE GOT A RESPONSE TO OUR GUESS");
+    app.gameChannel.bind('guess_response', function(data) {
+    	// ==========================================================
+    	// CHARLES: This is where everyone sees that someone guessed.
+    	// CHARLES: The properties are data.username and data.time
+    	// CHARLES: Both of them are strings.
+    	// ==========================================================
     	console.log(data);
   	});
     
