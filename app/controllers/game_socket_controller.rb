@@ -20,75 +20,14 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :mike, data
   end
 
-  def _start
-    Thread.new do
-      game = Game.last
-
-      sleep(@game_start_delay)
-      WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
-      _start_round 1
-    end
-  end
-
-  def _start_round round
+  # Selects a host for the game and notifies them.  They are now in charge of
+  # running the game!
+  def select_game_host
     game = Game.last
-      if round <= @no_of_rounds
 
-      game.players.each do |player|
-        player.state = "ready"
-        player.has_drawn = false
-        player.save
-      end
-
-      WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
-      game.players.each { |player| _start_phase player }
-      
-      WebsocketRails[:game].trigger :dictator, "\tEnding Round #{round}"
-      _round_summary game, round
-    else
-      WebsocketRails[:game].trigger :dictator, "Ending Game"
-    end
-  end
-
-  def _round_summary game, round
-    WebsocketRails[:game].trigger :dictator, "\tRound #{round} Summary"
-    # end_round
-
-    game = round_summary game
-
-    sleep(@round_summary_time)
-
-    round += 1
-    _start_round game, round
-  end
-
-  def _start_phase player
-    game = Game.last
-    game.phase_start_time = Time.new
-    game.save
-
-    start_phase
-
-    begin 
-      mike_debug(Game.last.to_json)
-    end until Game.last.word_id == nil
-
-    WebsocketRails[:game].trigger :tell_players_start
-
-    sleep(@phase_time)
-  end
-
-  def _phase_summary
-  end
-
-  private :_start, :_start_round, :_round_summary, :_start_phase, :_phase_summary
-  ##############################################################################
-  
-  def initialize
-    @game_start_delay = 0.seconds
-    @no_of_rounds = 1
-    @phase_time = 4.seconds
-    @round_summary_time = 5.seconds
+    user_id = game.players.pluck(:user_id).sample
+    # WebsocketRails[:game].trigger :dictator, "User #{user_id} is the host"
+    WebsocketRails[:game].trigger :host, "User #{user_id} is the host"
   end
 
   def mark_ready
@@ -129,7 +68,7 @@ class GameSocketController < WebsocketRails::BaseController
     end
 
     if game.players.length >= 2 && allReady
-      _start
+      select_game_host
     end
   end
 

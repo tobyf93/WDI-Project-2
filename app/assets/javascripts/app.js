@@ -47,9 +47,17 @@ $(function(){
 
 	// app.mikedebugChannel = app.dispatcher.subscribe('mikedebug');
 
+	app.dispatcher.bind('game.user_id', function(user_id) {
+   	app.user_id = user_id;
+  });
+
 	app.gameChannel.bind('dictator', function(data) {
-    	console.log(data);
-  	});
+   	console.log(data);
+  });
+
+	app.gameChannel.bind('host', function(data) {
+   	console.log(data);
+  });
 
 	app.gameChannel.bind('mike', function(data) {
 		console.warn(data);
@@ -59,6 +67,7 @@ $(function(){
 		console.warn(data);
 	});
 
+	app.dispatcher.trigger('fetch.user_id');
 	app.router = new app.Router();
 	Backbone.history.start();	
 });
