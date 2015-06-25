@@ -45,8 +45,6 @@ $(function(){
 	app.messageChannel = app.dispatcher.subscribe('message');
 	app.gameChannel = app.dispatcher.subscribe('game');
 
-	// app.mikedebugChannel = app.dispatcher.subscribe('mikedebug');
-
 	app.dispatcher.bind('game.user_id', function(user_id) {
    	app.user_id = user_id;
   });
@@ -55,8 +53,9 @@ $(function(){
    	console.log(data);
   });
 
-	app.gameChannel.bind('host', function(host_id) {
-   	if (host_id === app.user_id) {
+	app.gameChannel.bind('host', function(data) {
+   	if (data.host_id === app.user_id) {
+   		app.host.settings.players = data.players;
    		app.host.start();
    	}
   });

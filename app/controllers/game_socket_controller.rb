@@ -25,9 +25,14 @@ class GameSocketController < WebsocketRails::BaseController
   def select_game_host
     game = Game.last
 
-    user_id = game.players.pluck(:user_id).sample
+    host_id = game.players.pluck(:user_id).sample
+
+    data = {
+      :host_id => host_id,
+      :players => game.players.length
+    }
     # WebsocketRails[:game].trigger :dictator, "User #{user_id} is the host"
-    WebsocketRails[:game].trigger :host, user_id
+    WebsocketRails[:game].trigger :host, data
   end
 
   def mark_ready
