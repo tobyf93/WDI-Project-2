@@ -3,7 +3,7 @@ var app = app || {};
 app.host = {
   settings: {
     gameStartDelay: 0,
-    rounds: 3,
+    rounds: 1,
     players: 3,
     phaseLength: 4000,
     roundSummaryLength: 5000
@@ -30,7 +30,9 @@ app.host = {
   startPhase: function(roundNumber, phaseNumber) {
     console.log('\t\tStarting Phase', phaseNumber);
 
-    if (phaseNumber < app.host.settings.players) {
+    if (phaseNumber <= app.host.settings.players) {
+      app.dispatcher.trigger('game.start_phase');
+
       setTimeout(function() {
         app.host.startPhase(roundNumber, ++phaseNumber);
       }, app.host.settings.phaseLength);
