@@ -79,4 +79,3 @@ var submitGuessHandler = function() {
     $('#submit_guess').off();
   });
 }
->>>>>>> a06fa881ef4d8af244e49267ac6b4e912f66be72

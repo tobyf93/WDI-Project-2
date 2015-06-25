@@ -150,7 +150,7 @@ class GameSocketController < WebsocketRails::BaseController
     drawer.update :state => 'drawing', :has_drawn => true
 
     WebsocketRails[:game].trigger :dictator, "\t\t #{drawer.user.username} is drawing" 
-    WebsocketRails[:game].trigger :tell_players_start   
+    WebsocketRails[:game].trigger :tell_players_start
   end
 
   def get_role
@@ -208,7 +208,7 @@ class GameSocketController < WebsocketRails::BaseController
 
     sorted_by_score.each do |player|
       username = player.user.username
-      scores.push({ username: username, players: player })
+      scores.push({ username: username, player: player })
     end
     
     WebsocketRails[:game].trigger :game_over, scores
