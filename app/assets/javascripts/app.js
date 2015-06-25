@@ -45,14 +45,15 @@ $(function(){
 	app.messageChannel = app.dispatcher.subscribe('message');
 	app.gameChannel = app.dispatcher.subscribe('game');
 
-	app.mikedebugChannel = app.dispatcher.subscribe('mikedebug');
-	app.mikedebugChannel.bind('mikestatus', function(data) {
-		console.log('mikedebug', data);
-	});
+	// app.mikedebugChannel = app.dispatcher.subscribe('mikedebug');
 
 	app.gameChannel.bind('dictator', function(data) {
     	console.log(data);
   	});
+
+	app.gameChannel.bind('mike', function(data) {
+		console.warn(data);
+	});
 
 	app.gameChannel.bind('toby', function(data) {
 		console.warn(data);
