@@ -80,6 +80,7 @@ app.GameView = Backbone.View.extend({
   },
   drawView: function(data) {
     // debugger;
+    $('#main').empty();
     this.gameTimer();
     app.canvasView = new app.CanvasView();
     app.canvasView.renderDrawer(data);
