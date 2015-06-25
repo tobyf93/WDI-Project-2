@@ -11,36 +11,42 @@ class GameSocketController < WebsocketRails::BaseController
   #           remaining players submiting guesses based on the realtime drawing.
 
   def toby_debug data
+    data = "#{Time.new} - #{data}"
     WebsocketRails[:game].trigger :toby, data
   end
 
+  def mike_debug data
+    data = "#{Time.new} - #{data}"
+    WebsocketRails[:game].trigger :mike, data
+  end
+
   def _start
+    Thread.new do
     # Temporary - eventually we will pass the game into the _start method
     game = Game.last
     game = Game.create if !game
 
     WebsocketRails[:game].trigger :dictator, 'Beginning Game!'
     _start_round game, 1
+    end
   end
 
   def _start_round game, round
-    Thread.new do
-      if round <= 3
+    if round <= 3
 
-        game.players.each do |player|
-          player.state = "ready"
-          player.has_drawn = false
-          player.save
-        end
-
-        WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
-        game.players.each { |player| _start_phase player }
-        
-        WebsocketRails[:game].trigger :dictator, "\tEnding Round #{round}"
-        _round_summary game, round
-      else
-        WebsocketRails[:game].trigger :dictator, "Ending Game"
+      game.players.each do |player|
+        player.state = "ready"
+        player.has_drawn = false
+        player.save
       end
+
+      WebsocketRails[:game].trigger :dictator, "\tStarting Round #{round}"
+      game.players.each { |player| _start_phase player }
+      
+      WebsocketRails[:game].trigger :dictator, "\tEnding Round #{round}"
+      _round_summary game, round
+    else
+      WebsocketRails[:game].trigger :dictator, "Ending Game"
     end
   end
 
@@ -192,12 +198,16 @@ class GameSocketController < WebsocketRails::BaseController
     game = Game.last
 
     unless game.word_id
-      game.word_id = Word.all.sample.id
+      word = Word.all.sample
+      game.word_id = word.id
       game.save
     end
 
-    current_player = game.players.where :user_id => session[:user_id] 
+    mike_debug(word.name);
+    current_player = game.players.find_by user_id: session[:user_id] 
+    mike_debug(current_player.id);
 
+    mike_debug(current_player.state);
     if current_player.first.state == "drawing"
       # my_turn = true
       # this_word = Word.find game.word_id
@@ -213,6 +223,7 @@ class GameSocketController < WebsocketRails::BaseController
       }
     end
     send_message :my_turn, data, :namespace => :game
+    WebsocketRails[]
   end
 
   def submit_guess
