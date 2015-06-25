@@ -21,7 +21,9 @@ app.host = {
   startRound: function(roundNumber) {
     if (roundNumber <= app.host.settings.rounds) {
       console.log('\tStarting Round', roundNumber);
-        app.host.startPhase(roundNumber, 1);
+
+      app.dispatcher.trigger('game.start_round');
+      app.host.startPhase(roundNumber, 1);
     } else {
       console.log('Ending Game');
     }
