@@ -79,27 +79,31 @@ class GameSocketController < WebsocketRails::BaseController
   def join
     game = Game.last
     game = Game.create unless game
-    user = User.find session[:user_id]
-    player = user.players.first
+    game.update :state => "pregame" unless game.state
 
-    if !player
-      # Restrict user to one player for now
-      Player.where(:user_id => user.id).destroy_all
+    if game.state == "pregame"
+      user = User.find session[:user_id]
+      player = user.players.first
 
-      player = Player.create :user_id => user.id
-      game.players << player
+      if !player
+        # Restrict user to one player for now
+        Player.where(:user_id => user.id).destroy_all
+
+        player = Player.create :user_id => user.id
+        game.players << player
+      end
+
+      data = game.players.map do |player|
+        username = player.user.username
+
+        {
+          :player => player, 
+          :username => username
+        }
+      end
+
+      WebsocketRails[:game].trigger :join, data
     end
-
-    data = game.players.map do |player|
-      username = player.user.username
-
-      {
-        :player => player, 
-        :username => username
-      }
-    end
-
-    WebsocketRails[:game].trigger :join, data
   end
 
   def leave
@@ -145,6 +149,7 @@ class GameSocketController < WebsocketRails::BaseController
 
   def start_round
     game = Game.last
+    game.update :state => "in_progress"
 
     game.players.each do |player|
       player.update :state => "ready", :has_drawn => false, :guess => "", :score => 0, :guess_time => nil

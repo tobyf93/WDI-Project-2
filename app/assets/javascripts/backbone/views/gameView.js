@@ -24,12 +24,9 @@ app.GameView = Backbone.View.extend({
 
   },
   getRole: function(data) {
-  	console.log(" WOLF - GET ROLE");
     if (data.my_turn) {
-    console.log(" \tWOLF - MY TURN ")
       this.drawView(data);
     } else {
-    	console.log(" \tWOLF - NOT MY TURN ")
       this.guessView(data);
     };
   },
@@ -39,7 +36,6 @@ app.GameView = Backbone.View.extend({
     // var canvasTemplate = new app.CanvasView();
     // canvasTemplate.renderGuesser();
     // debugger;
-    console.log( "\tWOLF GUESS TURN" );
     $('#main').empty();
     this.$el.append("You're going to be drawing shit!");
     app.canvasView = new app.CanvasView();
@@ -62,7 +58,6 @@ app.GameView = Backbone.View.extend({
   },
   
   render: function() {
-
     app.dispatcher.trigger('game.get_role');
 	
     chatBoxTemplate = $('#chatBoxTemplate').html();
