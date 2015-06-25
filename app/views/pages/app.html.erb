@@ -31,7 +31,7 @@ Welcome back <%=  %>
 </script>
 
 <script id="chatBoxTemplate" type="text/template">
-  <div id="chatbox" class="chat-wrapper">
+  <div id="chatbox" class="chatWrapper">
     <h1>Chat</h1>
     <div id="messageDisplay">
     </div>
@@ -41,6 +41,7 @@ Welcome back <%=  %>
     </div>
   </div>
 </script>
+
 <script id="canvasTemplate" type="template/text">
 	<canvas id="drawsomeCanv" class="canvas"></canvas>
 </script>
@@ -78,8 +79,21 @@ Welcome back <%=  %>
 		<textarea class="typeBox"></textarea>
 	</div>
 </script>
+<script id="scoresListTemplate" type="template/text">
+	<div class="modalWrap">
+		<div id="roundSummary" class="modal">
+			<div id="scoresList" class="wrapper">
 
-<script id="eventAlerts" type="template/text">	
+			</div>
+		</div>
+	</div>
+</script>
+<script id="scoreTileTemplate" type="template/text">
+	<div class="scoreTiles">
+		<section>{{username}}</section>
+		<section>{{guess}}</section>
+		<section>{{score}}</section>
+	</div>
 </script>
 
 
