@@ -127,15 +127,20 @@ class GameSocketController < WebsocketRails::BaseController
   end
 
   def draw
-    data = {
-      x_pos: message[:xPos],
-      y_pos: message[:yPos],
-      new_path: message[:newPath],
-      stroke_color: message[:strokeColor],
-      stroke_width: message[:strokeWidth]
-    }
 
-    WebsocketRails[:game].trigger :draw, data
+    # requester = Player.find_by :user_id => session[:user]
+
+    # if requester.state == "drawing" 
+      data = {
+        x_pos: message[:xPos],
+        y_pos: message[:yPos],
+        new_path: message[:newPath],
+        stroke_color: message[:strokeColor],
+        stroke_width: message[:strokeWidth]
+      }
+      WebsocketRails[:game].trigger :draw, data
+    # end
+
   end
 
   def start_round
