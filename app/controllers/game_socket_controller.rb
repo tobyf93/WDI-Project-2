@@ -46,7 +46,6 @@ class GameSocketController < WebsocketRails::BaseController
 
     player_states = game.players.map do |player|
       username = player.user.username
-
       {
         :player => player, 
         :username => username
@@ -86,12 +85,12 @@ class GameSocketController < WebsocketRails::BaseController
       game.players << player
     end
 
-    users = game.players.map { |player| player.user }
-
     data = game.players.map do |player|
+      username = player.user.username
+
       {
-        player: player.id,
-        username: player.user.username
+        :player => player, 
+        :username => username
       }
     end
 
@@ -109,16 +108,17 @@ class GameSocketController < WebsocketRails::BaseController
       else
         data = []
 
-        game.players.each do |player|
-          data.push ({
-            player: player,
-            username: (User.find player.user_id).username
-          })
+        data = game.players.map do |player|
+          username = player.user.username
+          {
+          :player => player, 
+          :username => username
+          }
+        end
         
         WebsocketRails[:game].trigger :leave, data
       end
     end
-  end
   end
 
   def draw
