@@ -49,8 +49,9 @@ app.GameView = Backbone.View.extend({
 
   drawView: function(data) {
     // debugger;
+    // this.$el.append("You're going to be drawing shit!");
     app.canvasView = new app.CanvasView();
-    app.canvasView.renderDrawer();
+    app.canvasView.renderDrawer(data);
     app.chatBox.render();
   },
 

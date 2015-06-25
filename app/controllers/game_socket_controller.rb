@@ -20,8 +20,6 @@ class GameSocketController < WebsocketRails::BaseController
     WebsocketRails[:game].trigger :mike, data
   end
 
-  # Selects a host for the game and notifies them.  They are now in charge of
-  # running the game!
   def select_game_host
     game = Game.last
 
