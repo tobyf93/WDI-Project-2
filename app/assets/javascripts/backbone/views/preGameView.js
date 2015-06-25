@@ -46,6 +46,7 @@ app.PreGameView = Backbone.View.extend({
 		// SETUP BIND TO LISTEN FOR SCORES AT THE END OF ROUND//
 		//****************************************************// 
 		app.gameChannel.bind('game_over', function(data) {
+			console.log(data)
 		});
 
 
