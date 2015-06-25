@@ -43,11 +43,15 @@ app.PreGameView = Backbone.View.extend({
 		});
 
 
-		//****************************************************//
-		// SETUP BIND TO LISTEN FOR SCORES AT THE END OF ROUND//
-		//****************************************************// 
+		//*****************************************************//
+		// SETUP BIND TO LISTEN FOR SCORES AT THE END OF ROUND //
+		//*****************************************************// 
 		app.gameChannel.bind('game_over', function(data) {
 			console.log('This data should appear at the end of a round', data);
+			view.reloadCollection(data);
+			console.log(app.playersList);
+			app.scoresSummary = new app.ScoresSummaryView();
+			app.scoresSummary.render();
 		});
 
 
@@ -55,10 +59,14 @@ app.PreGameView = Backbone.View.extend({
 	reloadCollection: function(data){
 		app.playersList.reset();
 		for (var i = 0; i < data.length; i++) {
+			var playerScore = 0;
+
 			app.playersList.add({
 				username: data[i].username,
 				user_id: data[i].player.user_id,
-				state: data[i].player.state
+				state: data[i].player.state,
+				score: data[i].player.score,
+				guess: data[i].player.guess
 			});
 		}
 
@@ -66,7 +74,8 @@ app.PreGameView = Backbone.View.extend({
 	},
 	initialize: function(){
 		this.players = app.playersList;
-		app.gameStart = new app.GameView;
+		app.gameStart = new app.GameView();
+		app.chatBox = new app.ChatboxView();
 		this.initBinds();
 		this.fetchPlayers(); 
 

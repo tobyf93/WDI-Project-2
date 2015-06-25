@@ -14,16 +14,17 @@ app.ChatboxView = Backbone.View.extend({
 	},
 	render: function(){
 		var chatBoxTemplate = $('#chatBoxTemplate').html();
-		var guessSubmitTemplate = $('#guessSubmitTemplate').html();
 		this.$el.append(chatBoxTemplate);
-		$('#chatbox').append(guessSubmitTemplate);
+		;
 	},
 	renderMsg: function(data){
 		var message = "<p><span class='timestamp'>" + data.currtime + "</span>:: <span class='user'>" + data.user + '</span>:: <span class="message">' + data.message + "</span></p> ";
 		$('#messageDisplay').append(message);
 	},
-	renderDrawer:function(){},//WILL POPULATE THIS LATER
-	renderGuesser:function(){},//WILL POPULATE THIS LATER
+	renderDrawer:function(){
+		var guessSubmitTemplate = $('#guessSubmitTemplate').html();
+		$('#chatbox').append(guessSubmitTemplate)
+	},
 	clickSubmitMessage:function(e){
 		// debugger;
 		console.log("This is actually doing something");

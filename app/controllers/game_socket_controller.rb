@@ -249,7 +249,10 @@ class GameSocketController < WebsocketRails::BaseController
 
     sorted_by_score.each do |player|
       username = player.user.username
-      scores.push({ username: username, score: player.score, })
+      scores.push({ 
+        username: username, 
+        player: player
+        })
     end
 
     if game.word_id

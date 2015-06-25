@@ -1,4 +1,4 @@
-var app = app || {}
+var app = app || {};
 app.GameView = Backbone.View.extend({
 	el: '#main',
 	events:{},
@@ -34,16 +34,16 @@ app.GameView = Backbone.View.extend({
 		this.$el.append("You're going to be drawing shit!");
 		app.guessCanvasView = new app.CanvasView();
 		app.guessCanvasView.renderGuesser();
-		app.chatBox = new app.ChatboxView();
 		app.chatBox.render();
 	},
 
 	drawView: function(data){
 		// debugger;
 		this.$el.append("You're going to be drawing shit!");
-
 		app.drawCanvasView = new app.CanvasView();
 		app.drawCanvasView.renderDrawer();
+		app.chatBox.render();
+		app.chatBox.renderDrawer();
 	},
 	renderStatus: function(){
 		//GAME LOGIC TO HANDLE WHAT GETS DISPLAYED IN THE STATUS BAR
@@ -51,7 +51,6 @@ app.GameView = Backbone.View.extend({
 		statusBar.render("This is a message");
 	},
 	render: function(){
-
 		console.log("Triggering get role call");
 		app.dispatcher.trigger('game.get_role');
 		chatBoxTemplate = $('#chatBoxTemplate').html();

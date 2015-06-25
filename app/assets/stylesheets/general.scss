@@ -54,6 +54,13 @@
 .guessCanvas{
 	z-index:-500;
 }
+.chatWrapper{
+	z-index:500;
+	bottom:0;
+	left:0;
+	right:0;
+	position:fixed;
+}
 .toolsWrap{
 	z-index:200;
 	position:absolute;
