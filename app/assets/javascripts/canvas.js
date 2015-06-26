@@ -78,7 +78,6 @@ app.canvas = {
     // this.tool.onMouseDrag = this.mouseDragEvent;
     var view = this;
     $('.color').on('click', function(e){
-    	console.log("THIS IS CLICKED");
     	target = e.currentTarget; 
     	$('.color').removeClass('inUse');
     	view.changeColorEvent(target);
