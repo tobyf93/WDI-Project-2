@@ -1,23 +1,43 @@
 @import 'utilities.scss';
+.timestamp{
+	color: $white;
+	font-weight: 600;
+}
+.user{
+	color:$finalRed;
+	font-weight: 600;
+}
+.message{
+	color: $highlightGreen;
+	font-weight: 600;
+}
 .chatBox{
   position:absolute;
   z-index:4;
   width:100%;
   height:100%;
   overflow-y:auto; 
+
 }
 #chatToggle{
+	padding:12px 24px; 
+	background: $teal;
 	position:absolute;
 	top:20px;
-	right:0px;
-	width:50px;
-	height:50px;
-	background:$white;
-	border:1px solid $lightBorderGrey;
+	text-align:center;
+	right:15px;
+	font-size:16px;
+	text-transform: uppercase;
+	background: $teal;
+	border-radius: 5px; 
+	cursor:pointer;
+	&:hover{
+			background:#ff4c4c;
+	}
 }
 .chatWrapper{
 	padding: 25px 0;
-	background: rgba(0,0,0,0.4);
+	background: rgba(0,0,0,0.6);
 	z-index:500;
 	bottom:0px;
 	left:0;
