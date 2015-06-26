@@ -74,12 +74,9 @@ app.PreGameView = Backbone.View.extend({
 			playertile.render();
 			var $searchQ = '#'+player.get('username')+" #playerState";
 			if(player.get('state') === "not ready"){
-				console.log("I AM NOT READY");
 				
-				console.log($searchQ);
 				$($searchQ).addClass('notReady');
 			}else if(player.get('state')==="ready"){
-				console.log("I AM READY");
 				$($searchQ).addClass('ready');
 			}
 

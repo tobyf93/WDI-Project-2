@@ -4,7 +4,6 @@ app.ScoresSummaryView = Backbone.View.extend({
 	initialize:function(option){
 	},
 	render: function(data){
-		console.log("round summary is being displayed");
 		var scoresListTemplate = $('#scoresListTemplate').html();
 		this.$el.append(scoresListTemplate);
 		$('#roundSummary').prepend('<h2 class="rdAnswer">The word was <span>'+data+'</span></h2>');
