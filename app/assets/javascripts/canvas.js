@@ -46,7 +46,7 @@ app.canvas = {
     this.tool = new Tool();
     this.path = undefined;
     this.strokeColor = 'black';
-    this.strokeWidth = 1;
+    this.strokeWidth = 5;
     this.tool.onMouseDown = this.mouseDownEvent;
     this.tool.onMouseDrag = this.mouseDragEvent;
   },
@@ -78,7 +78,6 @@ app.canvas = {
     // this.tool.onMouseDrag = this.mouseDragEvent;
     var view = this;
     $('.color').on('click', function(e){
-    	console.log("THIS IS CLICKED");
     	target = e.currentTarget; 
     	$('.color').removeClass('inUse');
     	view.changeColorEvent(target);

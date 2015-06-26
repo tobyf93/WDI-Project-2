@@ -81,10 +81,8 @@ app.GameView = Backbone.View.extend({
 			$('#progressTimer').attr('value',percentage);
 		},
 		onstart: function() {
-			console.log('timer started');
 		},
 		onend: function() {
-			console.log('timer ended normally');  
 		}
 	});
 	app.timer.start(timeLimit);
@@ -120,6 +118,7 @@ app.GameView = Backbone.View.extend({
   	}else{
   		$('.guessPrompt').text('Chat').addClass('active');
   	}
+
   	$('#guessSubmit').toggleClass('slideDown');
   	$('#chatMsgSubmit').toggleClass('slideDown');
   }
