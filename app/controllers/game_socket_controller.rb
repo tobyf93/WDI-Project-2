@@ -157,7 +157,7 @@ class GameSocketController < WebsocketRails::BaseController
 
   def start_phase
     game = Game.last
-    game.update :word_id => Word.all.sample.id, :players_left => game.players.length, :phase_start_time => Time.new
+    game.update :word_id => Word.all.sample.id, :players_left => game.players.length, :phase_start_time => Time.new, :highest_score => 0
 
     game.players.update_all :state => 'guessing', :guess => ""
     drawer = game.players.find_by :has_drawn => false
@@ -178,8 +178,6 @@ class GameSocketController < WebsocketRails::BaseController
       word = Word.find game.word_id
       data[:my_turn] = true
       data[:word] = word.name
-
-      mike_debug("The word is #{word.name}, you cheating piece of shit")
     end
 
     send_message :my_turn, data, :namespace => :game
@@ -200,6 +198,7 @@ class GameSocketController < WebsocketRails::BaseController
     if player.first.guess == correct_answer
       score = (10000 / time_dif)
       correct = "true"
+      game.update :highest_score => (game.highest_score + 500)
     
     player.first.update :score => (player.first.score + score)
 
@@ -225,7 +224,8 @@ class GameSocketController < WebsocketRails::BaseController
     wordObj = Word.find game.word_id
     word = wordObj.name
     game.update :players_left => (game.players_left - 1), :word_id => nil
-    
+    drawing_player = (Player.where({ :state => "drawing" }))
+    drawing_player.first.update :score => (drawing_player.first.score + game.highest_score)
     scores = []
     sorted_by_score = game.players
     sorted_by_score.sort_by { |player| player.score }

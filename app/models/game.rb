@@ -9,6 +9,7 @@
 #  word_id          :integer
 #  players_left     :integer
 #  phase_start_time :datetime
+#  highest_score    :integer          default(0)
 #
 
 class Game < ActiveRecord::Base
