@@ -36,7 +36,7 @@ Word.create :name => 'Cat'
 Word.create :name => 'WDI9'
 Word.create :name => 'Coffeescript'
 Word.create :name => 'Underscore'
-
+Word.create :name => 'Dad'
 
 
 
