@@ -69,7 +69,7 @@ class GameSocketController < WebsocketRails::BaseController
       end
     end
 
-    if game.players.length >= 2 && allReady
+    if game.players.length >= 3 && allReady
       select_game_host
     end
   end
