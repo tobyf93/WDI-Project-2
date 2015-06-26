@@ -46,7 +46,7 @@ app.canvas = {
     this.tool = new Tool();
     this.path = undefined;
     this.strokeColor = 'black';
-    this.strokeWidth = 1;
+    this.strokeWidth = 5;
     this.tool.onMouseDown = this.mouseDownEvent;
     this.tool.onMouseDrag = this.mouseDragEvent;
   },
