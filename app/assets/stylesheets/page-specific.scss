@@ -1,14 +1,25 @@
 // Place all the styles related to the pages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-
+@import 'utilities.scss';
 .formTable{
-	display:table;
+	width:100%;
+	max-width:420px;
+	padding-top:60px;
+	h2{
+		margin-top:0px;
+	}
+	display:block;
 	margin:0 auto;
-	height: 100vh;
+	height: -webkit-calc(100% - 80px);
 	.formWrapper{
+		background: $white;
+		padding:25px;
 		margin:0 auto;
-		display:table-cell;
+		display:block;
 		vertical-align:middle;
+		-webkit-box-shadow: -1px 8px 3px -5px $lightBorderGrey;
+		-moz-box-shadow: -1px 8px 3px -5px $lightBorderGrey;
+		box-shadow: -1px 8px 3px -5px $lightBorderGrey;
 	}
 }
