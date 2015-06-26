@@ -37,6 +37,12 @@ Word.create :name => 'WDI9'
 Word.create :name => 'Coffeescript'
 Word.create :name => 'Underscore'
 Word.create :name => 'Dad'
+Word.create :name => 'Bong lord'
+Word.create :name => 'Socks'
+Word.create :name => 'Boat shoes'
+Word.create :name => 'Beard'
+Word.create :name => 'Pizza'
+Word.create :name => 'Beer'
 
 
 
