@@ -126,6 +126,17 @@ button:disabled{
 		background: $highlightGreen;
 	}
 }
+.btn-submit{
+	padding:8px;
+	border: 2px solid $teal;
+	background: $teal;
+	color: $white;
+	&:hover{
+		border:2px solid $highlightGreen;
+		background:$highlightGreen;
+		color: $white;
+	}
+}
 .startBtn{
 	display:inline-block;
 	text-align:center;

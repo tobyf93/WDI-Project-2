@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Drawsome</title>
+<link href='http://fonts.googleapis.com/css?family=Raleway:400,600,500,300' rel='stylesheet' type='text/css'>
   <link href="//d2v52k3cl9vedd.cloudfront.net/basscss/6.1.6/basscss.min.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
@@ -25,16 +26,16 @@
     </div>
   </nav>
 <% if notice || alert %>
-<div class="container">
+<!-- <div class="container">
   <p class="notice"><strong><%= notice %></strong></p>
-  <p class="alert"></strong><%= alert %></strong></p>
+  <p class="alert"></strong><%= alert %></strong></p> -->
 <!-- COMMENTING THIS OUT FOR NOW FOR THE SAKE OF CLARITY -->
 <!--   <div class="timer"> </div>
   <div class="timer_input">
      <label for="time-input">Timer seconds</label>
       <input name="time-input" type="text" class="time-input" value="20" autofocus/>
   <button id="play">Start Timer</button> -->
-</div>
+<!-- </div> -->
 <% end %>
   <%= yield %>
 </div>

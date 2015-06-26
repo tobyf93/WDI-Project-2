@@ -1,7 +1,8 @@
 var app = app || {};
 app.GameView = Backbone.View.extend({
   el: '#main',
-  events: {'click .guessPrompt': 'toggleInput'},
+  events: {'click .guessPrompt': 'toggleInput',
+'click #chatToggle':'toggleChat'},
   initialize: function() {
     var view = this;
 
@@ -51,7 +52,7 @@ app.GameView = Backbone.View.extend({
     // debugger;
 
     $('#main').empty();
-    $guessPrompt = $('<div class="guessPrompt">Guess the Word!</div>');
+    $guessPrompt = $('<div class="guessPrompt active">Chat</div>');
     
     this.gameTimer();
     app.canvasView = new app.CanvasView();
@@ -61,7 +62,10 @@ app.GameView = Backbone.View.extend({
     this.$el.append($guessPrompt);
 
   },
+  toggleChat:function(e){
 
+  	$('#chatbox').toggleClass('hidden')
+  },
   gameTimer: function(){
 	$('#main').append('<progress id="progressTimer" value="0" class="progress default">.2</progress>');
 	var timeLimit = app.host.settings.phaseLength/1000;
@@ -90,7 +94,9 @@ app.GameView = Backbone.View.extend({
     app.canvasView = new app.CanvasView();
     app.canvasView.renderDrawer(data);
     app.chatBox.render();
+    $('#chatbox').addClass('hidden');
     $('#chatMsgSubmit').toggleClass('slideDown');
+    $('#main').append('	<div id="chatToggle"> chat </div>')
   },
 
   renderStatus: function() {
@@ -106,6 +112,13 @@ app.GameView = Backbone.View.extend({
     // this.$el.html("Hello, ");
   },
   toggleInput: function(e){
+  	console.log("CLICKED");
+  	if($('.guessPrompt').hasClass('active')){
+  		$('.guessPrompt').text('Guess Word').removeClass('active');
+  	}else{
+  		$('.guessPrompt').text('Chat').addClass('active');
+  	}
+
   	$('#guessSubmit').toggleClass('slideDown');
   	$('#chatMsgSubmit').toggleClass('slideDown');
   }
